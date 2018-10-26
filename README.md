@@ -1,0 +1,1 @@
+Derivatives pricing in c++ after M. Joshi's book
