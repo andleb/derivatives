@@ -7,9 +7,9 @@ include(cmake/definitions.cmake )
 include(cmake/dirs.cmake)
 
 #NOTE: CMAKE_BUILD_TYPE is usually set by the IDE
-if( CMAKE_BUILD_TYPE MATCHES "Debug" )
-    add_definitions( -DTESTING )
-endif()
+#if( CMAKE_BUILD_TYPE MATCHES "Debug" )
+#    add_definitions( -DTESTING )
+#endif()
 
 #for headers
 #include_directories( . )
@@ -19,6 +19,7 @@ set(HEADERS
     )
 
 set(SOURCES
+    mc1.cpp
     )
 
 # set(ANALYZER
@@ -32,7 +33,7 @@ set(SOURCES
 #NOTE: this includes code specific to versioned build of boost, i.e. names are versioned by compiler & stdlib & debug & multithreaded
 include(cmake/libraries/threads.cmake)
 include(cmake/libraries/boost.cmake)
-include(cmake/libraries/common.cmake)
+#include(cmake/libraries/common.cmake)
 
 add_executable(main
     ${HEADERS}
