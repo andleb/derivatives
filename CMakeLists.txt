@@ -35,9 +35,16 @@ include(cmake/libraries/threads.cmake)
 include(cmake/libraries/boost.cmake)
 #include(cmake/libraries/common.cmake)
 
-add_executable(main
+add_executable(mc1
     ${HEADERS}
-    ${SOURCES}
+    mc1.cpp
+    )
+
+add_executable(mc2
+    ${HEADERS}
+    payoff1.h
+    payoff1.cpp
+    mc2.cpp
     )
 
 # add_executable(generator
@@ -47,5 +54,5 @@ add_executable(main
 #     )
 
 
-target_link_libraries( main ${PROJECT_LINK_LIBS} )
+target_link_libraries( mc2 ${PROJECT_LINK_LIBS} )
 # target_link_libraries( generator ${PROJECT_LINK_LIBS} )
