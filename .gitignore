@@ -12,3 +12,5 @@ Makefile
 cmake_install.cmake
 *.stash
 
+
+cmake
