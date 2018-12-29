@@ -19,7 +19,6 @@ set(HEADERS
     )
 
 set(SOURCES
-    mc1.cpp
     )
 
 # set(ANALYZER
@@ -47,11 +46,11 @@ add_executable(mc2
     mc2.cpp
     )
 
-# add_executable(generator
-#     ${HEADERS}
-#     ${SOURCES}
-#     ${GENERATOR}
-#     )
+add_executable(mc3
+    ${HEADERS}
+    payoff2.h
+    mc3.cpp
+    )
 
 
 target_link_libraries( mc2 ${PROJECT_LINK_LIBS} )
