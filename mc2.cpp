@@ -4,6 +4,7 @@
  */
 
 #include <iostream>
+#include <sstream>
 
 #include "derivatives.h"
 #include "payoff1.h"
