@@ -1,1 +1,2 @@
-Derivatives pricing in c++ after M. Joshi's book
+# derivatives
+Based on M. Joshi's C++ Design Patterns and Derivatives Pricing
