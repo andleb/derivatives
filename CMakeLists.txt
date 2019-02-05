@@ -30,8 +30,8 @@ set(SOURCES
 #     )
 
 #NOTE: this includes code specific to versioned build of boost, i.e. names are versioned by compiler & stdlib & debug & multithreaded
-include(cmake/libraries/threads.cmake)
-include(cmake/libraries/boost.cmake)
+#include(cmake/libraries/threads.cmake)
+#include(cmake/libraries/boost.cmake)
 #include(cmake/libraries/common.cmake)
 
 add_executable(mc1
@@ -49,6 +49,7 @@ add_executable(mc2
 add_executable(mc3
     ${HEADERS}
     payoff2.h
+    payoff2.cpp
     mc3.cpp
     )
 

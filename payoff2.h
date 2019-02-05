@@ -14,7 +14,11 @@ class payoff2
 {
 public:
     payoff2();
-    virtual ~payoff2() {};
+    payoff2(const payoff2 &) = default;
+    payoff2 & operator=(const payoff2 &) = default;
+    payoff2(payoff2 &&) = default;
+    payoff2 & operator=(payoff2 &&) = default;
+    virtual ~payoff2();
 
     virtual double operator() (double p_spot) const = 0;
 };
@@ -22,17 +26,26 @@ public:
 class payoff2call : public payoff2
 {
 public:
-    payoff2call(double p_strike) : m_strike(p_strike) {};
-    virtual ~payoff2call() {};
+    payoff2call(double p_strike) : m_strike(p_strike) {}
 
-    virtual double operator() (double p_spot) const
-    {
-        return std::max<double>(p_spot - m_strike, 0);
-    };
+    double operator() (double p_spot) const override;
 
 private:
     double m_strike = 0;
 };
+
+class payoffDoubleDigital : public payoff2
+{
+    payoffDoubleDigital(double LowerLevel, double UpperLevel);
+
+    double operator()(double Spot) const override;
+
+private:
+    double LowerLevel;
+    double UpperLevel;
+};
+
+
 
 } // namespace der
 
