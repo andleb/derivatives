@@ -9,30 +9,30 @@
 #include "derivatives.h"
 #include "payoff1.h"
 
-std::random_device rDev {};
+//std::random_device rDev {};
 // The generator is seeded from the implementation-defined device
-std::mt19937_64 rng{ rDev() };
+//std::mt19937_64 rng{ rDev() };
 
-std::normal_distribution<double> Ndist {0, 1};
+//std::normal_distribution<double> Ndist {0, 1};
 
 
-struct simSpot
-{
-    simSpot(double p_S0, double p_t, double p_sigma, double p_r) : m_t(p_t), m_sigma(p_sigma),
-        m_precalc(p_S0 * std::exp( (p_r - 0.5*p_sigma*p_sigma)*p_t))
-    {}
+//struct simSpot
+//{
+//    simSpot(double p_S0, double p_t, double p_sigma, double p_r) : m_t(p_t), m_sigma(p_sigma),
+//        m_precalc(p_S0 * std::exp( (p_r - 0.5*p_sigma*p_sigma)*p_t))
+//    {}
 
-    double operator() () const
-    {
-        return m_precalc * std::exp( m_sigma * std::sqrt(m_t) * N() );
-    }
+//    double operator() () const
+//    {
+//        return m_precalc * std::exp( m_sigma * std::sqrt(m_t) * N() );
+//    }
 
-    static double N ()
-    { return Ndist(rng); }
+//    static double N ()
+//    { return Ndist(rng); }
 
-    double m_t; double m_sigma;
-    double m_precalc;
-};
+//    double m_t; double m_sigma;
+//    double m_precalc;
+//};
 
 
 int main( int /*argc*/, char */*argv*/[] )

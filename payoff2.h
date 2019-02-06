@@ -1,50 +1,64 @@
-#ifndef PAYOFF2_H
-#define PAYOFF2_H
-
 /** \file payoff2.h
  * \author Andrej Leban
  * \date 11/2018
  */
 
-#include <algorithm>
+#ifndef PAYOFF2_H
+#define PAYOFF2_H
+
+
+//#include <algorithm>
 
 namespace der {
 
-class payoff2
+class Payoff2
 {
 public:
-    payoff2();
-    payoff2(const payoff2 &) = default;
-    payoff2 & operator=(const payoff2 &) = default;
-    payoff2(payoff2 &&) = default;
-    payoff2 & operator=(payoff2 &&) = default;
-    virtual ~payoff2();
+    Payoff2() = default;
+    Payoff2(const Payoff2 &) = default;
+    Payoff2 & operator=(const Payoff2 &) = default;
+    Payoff2(Payoff2 &&) = default;
+    Payoff2 & operator=(Payoff2 &&) = default;
+    virtual ~Payoff2();
 
     virtual double operator() (double p_spot) const = 0;
 };
 
-class payoff2call : public payoff2
+
+class Payoff2call : public Payoff2
 {
 public:
-    payoff2call(double p_strike) : m_strike(p_strike) {}
+    Payoff2call(double p_strike) : m_strike(p_strike) {}
 
-    double operator() (double p_spot) const override;
+    double operator()(double p_spot) const override;
 
 private:
     double m_strike = 0;
 };
 
-class payoffDoubleDigital : public payoff2
-{
-    payoffDoubleDigital(double LowerLevel, double UpperLevel);
 
-    double operator()(double Spot) const override;
+class Payoff2put : public Payoff2
+{
+public:
+    Payoff2put(double p_strike) : m_strike(p_strike) {}
+
+    double operator()(double p_spot) const override;
 
 private:
-    double LowerLevel;
-    double UpperLevel;
+    double m_strike = 0;
 };
 
+
+class Payoff2DoubleDigital : public Payoff2
+{
+    Payoff2DoubleDigital(double lowerLevel, double upperLevel) : m_lowerLevel(lowerLevel), m_upperLevel(upperLevel) {}
+
+    double operator()(double spot) const override;
+
+private:
+    double m_lowerLevel;
+    double m_upperLevel;
+};
 
 
 } // namespace der

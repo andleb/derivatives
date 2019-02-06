@@ -53,6 +53,16 @@ add_executable(mc3
     mc3.cpp
     )
 
+add_executable(mc4
+    ${HEADERS}
+    payoff2.h
+    payoff2.cpp
+    vanillaoption.h
+    vanillaoption.cpp
+    mc4.cpp
+    )
+
 
 target_link_libraries( mc2 ${PROJECT_LINK_LIBS} )
 # target_link_libraries( generator ${PROJECT_LINK_LIBS} )
+

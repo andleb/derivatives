@@ -10,11 +10,11 @@
 
 #include "derivatives.h"
 
-std::random_device rDev {};
+//std::random_device rDev {};
 // The generator is seeded from the implementation-defined device
-std::mt19937_64 rng{ rDev() };
+//std::mt19937_64 rng{ rDev() };
 
-std::normal_distribution<double> Ndist {0, 1};
+//std::normal_distribution<double> Ndist {0, 1};
 auto N = [] () {return Ndist(rng);};
 
 

@@ -1,31 +1,28 @@
-/** \file mc3.cpp
+/** \file mc4.cpp
  * \author Andrej Leban
- * \date 12/2018
+ * \date 2/2019
+ * Ch 4.2 Bridging with a virtual ctor
  */
 
 #include <iostream>
 #include <sstream>
 
 #include "derivatives.h"
-#include "payoff2.h"
+#include "vanillaoption.h"
 
-//std::random_device rDev {};
-//// The generator is seeded from the implementation-defined device
-//std::mt19937_64 rng{ rDev() };
+using namespace der;
 
-//std::normal_distribution<double> Ndist {0, 1};
-
-double doMonteCarlo(const der::Payoff2 & payoff, double T, double sigma, double r, double S0, int nScen)
+double doMonteCarlo(const VanillaOption & option, double sigma, double r, double S0, int nScen)
 {
     double sum = 0.0;
-    const simSpot spot {S0, T, sigma, r};
+    const simSpot spot {S0, option.expiry(), sigma, r};
 
     for( int i = 0; i < nScen; ++i )
     {
-        sum += payoff(spot());
+        sum += option.optionPayoff(spot());
     }
 
-    return std::exp(-r*T) * (sum / nScen);
+    return std::exp(-r*option.expiry()) * (sum / nScen);
 }
 
 int main( int /*argc*/, char */*argv*/[] )
@@ -52,7 +49,7 @@ int main( int /*argc*/, char */*argv*/[] )
 
     std::cout << S0 << " " << K << " " << T << " " << sigma << " " << r << " " << nScen << "\n";
 
-    std::cout << "the price is: " << doMonteCarlo(der::Payoff2call{K}, T, sigma, r, S0, nScen)  << "\n";
+    std::cout << "the price is: " << doMonteCarlo(VanillaOption{Payoff2call{K}, T}, sigma, r, S0, nScen)  << "\n";
 
     return 0;
 }
