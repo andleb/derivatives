@@ -9,7 +9,7 @@ namespace der {
 
 double VanillaOption::optionPayoff(double spot) const
 {
-    return m_payoff(spot);
+    return (*m_pPayoff)(spot);
 }
 
 

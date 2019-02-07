@@ -13,8 +13,8 @@ namespace der {
 class VanillaOption
 {
 public:
-    VanillaOption(const Payoff2 & payoff, double expiry)
-        : m_payoff(payoff)
+    VanillaOption(std::unique_ptr<Payoff2> pPayoff, double expiry)
+        : m_pPayoff(std::move(pPayoff))
         , m_expiry(expiry)
     {}
 
@@ -22,7 +22,7 @@ public:
     double optionPayoff(double spot) const;
 
 private:
-    const Payoff2 & m_payoff;
+    const std::unique_ptr<Payoff2>  m_pPayoff;
     double m_expiry;
 };
 
