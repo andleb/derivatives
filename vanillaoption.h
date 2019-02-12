@@ -8,7 +8,8 @@
 
 #include "payoff2.h"
 
-namespace der {
+namespace der
+{
 
 class VanillaOption
 {
@@ -17,12 +18,17 @@ public:
         : m_pPayoff(std::move(pPayoff))
         , m_expiry(expiry)
     {}
+    ~VanillaOption() = default;
+    VanillaOption(const VanillaOption & p_othr);
+    VanillaOption(VanillaOption && p_othr) noexcept;
+    VanillaOption & operator=(const VanillaOption & p_othr);
+    VanillaOption & operator=(VanillaOption && p_othr) noexcept;
 
     double expiry() const { return m_expiry; }
     double optionPayoff(double spot) const;
 
 private:
-    const std::unique_ptr<Payoff2>  m_pPayoff;
+    std::unique_ptr<Payoff2> m_pPayoff;
     double m_expiry;
 };
 

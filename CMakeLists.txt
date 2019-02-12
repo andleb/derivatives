@@ -59,10 +59,28 @@ add_executable(mc4
     payoff2.cpp
     vanillaoption.h
     vanillaoption.cpp
+    payoffbridge.h
+    payoffbridge.cpp
     mc4.cpp
     )
 
+add_executable(mc5
+    ${HEADERS}
+    payoff2.h
+    payoff2.cpp
+    vanillaoption2.h
+    vanillaoption2.cpp
+    payoffbridge.h
+    payoffbridge.cpp
+    parameters.h
+    parameters.cpp
+    mc5.cpp
+    )
 
+target_link_libraries( mc1 ${PROJECT_LINK_LIBS} )
 target_link_libraries( mc2 ${PROJECT_LINK_LIBS} )
-# target_link_libraries( generator ${PROJECT_LINK_LIBS} )
+target_link_libraries( mc3 ${PROJECT_LINK_LIBS} )
+target_link_libraries( mc4 ${PROJECT_LINK_LIBS} )
+target_link_libraries( mc5 ${PROJECT_LINK_LIBS} )
+
 

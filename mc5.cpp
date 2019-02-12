@@ -1,18 +1,19 @@
-/** \file mc4.cpp
+/** \file mc5.cpp
  * \author Andrej Leban
  * \date 2/2019
- * Ch 4.2 Bridging with a virtual ctor
+ * Ch 4 Bridging with a virtual ctor
  */
 
 #include <iostream>
 #include <sstream>
 
 #include "derivatives.h"
-#include "vanillaoption.h"
+#include "vanillaoption2.h"
+#include "payoffbridge.h"
 
 using namespace der;
 
-double doMonteCarlo(const VanillaOption & option, double sigma, double r, double S0, int nScen)
+double doMonteCarlo(const VanillaOption2 & option, double sigma, double r, double S0, int nScen)
 {
     double sum = 0.0;
     const simSpot spot{S0, option.expiry(), sigma, r};
@@ -49,7 +50,10 @@ int main(int /*argc*/, char * /*argv*/ [])
 
     std::cout << S0 << " " << K << " " << T << " " << sigma << " " << r << " " << nScen << "\n";
 
-    std::cout << "the price is: " << doMonteCarlo(VanillaOption{std::make_unique<Payoff2call>(K), T}, sigma, r, S0, nScen) << "\n";
+
+    VanillaOption2 option{Payoff2call{K}, T};
+
+    std::cout << "the price is: " << doMonteCarlo(option, sigma, r, S0, nScen) << "\n";
 
     return 0;
 }
