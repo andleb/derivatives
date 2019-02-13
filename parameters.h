@@ -23,8 +23,8 @@ public:
     ParametersInner & operator=(ParametersInner &&) = default;
 
     virtual std::unique_ptr<ParametersInner> clone() const = 0;
-    virtual double integral() const = 0;
-    virtual double integralSquare() const = 0;
+    virtual double integral(double time1, double time2) const = 0;
+    virtual double integralSquare(double time1, double time2) const = 0;
 };
 
 class Parameters
@@ -38,8 +38,29 @@ public:
     Parameters & operator=(const Parameters & other);
     Parameters & operator=(Parameters && other) noexcept;
 
+    double integral(double time1, double time2) const;
+    double integralSquare(double time1, double time2) const;
+    double mean(double time1, double time2) const;
+    double RMS(double time1, double time2) const;
+
 private:
     std::unique_ptr<ParametersInner> m_pImpl;
+};
+
+class ParametersConstant : public ParametersInner
+{
+
+public:
+    ParametersConstant(double constant)
+        : m_constant(constant)
+    {}
+
+    std::unique_ptr<ParametersInner> clone() const override;
+    double integral(double time1, double time2) const override;
+    double integralSquare(double time1, double time2) const override;
+
+private:
+    double m_constant;
 };
 
 } // namespace der

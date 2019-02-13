@@ -9,16 +9,10 @@
 #include "derivatives.h"
 #include "payoff2.h"
 
-//std::random_device rDev {};
-//// The generator is seeded from the implementation-defined device
-//std::mt19937_64 rng{ rDev() };
-
-//std::normal_distribution<double> Ndist {0, 1};
-
 double doMonteCarlo(const der::Payoff2 & payoff, double T, double sigma, double r, double S0, int nScen)
 {
     double sum = 0.0;
-    const simSpot spot {S0, T, sigma, r};
+    const der::simSpot spot {S0, T, sigma, r};
 
     for( int i = 0; i < nScen; ++i )
     {

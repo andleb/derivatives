@@ -1,7 +1,7 @@
-/** \file mc5.cpp
+/** \file mc6.cpp
  * \author Andrej Leban
  * \date 2/2019
- * Ch 4 Bridging with a virtual ctor
+ * Ch 5 Strategies, decoration, and statistics
  */
 
 #include <iostream>

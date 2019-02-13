@@ -77,10 +77,17 @@ add_executable(mc5
     mc5.cpp
     )
 
+add_executable(mc6
+    ${HEADERS}
+    statistics.h
+    statistics.cpp
+    mc6.cpp
+    )
+
 target_link_libraries( mc1 ${PROJECT_LINK_LIBS} )
 target_link_libraries( mc2 ${PROJECT_LINK_LIBS} )
 target_link_libraries( mc3 ${PROJECT_LINK_LIBS} )
 target_link_libraries( mc4 ${PROJECT_LINK_LIBS} )
 target_link_libraries( mc5 ${PROJECT_LINK_LIBS} )
-
+target_link_libraries( mc6 ${PROJECT_LINK_LIBS} )
 
