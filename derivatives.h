@@ -18,6 +18,8 @@ static std::normal_distribution<double> Ndist;
 namespace der
 {
 
+//! \brief The simSpot struct
+//! Simulates the value of a spot price at time p_t for some volatility & interest rate
 struct simSpot
 {
     simSpot(double p_S0, double p_t, double p_sigma, double p_r)
@@ -38,7 +40,6 @@ struct simSpot
     double m_precalc;
 };
 
-
 //! \brief The simSpotParams struct
 //! Allows for variable volatilities & interest rates
 struct simSpotParams
@@ -51,7 +52,7 @@ struct simSpotParams
 
     double operator()() const
     {
-                                                // need root variance, sqrt(t) already factored in
+        // need root variance, sqrt(t) already factored in
         return m_precalc * std::exp(sqrt(m_sigma.integralSquare(0, m_t)) * N());
     }
 
@@ -61,7 +62,6 @@ struct simSpotParams
     Parameters m_sigma;
     double m_precalc;
 };
-
 
 } // namespace der
 #endif // DERIVATIVES_H

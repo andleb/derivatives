@@ -7,23 +7,32 @@
 #include <iostream>
 #include <sstream>
 
+#include "common/io.h"
+
 #include "derivatives.h"
+#include "parameters.h"
 #include "payoffbridge.h"
+#include "statistics.h"
 #include "vanillaoption2.h"
+
 
 using namespace der;
 
-double doMonteCarlo(const VanillaOption2 & option, const Parameters & sigma, const Parameters & r, double S0, int nScen)
+auto doMonteCarlo(const VanillaOption2 & option, const Parameters & sigma, const Parameters & r, double S0, int nScen,
+                    StatisticsBase & gatherer)
 {
-    double sum = 0.0;
     const simSpotParams spot{S0, option.expiry(), sigma, r};
+    auto discount = std::exp(-r.integral(0, option.expiry()));
 
     for (int i = 0; i < nScen; ++i)
     {
-        sum += option.optionPayoff(spot());
+        // payoff in the current path, spot() simulates a spot value @expiry
+        auto thisPayoff = option.optionPayoff(spot());
+        // add it to the sum
+        gatherer.dumpOneResult(discount * thisPayoff);
     }
 
-    return std::exp(-r.integral(0, option.expiry())) * (sum / nScen);
+    return gatherer.resultsSoFar();
 }
 
 int main(int /*argc*/, char * /*argv*/ [])
@@ -51,8 +60,14 @@ int main(int /*argc*/, char * /*argv*/ [])
     std::cout << S0 << " " << K << " " << T << " " << sigma << " " << r << " " << nScen << "\n";
 
     VanillaOption2 option{Payoff2call{K}, T};
+    StatisticsMean gatherer{};
 
-    std::cout << "the price is: " << doMonteCarlo(option, ParametersConstant{sigma}, ParametersConstant{r}, S0, nScen) << "\n";
+    auto results = doMonteCarlo(option, ParametersConstant{sigma}, ParametersConstant{r},
+                                S0, nScen, gatherer);
+
+    std::cout << "the price is: " << results.front().front() << "\n";
+    std::cout << "number of paths were: " << gatherer.simsSoFar() << "\n";
+    std::cout << "the results are: " << results << "\n";
 
     return 0;
 }

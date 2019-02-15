@@ -20,7 +20,7 @@ double der::payoff1::operator() (double p_spot) const
         return std::max<double>(m_strike - p_spot, 0);
     case OptionsType::digital:
         return p_spot > m_strike;
-    default:
-        throw std::runtime_error{"Unrecognized option type"};
+//    default:
+//        throw std::runtime_error{"Unrecognized option type"};
     }
 }

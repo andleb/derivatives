@@ -14,6 +14,11 @@ std::vector<std::vector<double> > StatisticsMean::resultsSoFar() const
     return {{m_runningSum / m_nPathsDone}};
 }
 
+size_t StatisticsMean::simsSoFar() const
+{
+    return m_nPathsDone;
+}
+
 void StatisticsMean::dumpOneResult(double val)
 {
     m_runningSum += val;
