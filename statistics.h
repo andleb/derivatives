@@ -46,6 +46,33 @@ private:
     size_t m_nPathsDone{0};
 };
 
+class ConvergenceTable : public StatisticsBase
+{
+public:
+    ConvergenceTable(std::unique_ptr<StatisticsBase> p_pGatherer)
+        : m_pGatherer(std::move(p_pGatherer))
+    {}
+
+    ConvergenceTable() = default;
+    ConvergenceTable(const ConvergenceTable &) = default;
+    ConvergenceTable(ConvergenceTable &&) = default;
+    ConvergenceTable & operator=(const ConvergenceTable &) = default;
+    ConvergenceTable & operator=(ConvergenceTable &&) = default;
+    ~ConvergenceTable() override;
+
+    std::unique_ptr<StatisticsBase> clone() const override;
+    std::vector<std::vector<double>> resultsSoFar() const override;
+    size_t simsSoFar() const override;
+    void dumpOneResult(double val) override;
+
+private:
+    std::shared_ptr<StatisticsBase> m_pGatherer{};
+    size_t m_count{2};
+    size_t m_nPathsDone{0};
+
+    std::vector<std::vector<double>> m_results{};
+};
+
 } // namespace der
 
 #endif // STATISTICS_H

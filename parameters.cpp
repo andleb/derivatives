@@ -2,7 +2,10 @@
  *  \author Andrej Leban
  *  \date 2/2018
  */
+
 #include "parameters.h"
+
+#include <cmath>
 
 namespace der
 {
@@ -10,7 +13,7 @@ namespace der
 ParametersInner::~ParametersInner() = default;
 
 Parameters::Parameters(const ParametersInner & parameter)
-    : m_pImpl(parameter.clone())
+    : m_pImpl(paramet er.clone())
 {}
 
 Parameters::~Parameters() = default;
@@ -48,7 +51,7 @@ double Parameters::mean(double time1, double time2) const
 
 double Parameters::RMS(double time1, double time2) const
 {
-    return m_pImpl->integralSquare(time1, time2) / (time2 - time1);
+    return std::sqrt(m_pImpl->integralSquare(time1, time2) / (time2 - time1));
 }
 
 Parameters & Parameters::operator=(Parameters && other) noexcept = default;

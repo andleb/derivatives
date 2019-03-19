@@ -60,7 +60,9 @@ int main(int /*argc*/, char * /*argv*/ [])
     std::cout << S0 << " " << K << " " << T << " " << sigma << " " << r << " " << nScen << "\n";
 
     VanillaOption2 option{Payoff2call{K}, T};
-    StatisticsMean gatherer{};
+
+    StatisticsMean gathererInner{};
+    ConvergenceTable gatherer{ std::make_unique<StatisticsMean>(std::move(gathererInner))};
 
     auto results = doMonteCarlo(option, ParametersConstant{sigma}, ParametersConstant{r},
                                 S0, nScen, gatherer);
