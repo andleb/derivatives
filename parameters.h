@@ -1,6 +1,6 @@
 /** \file parameters.h
  *  \author Andrej Leban
- *  \date 2/2018
+ *  \date 2/2019
  */
 
 #ifndef PARAMETERS_H

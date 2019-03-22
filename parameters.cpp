@@ -1,6 +1,6 @@
 /** \file parameters.cpp
  *  \author Andrej Leban
- *  \date 2/2018
+ *  \date 2/2019
  */
 
 #include "parameters.h"
@@ -13,7 +13,7 @@ namespace der
 ParametersInner::~ParametersInner() = default;
 
 Parameters::Parameters(const ParametersInner & parameter)
-    : m_pImpl(paramet er.clone())
+    : m_pImpl(parameter.clone())
 {}
 
 Parameters::~Parameters() = default;

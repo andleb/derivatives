@@ -67,7 +67,7 @@ int main(int /*argc*/, char * /*argv*/ [])
     auto results = doMonteCarlo(option, ParametersConstant{sigma}, ParametersConstant{r},
                                 S0, nScen, gatherer);
 
-    std::cout << "the price is: " << results.front().front() << "\n";
+    std::cout << "the price is: " << results.back().front() << "\n";
     std::cout << "number of paths were: " << gatherer.simsSoFar() << "\n";
     std::cout << "the results are: " << results << "\n";
 

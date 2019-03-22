@@ -4,18 +4,11 @@
  */
 
 #include <algorithm>
-#include <iostream>
-#include <iomanip>
 #include <cmath>
+#include <iomanip>
+#include <iostream>
 
 #include "derivatives.h"
-
-//std::random_device rDev {};
-// The generator is seeded from the implementation-defined device
-//std::mt19937_64 rng{ rDev() };
-
-//std::normal_distribution<double> Ndist {0, 1};
-auto N = [] () {return Ndist(rng);};
 
 
 double payoff(double p_spot, double p_strike)
@@ -26,7 +19,7 @@ double payoff(double p_spot, double p_strike)
 
 double simSpot(double p_S0, double p_t, double p_sigma, double p_r)
 {
-    return p_S0 * std::exp( (p_r - 0.5*p_sigma*p_sigma)*p_t + p_sigma * std::sqrt(p_t) * N() );
+    return p_S0 * std::exp( (p_r - 0.5*p_sigma*p_sigma)*p_t + p_sigma * std::sqrt(p_t) * der::normalDist() );
 }
 
 
