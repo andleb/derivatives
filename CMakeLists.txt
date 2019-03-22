@@ -90,10 +90,22 @@ add_executable(mc6
     mc6.cpp
     )
 
+add_executable(mc7
+    ${HEADERS}
+    parameters.h
+    parameters.cpp
+    statistics.h
+    statistics.cpp
+    random.h
+    random.cpp
+    mc7.cpp
+    )
+
 target_link_libraries( mc1 ${PROJECT_LINK_LIBS} )
 target_link_libraries( mc2 ${PROJECT_LINK_LIBS} )
 target_link_libraries( mc3 ${PROJECT_LINK_LIBS} )
 target_link_libraries( mc4 ${PROJECT_LINK_LIBS} )
 target_link_libraries( mc5 ${PROJECT_LINK_LIBS} )
 target_link_libraries( mc6 ${PROJECT_LINK_LIBS} )
+target_link_libraries( mc7 ${PROJECT_LINK_LIBS} )
 
