@@ -179,7 +179,29 @@ RandomParkMiller<DIM>::RandomParkMiller(size_t p_seed)
         m_seed = 1;
     }
 
+    // + 1 so we obtain the uniforms on the closed interval (0,  1)
     m_reciprocal = 1. / (1. + max());
+}
+
+template<size_t DIM>
+std::vector<double> RandomParkMiller<DIM>::uniforms(std::vector<double> && p_variates) const
+{
+    return std::for_each(p_variates.begin(), p_variates.end(), [this] (auto & el) { el = randInt() * m_reciprocal; } );
+}
+
+template<size_t DIM>
+void RandomParkMiller<DIM>::skip(size_t p_nPaths)
+{
+    for(size_t i; i < p_nPaths; ++i)
+    {
+        randInt();
+    }
+}
+
+template<size_t DIM>
+void RandomParkMiller<DIM>::reset()
+{
+    m_seed = m_initSeed;
 }
 
 template<size_t DIM>
