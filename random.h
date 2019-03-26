@@ -25,8 +25,12 @@ class RandomBase
 public:
     RandomBase() = default;
 
+    //! \brief uniforms
+    //! \param p_variates should be pre-allocated to the desired size
     std::vector<double> uniforms(std::vector<double> && p_variates) const;
-    std::vector<double> gaussians(std::vector<double> && p_variates) const;
+    //! \brief gaussians
+    //! \param p_variates should be pre-allocated to the desired size
+      std::vector<double> gaussians(std::vector<double> && p_variates) const;
 
     static double invCDFNormal(double x);
 
@@ -34,6 +38,24 @@ public:
     void setSeed(size_t p_seed);
     void reset();
 };
+
+template <typename Generator, size_t DIM>
+class AntiThetic : public RandomBase<AntiThetic<Generator, DIM>, DIM>
+{
+public:
+    AntiThetic() = default;
+    explicit AntiThetic(size_t p_seed) : m_generator(p_seed) {}
+
+    std::vector<double> uniforms(std::vector<double> && p_variates) const;
+
+    void skip(size_t p_nPaths);
+    void setSeed(size_t p_seed);
+    void reset();
+
+private:
+    Generator m_generator;
+};
+
 
 //! \brief The RandomParkMiller class
 //! The minimal standard linear congruential generator due to Park & Miller
@@ -79,15 +101,17 @@ private:
 template <typename Derived, size_t DIM>
 std::vector<double> RandomBase<Derived, DIM>::uniforms(std::vector<double> && p_variates) const
 {
-    // the implementation provides the uniforms
+    //the implementation provides the uniforms
     return static_cast<Derived *>(this)->uniforms(std::move(p_variates));
 }
 
 template <typename Derived, size_t DIM>
 std::vector<double> RandomBase<Derived, DIM>::gaussians(std::vector<double> && p_variates) const
 {
+    //NOTE: here we provide a default implementation, can of course still be overloaded in the derived class
     auto ret = uniforms(std::move(p_variates));
-    return std::for_each(ret.begin(), ret.end(), invCDFNormal);
+    std::for_each(ret.begin(), ret.end(), invCDFNormal);
+    return ret;
 }
 
 template <typename Derived, size_t DIM>
@@ -165,6 +189,42 @@ void RandomBase<Derived, DIM>::reset()
     return static_cast<Derived *>(this)->reset();
 }
 
+//Anti-Thetic
+
+template<typename Generator, size_t DIM>
+std::vector<double> AntiThetic<Generator, DIM>::uniforms(std::vector<double> && p_variates) const
+{
+    auto ret = p_variates;
+    long half = ret.size() / 2;
+    auto midpoint = ret.begin() + half;
+
+    ret.assign(ret.begin(), midpoint, m_generator.uniforms(std::vector<double> {ret.begin(), midpoint}));
+    // anti-thetic in the second half
+    for(auto it = midpoint + 1; it != ret.end(); ++it)
+    {
+        *it = 1.0 - *(it - half);
+    }
+
+    return ret;
+}
+
+template<typename Generator, size_t DIM>
+void AntiThetic<Generator, DIM>::skip(size_t p_nPaths)
+{
+    return m_generator.skip(p_nPaths / 2);
+}
+
+template<typename Generator, size_t DIM>
+void AntiThetic<Generator, DIM>::setSeed(size_t p_seed)
+{
+    return m_generator.setSeed(p_seed);
+}
+
+template<typename Generator, size_t DIM>
+void AntiThetic<Generator, DIM>::reset()
+{
+    return m_generator.reset();
+}
 
 // RandomParkMiller
 
@@ -186,7 +246,9 @@ RandomParkMiller<DIM>::RandomParkMiller(size_t p_seed)
 template<size_t DIM>
 std::vector<double> RandomParkMiller<DIM>::uniforms(std::vector<double> && p_variates) const
 {
-    return std::for_each(p_variates.begin(), p_variates.end(), [this] (auto & el) { el = randInt() * m_reciprocal; } );
+    auto ret = p_variates;
+    std::for_each(ret.begin(), ret.end(), [this] (auto & el) { el = randInt() * m_reciprocal; } );
+    return ret;
 }
 
 template<size_t DIM>
