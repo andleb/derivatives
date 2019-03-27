@@ -87,6 +87,11 @@ struct simSpotParamsMultiple : public simSpotParams
         , m_generator(p_seed)
     {}
 
+    simSpotParamsMultiple(double p_S0, double p_t, const Parameters & p_sigma, const Parameters & p_r, Generator & p_generator)
+        : simSpotParams(p_S0, p_t, p_sigma, p_r)
+        , m_generator(p_generator)
+    {}
+
     double operator()() const
     {
         // make use of custom generator
@@ -98,7 +103,7 @@ struct simSpotParamsMultiple : public simSpotParams
         return m_precalc * std::exp(sqrt(m_sigma.integralSquare(0, m_t)) * m_generator.gaussians(std::vector<double>(1)));
     }
 
-    std::vector<double> simMultiple(size_t p_nValues) const
+    std::vector<double> simSpotMultiple(size_t p_nValues)
     {
         std::vector<double> ret(p_nValues);
 

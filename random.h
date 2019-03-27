@@ -14,6 +14,9 @@
 // Decided on static polymorphism here instead of dynamic,
 // since we know the desired generator at compile time
 
+// interface functions are not const since they mutate some generator states
+// TODO:    * perhaps use mutable for the state fields?
+
 namespace der
 {
 
@@ -27,10 +30,10 @@ public:
 
     //! \brief uniforms
     //! \param p_variates should be pre-allocated to the desired size
-    std::vector<double> uniforms(std::vector<double> && p_variates) const;
+    std::vector<double> uniforms(std::vector<double> && p_variates);
     //! \brief gaussians
     //! \param p_variates should be pre-allocated to the desired size
-      std::vector<double> gaussians(std::vector<double> && p_variates) const;
+    std::vector<double> gaussians(std::vector<double> && p_variates);
 
     static double invCDFNormal(double x);
 
@@ -46,7 +49,7 @@ public:
     AntiThetic() = default;
     explicit AntiThetic(size_t p_seed) : m_generator(p_seed) {}
 
-    std::vector<double> uniforms(std::vector<double> && p_variates) const;
+    std::vector<double> uniforms(std::vector<double> && p_variates);
 
     void skip(size_t p_nPaths);
     void setSeed(size_t p_seed);
@@ -63,9 +66,9 @@ template <size_t DIM>
 class RandomParkMiller : public RandomBase<RandomParkMiller<DIM>, DIM>
 {
 public:
-    explicit RandomParkMiller(size_t p_seed = 1);
+    RandomParkMiller(size_t p_seed = 1);
 
-    std::vector<double> uniforms(std::vector<double> && p_variates) const;
+    std::vector<double> uniforms(std::vector<double> && p_variates);
 
     void skip(size_t p_nPaths);
     void setSeed(size_t p_seed) { m_seed = p_seed != 0 ? p_seed : 1; }
@@ -81,12 +84,12 @@ private:
     double m_reciprocal;
 
     //! The coefficients for the Park-Miller LCG
-    static const struct
+    static constexpr struct Coeff
     {
-        const long a = 16807;
-        const long m = 2147483647;
-        const long q = 127773;
-        const long r = 2836;
+        const size_t a = 16807;
+        const size_t m = 2147483647;
+        const size_t q = 127773;
+        const size_t r = 2836;
     } m_coeffs;
 
 };
@@ -99,14 +102,14 @@ private:
 // RandomBase
 
 template <typename Derived, size_t DIM>
-std::vector<double> RandomBase<Derived, DIM>::uniforms(std::vector<double> && p_variates) const
+std::vector<double> RandomBase<Derived, DIM>::uniforms(std::vector<double> && p_variates)
 {
     //the implementation provides the uniforms
     return static_cast<Derived *>(this)->uniforms(std::move(p_variates));
 }
 
 template <typename Derived, size_t DIM>
-std::vector<double> RandomBase<Derived, DIM>::gaussians(std::vector<double> && p_variates) const
+std::vector<double> RandomBase<Derived, DIM>::gaussians(std::vector<double> && p_variates)
 {
     //NOTE: here we provide a default implementation, can of course still be overloaded in the derived class
     auto ret = uniforms(std::move(p_variates));
@@ -192,7 +195,7 @@ void RandomBase<Derived, DIM>::reset()
 //Anti-Thetic
 
 template<typename Generator, size_t DIM>
-std::vector<double> AntiThetic<Generator, DIM>::uniforms(std::vector<double> && p_variates) const
+std::vector<double> AntiThetic<Generator, DIM>::uniforms(std::vector<double> && p_variates)
 {
     auto ret = p_variates;
     long half = ret.size() / 2;
@@ -235,7 +238,6 @@ RandomParkMiller<DIM>::RandomParkMiller(size_t p_seed)
 {
     if(p_seed == 0)
     {
-        m_initSeed = 1;
         m_seed = 1;
     }
 
@@ -244,7 +246,7 @@ RandomParkMiller<DIM>::RandomParkMiller(size_t p_seed)
 }
 
 template<size_t DIM>
-std::vector<double> RandomParkMiller<DIM>::uniforms(std::vector<double> && p_variates) const
+std::vector<double> RandomParkMiller<DIM>::uniforms(std::vector<double> && p_variates)
 {
     auto ret = p_variates;
     std::for_each(ret.begin(), ret.end(), [this] (auto & el) { el = randInt() * m_reciprocal; } );
@@ -263,7 +265,7 @@ void RandomParkMiller<DIM>::skip(size_t p_nPaths)
 template<size_t DIM>
 void RandomParkMiller<DIM>::reset()
 {
-    m_seed = m_initSeed;
+    m_seed = m_initSeed != 0 ? m_initSeed : 1;
 }
 
 template<size_t DIM>

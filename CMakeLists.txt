@@ -94,6 +94,8 @@ add_executable(mc7
     ${HEADERS}
     parameters.h
     parameters.cpp
+    payoff2.h
+    payoff2.cpp
     statistics.h
     statistics.cpp
     random.h
