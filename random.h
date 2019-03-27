@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstddef>
+#include <stdexcept>
 #include <vector>
 
 // Decided on static polymorphism here instead of dynamic,
@@ -47,7 +48,9 @@ class AntiThetic : public RandomBase<AntiThetic<Generator, DIM>, DIM>
 {
 public:
     AntiThetic() = default;
-    explicit AntiThetic(size_t p_seed) : m_generator(p_seed) {}
+    explicit AntiThetic(size_t p_seed)
+        : m_generator(p_seed)
+    {}
 
     std::vector<double> uniforms(std::vector<double> && p_variates);
 
@@ -58,7 +61,6 @@ public:
 private:
     Generator m_generator;
 };
-
 
 //! \brief The RandomParkMiller class
 //! The minimal standard linear congruential generator due to Park & Miller
@@ -79,21 +81,19 @@ public:
     size_t randInt();
 
 private:
-    const size_t m_initSeed;
-    mutable size_t m_seed;
+    const long m_initSeed;
+    mutable long m_seed;
     double m_reciprocal;
 
     //! The coefficients for the Park-Miller LCG
     static constexpr struct Coeff
     {
-        const size_t a = 16807;
-        const size_t m = 2147483647;
-        const size_t q = 127773;
-        const size_t r = 2836;
+        static constexpr size_t a = 16807;
+        static constexpr size_t m = 2147483647;
+        static constexpr size_t q = 127773;
+        static constexpr size_t r = 2836;
     } m_coeffs;
-
 };
-
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION
@@ -174,19 +174,19 @@ double RandomBase<Derived, DIM>::invCDFNormal(double x)
     return r;
 }
 
-template<typename Derived, size_t DIM>
+template <typename Derived, size_t DIM>
 void RandomBase<Derived, DIM>::skip(size_t p_nPaths)
 {
     return static_cast<Derived *>(this)->skip(p_nPaths);
 }
 
-template<typename Derived, size_t DIM>
+template <typename Derived, size_t DIM>
 void RandomBase<Derived, DIM>::setSeed(size_t p_seed)
 {
     return static_cast<Derived *>(this)->setSeed(p_seed);
 }
 
-template<typename Derived, size_t DIM>
+template <typename Derived, size_t DIM>
 void RandomBase<Derived, DIM>::reset()
 {
     return static_cast<Derived *>(this)->reset();
@@ -194,16 +194,16 @@ void RandomBase<Derived, DIM>::reset()
 
 //Anti-Thetic
 
-template<typename Generator, size_t DIM>
+template <typename Generator, size_t DIM>
 std::vector<double> AntiThetic<Generator, DIM>::uniforms(std::vector<double> && p_variates)
 {
     auto ret = p_variates;
     long half = ret.size() / 2;
     auto midpoint = ret.begin() + half;
 
-    ret.assign(ret.begin(), midpoint, m_generator.uniforms(std::vector<double> {ret.begin(), midpoint}));
+    ret.assign(ret.begin(), midpoint, m_generator.uniforms(std::vector<double>{ret.begin(), midpoint}));
     // anti-thetic in the second half
-    for(auto it = midpoint + 1; it != ret.end(); ++it)
+    for (auto it = midpoint + 1; it != ret.end(); ++it)
     {
         *it = 1.0 - *(it - half);
     }
@@ -211,19 +211,19 @@ std::vector<double> AntiThetic<Generator, DIM>::uniforms(std::vector<double> && 
     return ret;
 }
 
-template<typename Generator, size_t DIM>
+template <typename Generator, size_t DIM>
 void AntiThetic<Generator, DIM>::skip(size_t p_nPaths)
 {
     return m_generator.skip(p_nPaths / 2);
 }
 
-template<typename Generator, size_t DIM>
+template <typename Generator, size_t DIM>
 void AntiThetic<Generator, DIM>::setSeed(size_t p_seed)
 {
     return m_generator.setSeed(p_seed);
 }
 
-template<typename Generator, size_t DIM>
+template <typename Generator, size_t DIM>
 void AntiThetic<Generator, DIM>::reset()
 {
     return m_generator.reset();
@@ -232,46 +232,51 @@ void AntiThetic<Generator, DIM>::reset()
 // RandomParkMiller
 
 template<size_t DIM>
+typename RandomParkMiller<DIM>::Coeff const RandomParkMiller<DIM>::m_coeffs;
+
+template <size_t DIM>
 RandomParkMiller<DIM>::RandomParkMiller(size_t p_seed)
     : m_initSeed(p_seed)
     , m_seed(p_seed)
 {
-    if(p_seed == 0)
+    if (p_seed == 0)
     {
-        m_seed = 1;
+        m_seed = 1; 2836;
+
     }
 
     // + 1 so we obtain the uniforms on the closed interval (0,  1)
     m_reciprocal = 1. / (1. + max());
 }
 
-template<size_t DIM>
+template <size_t DIM>
 std::vector<double> RandomParkMiller<DIM>::uniforms(std::vector<double> && p_variates)
 {
+    //TODO: move here?
     auto ret = p_variates;
-    std::for_each(ret.begin(), ret.end(), [this] (auto & el) { el = randInt() * m_reciprocal; } );
+    std::for_each(ret.begin(), ret.end(), [this](auto & el) { el = randInt() * m_reciprocal; });
     return ret;
 }
 
-template<size_t DIM>
+template <size_t DIM>
 void RandomParkMiller<DIM>::skip(size_t p_nPaths)
 {
-    for(size_t i; i < p_nPaths; ++i)
+    for (size_t i; i < p_nPaths; ++i)
     {
         randInt();
     }
 }
 
-template<size_t DIM>
+template <size_t DIM>
 void RandomParkMiller<DIM>::reset()
 {
     m_seed = m_initSeed != 0 ? m_initSeed : 1;
 }
 
-template<size_t DIM>
+template <size_t DIM>
 size_t RandomParkMiller<DIM>::randInt()
 {
-    size_t k = m_seed / m_coeffs.q;
+    long k = m_seed / m_coeffs.q;
 
     m_seed = m_coeffs.a * (m_seed - k * m_coeffs.q) - k * m_coeffs.r;
 
@@ -280,7 +285,31 @@ size_t RandomParkMiller<DIM>::randInt()
         m_seed += m_coeffs.m;
     }
 
+    // FIXME: remove this after debug:
+    if (m_seed > max())
+    {
+        throw std::runtime_error{"random generator out of bounds"};
+    }
+
     return m_seed;
+
+// from the article
+
+//    long hi = m_seed / m_coeffs.q;
+//    long lo = m_seed % m_coeffs.q;
+
+//    long test = m_coeffs.a * lo - m_coeffs.r * hi;
+
+//    if (test > 0)
+//    {
+//        m_seed = test;
+//    }
+//    else
+//    {
+//        m_seed = test + m_coeffs.m;
+//    }
+
+//    return m_seed / m_coeffs.m;
 }
 
 } // namespace der
