@@ -51,7 +51,7 @@ int main(int /*argc*/, char * /*argv*/ [])
     T = 30;
     sigma = 0.5;
     r = 0.02;
-    nScen = 10000000;
+    nScen = 100000;
 #else
     std::cout << "enter spot, strike, time to expiry, vol, r and number of scenarios:\n";
     std::string inputParams;

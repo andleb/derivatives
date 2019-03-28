@@ -7,9 +7,9 @@ include(cmake/definitions.cmake )
 include(cmake/dirs.cmake)
 
 #NOTE: CMAKE_BUILD_TYPE is usually set by the IDE
-#if( CMAKE_BUILD_TYPE MATCHES "Debug" )
-#    add_definitions( -DTESTING )
-#endif()
+if( CMAKE_BUILD_TYPE MATCHES "Debug" )
+    add_definitions( -DTESTING )
+endif()
 
 #for headers
 #include_directories( . )

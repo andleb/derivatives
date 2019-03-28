@@ -9,6 +9,9 @@
 #include <algorithm>
 #include <cmath>
 #include <cstddef>
+#ifdef TESTING
+    #include <fstream>
+#endif
 #include <stdexcept>
 #include <vector>
 
@@ -68,7 +71,7 @@ template <size_t DIM>
 class RandomParkMiller : public RandomBase<RandomParkMiller<DIM>, DIM>
 {
 public:
-    RandomParkMiller(size_t p_seed = 1);
+    RandomParkMiller(long p_seed = 1);
 
     std::vector<double> uniforms(std::vector<double> && p_variates);
 
@@ -114,6 +117,14 @@ std::vector<double> RandomBase<Derived, DIM>::gaussians(std::vector<double> && p
     //NOTE: here we provide a default implementation, can of course still be overloaded in the derived class
     auto ret = uniforms(std::move(p_variates));
     std::for_each(ret.begin(), ret.end(), invCDFNormal);
+#ifdef TESTING
+    std::ofstream f {"../gaussians"};
+    for(auto n: ret)
+    {
+        f << n << ", ";
+    }
+#endif
+
     return ret;
 }
 
@@ -231,17 +242,17 @@ void AntiThetic<Generator, DIM>::reset()
 
 // RandomParkMiller
 
-template<size_t DIM>
-typename RandomParkMiller<DIM>::Coeff const RandomParkMiller<DIM>::m_coeffs;
+//template<size_t DIM>
+//typename RandomParkMiller<DIM>::Coeff const RandomParkMiller<DIM>::m_coeffs;
 
 template <size_t DIM>
-RandomParkMiller<DIM>::RandomParkMiller(size_t p_seed)
+RandomParkMiller<DIM>::RandomParkMiller(long p_seed)
     : m_initSeed(p_seed)
     , m_seed(p_seed)
 {
     if (p_seed == 0)
     {
-        m_seed = 1; 2836;
+        m_seed = 1;
 
     }
 
@@ -255,6 +266,13 @@ std::vector<double> RandomParkMiller<DIM>::uniforms(std::vector<double> && p_var
     //TODO: move here?
     auto ret = p_variates;
     std::for_each(ret.begin(), ret.end(), [this](auto & el) { el = randInt() * m_reciprocal; });
+#ifdef TESTING
+    std::ofstream f {"../uniforms"};
+    for(auto n: ret)
+    {
+        f << n << ", ";
+    }
+#endif
     return ret;
 }
 
