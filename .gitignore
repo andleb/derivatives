@@ -11,3 +11,7 @@ CMakeLists.txt.user*
 Makefile
 cmake_install.cmake
 *.stash
+
+gaussians
+
+uniforms

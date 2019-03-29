@@ -21,9 +21,17 @@ using namespace der;
 // generator is passed by value so there is no state persistence
 template<typename Generator>
 auto doMonteCarlo(const VanillaOption2 & option, const Parameters & sigma, const Parameters & r, double S0, size_t nScen,
-                  StatisticsBase & gatherer, Generator & p_generator)
+                  StatisticsBase & gatherer, std::unique_ptr<Generator> p_pGenerator = nullptr)
 {
-    simSpotParamsMultiple<Generator> spot{S0, option.expiry(), sigma, r, p_generator};
+    simSpotParamsMultiple<Generator> spot;
+    if constexpr(! std::is_same<Generator, std::nullptr_t>::value)
+    {
+        spot = simSpotParamsMultiple<Generator> {S0, option.expiry(), sigma, r, *p_pGenerator};
+    }
+    else
+    {
+        spot = simSpotParamsMultiple<Generator> {S0, option.expiry(), sigma, r};
+    }
 
     std::vector<double> simSpots = spot.simSpotMultiple(nScen);
     auto discount = std::exp(-r.integral(0, option.expiry()));
@@ -51,7 +59,7 @@ int main(int /*argc*/, char * /*argv*/ [])
     T = 30;
     sigma = 0.5;
     r = 0.02;
-    nScen = 100000;
+    nScen = 10000000;
 #else
     std::cout << "enter spot, strike, time to expiry, vol, r and number of scenarios:\n";
     std::string inputParams;
@@ -64,21 +72,33 @@ int main(int /*argc*/, char * /*argv*/ [])
 
     VanillaOption2 option{Payoff2call{K}, T};
     StatisticsMean gathererInner{};
-    ConvergenceTable gatherer{std::make_unique<StatisticsMean>(std::move(gathererInner))};
 
-//    AntiThetic<RandomParkMiller<1>, 1> generator{1};
-    RandomParkMiller<1> generator{1};
+    ConvergenceTable gatherer1{std::make_unique<StatisticsMean>(gathererInner)};
+    RandomParkMiller<1> generator1{1};
+    ConvergenceTable gatherer2{std::make_unique<StatisticsMean>(gathererInner)};
+    AntiThetic<RandomParkMiller<1>, 1> generator2{1};
+    ConvergenceTable gatherer3{std::make_unique<StatisticsMean>(gathererInner)};
 
 //    const simSpotParamsMultiple<AntiThetic<RandomParkMiller<1>, 1> > spot{S0, option.expiry(),
 //                                                                         ParametersConstant{sigma}, ParametersConstant{r}, 1};
 
+    std::vector<std::vector<double>> results1 = doMonteCarlo
+        (option, ParametersConstant{sigma}, ParametersConstant{r}, S0, nScen, gatherer1,
+         std::make_unique<decltype(generator1)>(generator1));
 
-    std::vector<std::vector<double>> results = doMonteCarlo
-        (option, ParametersConstant{sigma}, ParametersConstant{r}, S0, nScen, gatherer, generator);
+    std::cout << "Park-Miller: number of paths were: " << gatherer1.simsSoFar() << "\n";
+    std::cout << "the results are: " << results1 << "\n\n";
 
-    std::cout << "the price is: " << results.back().front() << "\n";
-    std::cout << "number of paths were: " << gatherer.simsSoFar() << "\n";
-    std::cout << "the results are: " << results << "\n";
+    std::vector<std::vector<double>> results2 = doMonteCarlo
+        (option, ParametersConstant{sigma}, ParametersConstant{r}, S0, nScen, gatherer2,
+         std::make_unique<decltype(generator2)>(generator2));
+    std::cout << "Anti-thetic Park-Miller: number of paths were: " << gatherer2.simsSoFar() << "\n";
+    std::cout << "the results are: " << results2 << "\n\n";
+
+    std::vector<std::vector<double>> results3 = doMonteCarlo<std::nullptr_t>
+        (option, ParametersConstant{sigma}, ParametersConstant{r}, S0, nScen, gatherer3);
+    std::cout << "Mersenne twister: number of paths were: " << gatherer3.simsSoFar() << "\n";
+    std::cout << "the results are: " << results3 << "\n";
 
     return 0;
 }

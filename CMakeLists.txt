@@ -16,6 +16,7 @@ endif()
 # or
 set(HEADERS
     derivatives.h
+    derivatives.cpp
     )
 
 set(SOURCES
@@ -99,7 +100,6 @@ add_executable(mc7
     statistics.h
     statistics.cpp
     random.h
-    random.cpp
     mc7.cpp
     )
 

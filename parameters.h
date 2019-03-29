@@ -31,6 +31,7 @@ class Parameters
 {
 
 public:
+    Parameters() = default;
     Parameters(const ParametersInner & parameter);
     ~Parameters();
     Parameters(const Parameters & other);
