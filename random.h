@@ -116,7 +116,6 @@ std::vector<double> RandomBase<Derived, DIM>::gaussians(std::vector<double> && p
 {
     //NOTE: here we provide a default implementation, can of course still be overloaded in the derived class
     auto ret = uniforms(std::move(p_variates));
-    // BUG: gaussians do nothing!
     std::for_each(ret.begin(), ret.end(), invCDFNormal);
 #ifdef TESTING
     std::ofstream f {"../gaussians"};

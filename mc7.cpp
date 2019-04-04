@@ -75,8 +75,10 @@ int main(int /*argc*/, char * /*argv*/ [])
 
     ConvergenceTable gatherer1{std::make_unique<StatisticsMean>(gathererInner)};
     RandomParkMiller<1> generator1{1};
+
     ConvergenceTable gatherer2{std::make_unique<StatisticsMean>(gathererInner)};
     AntiThetic<RandomParkMiller<1>, 1> generator2{1};
+
     ConvergenceTable gatherer3{std::make_unique<StatisticsMean>(gathererInner)};
 
 //    const simSpotParamsMultiple<AntiThetic<RandomParkMiller<1>, 1> > spot{S0, option.expiry(),
