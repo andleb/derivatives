@@ -39,7 +39,7 @@ public:
     //! \brief path
     //! \param p_spots
     //! \return
-    //! This is a pure virtual whhose implementation will signify a choice of model & stochastic process
+    //! This is a pure virtual whose implementation will signify a choice of model & stochastic process
     virtual std::vector<double> path(std::vector<double> && p_spots) const = 0;
     double doOnePath(const std::vector<double> & p_spots) const;
     double doSimulation(StatisticsBase & p_gatherer, size_t p_numberOfPaths) const;
@@ -50,15 +50,27 @@ private:
     Parameters m_r;
     std::vector<double> m_discounts;
 
-    // scratchpatd
+    // scratchpad
     mutable std::vector<double> m_cashflows;
 
     // TODO: don't pass around reference to a vector of cash flows
 };
 
+
+template<typename Product>
+class ExoticBSEngine : public ExoticEngine<Product>
+{
+public:
+    std::vector<double> path(std::vector<double> && p_spots) const override;
+
+
+};
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 template<typename Product>
 ExoticEngine<Product>::ExoticEngine(const Product & p_product, Parameters p_r)
@@ -77,8 +89,12 @@ ExoticEngine<Product>::ExoticEngine(const Product & p_product, Parameters p_r)
 template<typename Product>
 double ExoticEngine<Product>::doOnePath(const std::vector<double> & p_spots) const
 {
+    size_t numflows;
+
+    // spots are passed into the products
     // the price of one path is the weighted(by the discounts) sum of amounts
-    auto [m_cashflows, numflows] = m_product.cashFlows(p_spots, std::move(m_cashflows));
+    //TODO: does this take advantage of the move?
+    std::tie(m_cashflows, numflows) = m_product.cashFlows(p_spots, std::move(m_cashflows));
 
     //TODO: better way to handle this timeIndex stuff
     double val = 0.0;
@@ -94,9 +110,33 @@ double ExoticEngine<Product>::doOnePath(const std::vector<double> & p_spots) con
 template<typename Product>
 double ExoticEngine<Product>::doSimulation(StatisticsBase & p_gatherer, size_t p_numberOfPaths) const
 {
+    std::vector<double> spots {m_product.lookAtTimes().size()};
+
+    // should be done in doOnePath->Product::cashFlows otherwise
+    // Done in constructor, product should guarantee this is static!
+//    m_cashflows.resize(m_product.maxNumberOfCashFlows());
+
+    double value;
+
+    for (auto i = 0; i < p_numberOfPaths; ++i)
+    {
+        spots = path(std::move(spots));
+        value = doOnePath(spots);
+        p_gatherer.dumpOneResult(value);
+    }
+
+}
+
+//ExoticBSEngine
+
+template<typename Product>
+std::vector<double> ExoticBSEngine<Product>::path(std::vector<double> && p_spots) const
+{
 
 }
 
 } // namespace der
 
 #endif // EXOTICENGINE_H
+
+

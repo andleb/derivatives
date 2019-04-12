@@ -107,7 +107,6 @@ add_executable(exotics1
     ${HEADERS}
     exotics1.cpp
     exoticengine.h
-    exoticengine.cpp
     parameters.h
     parameters.cpp
     payoff2.h
@@ -126,4 +125,5 @@ target_link_libraries( mc4 ${PROJECT_LINK_LIBS} )
 target_link_libraries( mc5 ${PROJECT_LINK_LIBS} )
 target_link_libraries( mc6 ${PROJECT_LINK_LIBS} )
 target_link_libraries( mc7 ${PROJECT_LINK_LIBS} )
+target_link_libraries( exotics1 ${PROJECT_LINK_LIBS} )
 

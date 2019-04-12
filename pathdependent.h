@@ -26,7 +26,7 @@ struct CashFlow
     size_t timeIndex;
 };
 
-// TODO: remove the virtual to save on the vtable if using static polymorphism only
+// TODO: remove the virtuals to save on the vtable if you'll be using static polymorphism only
 
 //! \brief The PathDependent class
 //!
@@ -42,8 +42,8 @@ public:
 
     std::vector<double> lookAtTimes() const;
 
-    virtual size_t maxNumberOfCashFlows() const = 0;
-    virtual std::vector<double> possibleCashFlowTimes() const = 0;
+    virtual constexpr size_t maxNumberOfCashFlows() const = 0;
+    virtual constexpr std::vector<double> possibleCashFlowTimes() const = 0;
     virtual std::pair<std::vector<double>, size_t>
         cashFlows(const std::vector<double> & p_spots, std::vector<double> && p_flows) const = 0;
 
