@@ -34,10 +34,10 @@ public:
 
     //! \brief uniforms
     //! \param p_variates should be pre-allocated to the desired size
-    std::vector<double> uniforms(std::vector<double> && p_variates);
+    std::vector<double> uniforms(std::vector<double> && p_variates) const;
     //! \brief gaussians
     //! \param p_variates should be pre-allocated to the desired size
-    std::vector<double> gaussians(std::vector<double> && p_variates);
+    std::vector<double> gaussians(std::vector<double> && p_variates) const;
 
     static void invCDFNormal(double & x);
 
@@ -55,7 +55,7 @@ public:
         : m_generator(p_seed)
     {}
 
-    std::vector<double> uniforms(std::vector<double> && p_variates);
+    std::vector<double> uniforms(std::vector<double> && p_variates) const;
 
     void skip(size_t p_nPaths);
     void setSeed(size_t p_seed);
@@ -73,7 +73,7 @@ class RandomParkMiller : public RandomBase<RandomParkMiller<DIM>, DIM>
 public:
     RandomParkMiller(long p_seed = 1);
 
-    std::vector<double> uniforms(std::vector<double> && p_variates);
+    std::vector<double> uniforms(std::vector<double> && p_variates) const;
 
     void skip(size_t p_nPaths);
     void setSeed(size_t p_seed) { m_seed = p_seed != 0 ? p_seed : 1; }
@@ -81,7 +81,7 @@ public:
 
     long max() const { return m_coeffs.m - 1; }
     long min() const { return 1; }
-    long randInt();
+    long randInt() const;
 
 private:
     long m_initSeed;
@@ -105,14 +105,14 @@ private:
 // RandomBase
 
 template <typename Derived, size_t DIM>
-std::vector<double> RandomBase<Derived, DIM>::uniforms(std::vector<double> && p_variates)
+std::vector<double> RandomBase<Derived, DIM>::uniforms(std::vector<double> && p_variates) const
 {
     //the implementation provides the uniforms
-    return static_cast<Derived *>(this)->uniforms(std::move(p_variates));
+    return static_cast<const Derived *>(this)->uniforms(std::move(p_variates));
 }
 
 template <typename Derived, size_t DIM>
-std::vector<double> RandomBase<Derived, DIM>::gaussians(std::vector<double> && p_variates)
+std::vector<double> RandomBase<Derived, DIM>::gaussians(std::vector<double> && p_variates) const
 {
     //NOTE: here we provide a default implementation, can of course still be overloaded in the derived class
     auto ret = uniforms(std::move(p_variates));
@@ -209,7 +209,7 @@ void RandomBase<Derived, DIM>::reset()
 
 //TODO: do this with less copies while keeping value semantics
 template <typename Generator, size_t DIM>
-std::vector<double> AntiThetic<Generator, DIM>::uniforms(std::vector<double> && p_variates)
+std::vector<double> AntiThetic<Generator, DIM>::uniforms(std::vector<double> && p_variates) const
 {
     auto ret = p_variates;
     long half = ret.size() / 2;
@@ -267,7 +267,7 @@ RandomParkMiller<DIM>::RandomParkMiller(long p_seed)
 }
 
 template <size_t DIM>
-std::vector<double> RandomParkMiller<DIM>::uniforms(std::vector<double> && p_variates)
+std::vector<double> RandomParkMiller<DIM>::uniforms(std::vector<double> && p_variates) const
 {
     //TODO: move here?
     auto ret = p_variates;
@@ -300,7 +300,7 @@ void RandomParkMiller<DIM>::reset()
 }
 
 template <size_t DIM>
-long RandomParkMiller<DIM>::randInt()
+long RandomParkMiller<DIM>::randInt() const
 {
     long k = m_seed / m_coeffs.q;
 

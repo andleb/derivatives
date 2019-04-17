@@ -47,9 +47,19 @@ public:
     virtual std::pair<std::vector<double>, size_t>
         cashFlows(const std::vector<double> & p_spots, std::vector<double> && p_flows) const = 0;
 
-
 private:
     std::vector<double> m_lookAtTimes;
+};
+
+
+//TODO: just declaration for now so we can instantiate the templates
+class AsianOption : public PathDependent
+{
+public:
+    constexpr size_t maxNumberOfCashFlows() const override;
+    constexpr std::vector<double> possibleCashFlowTimes() const override;
+    std::pair<std::vector<double>, size_t>
+    cashFlows(const std::vector<double> & p_spots, std::vector<double> && p_flows) const override;
 };
 
 } // namespace der
