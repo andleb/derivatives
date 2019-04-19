@@ -107,6 +107,7 @@ add_executable(exotics1
     ${HEADERS}
     exotics1.cpp
     exoticengine.h
+    exoticengine.cpp
     parameters.h
     parameters.cpp
     payoff2.h
