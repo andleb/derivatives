@@ -40,6 +40,8 @@ public:
     PathDependent & operator=(PathDependent &&) = default;
     virtual ~PathDependent();
 
+    virtual std::unique_ptr<PathDependent> clone() const = 0;
+
     std::vector<double> lookAtTimes() const;
 
     virtual constexpr size_t maxNumberOfCashFlows() const = 0;
@@ -55,8 +57,10 @@ private:
 class AsianOption : public PathDependent
 {
 public:
-    constexpr size_t maxNumberOfCashFlows() const override;
-    constexpr std::vector<double> possibleCashFlowTimes() const override;
+    std::unique_ptr<PathDependent> clone() const override;
+
+    size_t maxNumberOfCashFlows() const override;
+    std::vector<double> possibleCashFlowTimes() const override;
     std::vector<CashFlow> cashFlows(const std::vector<double> & p_spots, std::vector<CashFlow> && p_flows) const override;
 };
 

@@ -10,7 +10,7 @@ namespace der
 {
 
 ExoticEngine::ExoticEngine(const PathDependent & p_product, Parameters p_r)
-    : m_pProduct(std::make_unique<PathDependent>(p_product))
+    : m_pProduct(p_product.clone())
     , m_r(std::move(p_r))
     , m_discounts(m_pProduct->possibleCashFlowTimes())
     , m_cashflows(m_pProduct->maxNumberOfCashFlows())
@@ -19,6 +19,26 @@ ExoticEngine::ExoticEngine(const PathDependent & p_product, Parameters p_r)
     std::for_each(m_discounts.begin(), m_discounts.end(), [this](auto & elem) {
         elem = std::exp(-m_r.integral(0.0, elem));
     });
+}
+
+ExoticEngine::ExoticEngine(const ExoticEngine & p_other)
+    : m_pProduct(p_other.m_pProduct->clone())
+    , m_r(p_other.m_r)
+    , m_discounts(p_other.m_discounts)
+    , m_cashflows(p_other.m_cashflows)
+{}
+
+ExoticEngine & ExoticEngine::operator=(const ExoticEngine & p_other)
+{
+    if (this != &p_other)
+    {
+        m_pProduct = p_other.m_pProduct->clone();
+        m_r = p_other.m_r;
+        m_discounts = p_other.m_discounts;
+        m_cashflows = p_other.m_cashflows;
+    }
+
+    return *this;
 }
 
 double ExoticEngine::doOnePath(const std::vector<double> & p_spots) const

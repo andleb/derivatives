@@ -13,7 +13,7 @@ using namespace der;
 int main( int /*argc*/, char */*argv*/[] )
 {
 
-    ExoticBSEngine<PathDependent, RandomParkMiller<1>> engine {};
+    ExoticBSEngine<RandomParkMiller<1>> engine {};
 
     return 0;
 }

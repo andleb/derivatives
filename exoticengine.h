@@ -22,6 +22,8 @@
 namespace der
 {
 
+//TODO: remove default ctor, dtors after development
+
 //! \brief The ExoticEngine class
 //! the central hub for calculation of the exotic derivative's price
 class ExoticEngine
@@ -29,9 +31,9 @@ class ExoticEngine
 public:
     ExoticEngine() = default;
     ExoticEngine(const PathDependent & p_product, Parameters p_r);
-    ExoticEngine(const ExoticEngine &) = default;
+    ExoticEngine(const ExoticEngine &);
     ExoticEngine(ExoticEngine &&) noexcept = default;
-    ExoticEngine & operator=(const ExoticEngine &) = default;
+    ExoticEngine & operator=(const ExoticEngine &);
     ExoticEngine & operator=(ExoticEngine &&) noexcept = default;
     virtual ~ExoticEngine() = default;
 
@@ -46,7 +48,7 @@ public:
     void doSimulation(StatisticsBase & p_gatherer, size_t p_numberOfPaths) const;
 
 protected:
-    std::unique_ptr<PathDependent> m_pProduct;
+    std::unique_ptr<PathDependent> m_pProduct {nullptr};
     Parameters m_r;
     std::vector<double> m_discounts;
 
@@ -54,7 +56,6 @@ protected:
     mutable std::vector<CashFlow> m_cashflows;
 };
 
-//TODO: remove default ctor, dtors after development
 template <typename Generator>
 class ExoticBSEngine : public ExoticEngine
 {

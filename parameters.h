@@ -45,7 +45,7 @@ public:
     double RMS(double time1, double time2) const;
 
 private:
-    std::unique_ptr<ParametersInner> m_pImpl;
+    std::unique_ptr<ParametersInner> m_pImpl {nullptr};
 };
 
 class ParametersConstant : public ParametersInner
@@ -61,7 +61,7 @@ public:
     double integralSquare(double time1, double time2) const override;
 
 private:
-    double m_constant;
+    double m_constant {0.0};
 };
 
 } // namespace der
