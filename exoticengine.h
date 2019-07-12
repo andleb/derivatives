@@ -35,7 +35,7 @@ public:
     ExoticEngine(ExoticEngine &&) noexcept = default;
     ExoticEngine & operator=(const ExoticEngine &);
     ExoticEngine & operator=(ExoticEngine &&) noexcept = default;
-    virtual ~ExoticEngine() = default;
+    virtual ~ExoticEngine();
 
     //! \brief path
     //! \param p_spots
@@ -44,11 +44,20 @@ public:
     //! Returns an array of spot values
     virtual std::vector<double> path(std::vector<double> && p_spots) const = 0;
 
+    //! \brief doOnePath
+    //! \param p_spots
+    //! \return
+    //! Evaluates one path of the simulation, with the spot values provided
     double doOnePath(const std::vector<double> & p_spots) const;
+
+    //! \brief doSimulation
+    //! \param p_gatherer
+    //! \param p_numberOfPaths
+    //! Performs the whole simulation, i.e. evaluates all the paths
     void doSimulation(StatisticsBase & p_gatherer, size_t p_numberOfPaths) const;
 
 protected:
-    std::unique_ptr<PathDependent> m_pProduct {nullptr};
+    std::unique_ptr<PathDependent> m_pProduct{nullptr};
     Parameters m_r;
     std::vector<double> m_discounts;
 
@@ -62,10 +71,10 @@ class ExoticBSEngine : public ExoticEngine
 public:
     ExoticBSEngine() = default;
     ExoticBSEngine(const PathDependent & p_product, Parameters p_r, Parameters p_d, Parameters p_vol, double p_S0);
-    //    ExoticBSEngine(const ExoticBSEngine &) = default;
-    //    ExoticBSEngine(ExoticBSEngine &&) noexcept = default;
-    //    ExoticBSEngine & operator=(const ExoticBSEngine &) = default;
-    //    ExoticBSEngine & operator=(ExoticBSEngine &&) noexcept = default;
+    ExoticBSEngine(const ExoticBSEngine &) = default;
+    ExoticBSEngine(ExoticBSEngine &&) = default;
+    ExoticBSEngine & operator=(const ExoticBSEngine &) = default;
+    ExoticBSEngine & operator=(ExoticBSEngine &&) noexcept = default;
     ~ExoticBSEngine() override = default;
 
     std::vector<double> path(std::vector<double> && p_spots) const override;
@@ -79,7 +88,6 @@ protected:
 
 private:
     mutable std::vector<double> m_times;
-
     mutable std::vector<double> m_drifts;
     mutable std::vector<double> m_stds;
 };
@@ -92,7 +100,7 @@ private:
 
 template <typename Generator>
 ExoticBSEngine<Generator>::ExoticBSEngine(const PathDependent & p_product, Parameters p_r, Parameters p_d,
-                                                   Parameters p_vol, double p_S0)
+                                          Parameters p_vol, double p_S0)
     : ExoticEngine(p_product, p_r)
     , m_d(std::move(p_d))
     , m_vol(std::move(p_vol))
@@ -110,8 +118,8 @@ ExoticBSEngine<Generator>::ExoticBSEngine(const PathDependent & p_product, Param
 
     for (size_t i = 1; i < m_drifts.size(); ++i)
     {
-        m_stds[i] = std::sqrt(m_vol.integralSquare(m_times[i-1], m_times[i]));
-         m_drifts[0] = m_r.integral(m_times[i-1], m_times[i]) - m_d.integral(m_times[i-1], m_times[i])
+        m_stds[i] = std::sqrt(m_vol.integralSquare(m_times[i - 1], m_times[i]));
+        m_drifts[0] = m_r.integral(m_times[i - 1], m_times[i]) - m_d.integral(m_times[i - 1], m_times[i])
                       - 0.5 * m_stds[i] * m_stds[i];
     }
 }

@@ -9,6 +9,9 @@
 namespace der
 {
 
+
+ExoticEngine::~ExoticEngine() = default;
+
 ExoticEngine::ExoticEngine(const PathDependent & p_product, Parameters p_r)
     : m_pProduct(p_product.clone())
     , m_r(std::move(p_r))
@@ -41,10 +44,9 @@ ExoticEngine & ExoticEngine::operator=(const ExoticEngine & p_other)
     return *this;
 }
 
+
 double ExoticEngine::doOnePath(const std::vector<double> & p_spots) const
 {
-    size_t numflows;
-
     // spots are passed into the products
     // the price of one path is the weighted(by the discounts) sum of amounts
     //TODO: does this take advantage of the move?
@@ -75,6 +77,7 @@ void ExoticEngine::doSimulation(StatisticsBase & p_gatherer, size_t p_numberOfPa
     {
         spots = path(std::move(spots));
         value = doOnePath(spots);
+        // it is the statistic gatherer's responsibility to sum the paths' results up
         p_gatherer.dumpOneResult(value);
     }
 }

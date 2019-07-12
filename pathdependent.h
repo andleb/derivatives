@@ -67,6 +67,11 @@ public:
     //! \param p_payoff:    the simple payoff/option this option is composed of, i.e. vanilla call etc.
     //!
     AsianOptionArith(const std::vector<double> & p_lookAtTimes, double p_delivery, const Payoff2 & p_payoff);
+    AsianOptionArith(const AsianOptionArith & p_other);
+    AsianOptionArith(AsianOptionArith &&) = default;
+    AsianOptionArith & operator=(const AsianOptionArith & p_other);
+    AsianOptionArith & operator=(AsianOptionArith &&) = default;
+    ~AsianOptionArith() override = default;
 
     std::unique_ptr<PathDependent> clone() const override;
 
@@ -75,8 +80,8 @@ public:
     std::vector<CashFlow> cashFlows(const std::vector<double> & p_spots, std::vector<CashFlow> && p_flows) const override;
 
 protected:
-    const double m_delivery;
-    const std::unique_ptr<Payoff2> m_pPayoff;
+    double m_delivery;
+    std::unique_ptr<Payoff2> m_pPayoff;
 };
 
 } // namespace der

@@ -63,6 +63,7 @@ public:
     std::unique_ptr<StatisticsBase> clone() const override;
     std::vector<std::vector<double>> resultsSoFar() const override;
     size_t simsSoFar() const override;
+
     void dumpOneResult(double val) override;
 
 private:

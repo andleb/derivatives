@@ -14,6 +14,10 @@
 namespace der
 {
 
+PathDependent::PathDependent(const std::vector<double> & p_lookAtTimes)
+    : m_lookAtTimes(p_lookAtTimes)
+{}
+
 PathDependent::~PathDependent() = default;
 
 std::vector<double> PathDependent::lookAtTimes() const
@@ -48,8 +52,28 @@ std::vector<CashFlow> AsianOptionArith::cashFlows(const std::vector<double> & p_
     double sum = std::accumulate(p_spots.begin(), p_spots.end(), 0.0);
 
     p_flows[0].timeIndex = 0;
+    // The payoff of the arithmetic Asian option at delivery is naturally the arithemtic mean of the
+    // underlying at the times specified
     p_flows[0].amount = (*m_pPayoff)(sum/m_lookAtTimes.size());
     return std::move(p_flows);
+}
+
+der::AsianOptionArith::AsianOptionArith(const der::AsianOptionArith & p_other)
+    : PathDependent(p_other)
+    , m_delivery(p_other.m_delivery)
+    , m_pPayoff(p_other.m_pPayoff->clone())
+{}
+
+AsianOptionArith & AsianOptionArith::operator=(const AsianOptionArith & p_other)
+{
+    if(this != &p_other)
+    {
+        // call without returning
+        PathDependent::operator=(p_other);
+        this->m_delivery = p_other.m_delivery;
+        this->m_pPayoff= p_other.m_pPayoff->clone();
+    }
+    return *this;
 }
 
 } // namespace der
