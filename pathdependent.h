@@ -15,6 +15,9 @@
 namespace der
 {
 
+//Forward declarations
+class Payoff2;
+
 // no ctors => an aggregation hence can be aggregate-initialized!
 
 //! \brief The CashFlow struct
@@ -46,22 +49,34 @@ public:
 
     virtual constexpr size_t maxNumberOfCashFlows() const = 0;
     virtual constexpr std::vector<double> possibleCashFlowTimes() const = 0;
+
+    //NOTE: return a modified version of the input, prefering this to input/output params
     virtual std::vector<CashFlow> cashFlows(const std::vector<double> & p_spots, std::vector<CashFlow> && p_flows) const = 0;
 
-private:
+protected:
     std::vector<double> m_lookAtTimes;
 };
 
 
-//TODO: just declaration for now so we can instantiate the templates
-class AsianOption : public PathDependent
+class AsianOptionArith : public PathDependent
 {
 public:
+    //! \brief AsianOptionArith
+    //! \param p_lookAtTimes: the averaging times
+    //! \param p_delivery:  the expiry date can be different from the last averaging date
+    //! \param p_payoff:    the simple payoff/option this option is composed of, i.e. vanilla call etc.
+    //!
+    AsianOptionArith(const std::vector<double> & p_lookAtTimes, double p_delivery, const Payoff2 & p_payoff);
+
     std::unique_ptr<PathDependent> clone() const override;
 
     size_t maxNumberOfCashFlows() const override;
     std::vector<double> possibleCashFlowTimes() const override;
     std::vector<CashFlow> cashFlows(const std::vector<double> & p_spots, std::vector<CashFlow> && p_flows) const override;
+
+protected:
+    const double m_delivery;
+    const std::unique_ptr<Payoff2> m_pPayoff;
 };
 
 } // namespace der

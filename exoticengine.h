@@ -102,8 +102,6 @@ ExoticBSEngine<Generator>::ExoticBSEngine(const PathDependent & p_product, Param
     , m_stds(m_times.size())
 {
     // pre-calculate the drifts and the standard deviations
-
-
     m_stds[0] = std::sqrt(m_vol.integralSquare(0, m_times[0]));
     // TODO: why do I need to be explicit about accessing the base class members in the body?
     //        m_drifts[0] = m_r.Integral(0.0, m_times[0]);
