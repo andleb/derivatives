@@ -13,5 +13,5 @@ cmake_install.cmake
 *.stash
 
 gaussians
-
 uniforms
+docs/html/
