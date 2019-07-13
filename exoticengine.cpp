@@ -65,6 +65,7 @@ double ExoticEngine::doOnePath(const std::vector<double> & p_spots) const
 
 void ExoticEngine::doSimulation(StatisticsBase & p_gatherer, size_t p_numberOfPaths) const
 {
+    // spots is moved around and reused at each path
     std::vector<double> spots(m_pProduct->lookAtTimes().size());
 
     // should be done in doOnePath->Product::cashFlows otherwise

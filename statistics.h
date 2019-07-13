@@ -46,6 +46,9 @@ private:
     size_t m_nPathsDone{0};
 };
 
+
+//! \brief The ConvergenceTable class
+//! Uses an aggregated statistics gatherer
 class ConvergenceTable : public StatisticsBase
 {
 public:
@@ -69,7 +72,8 @@ public:
 private:
     std::shared_ptr<StatisticsBase> m_pGatherer{};
     size_t m_count{2};
-    size_t m_nPathsDone{0};
+    // used for caching
+    size_t m_nPathsDoneConvergence{0};
 
     std::vector<std::vector<double>> m_results{};
 };

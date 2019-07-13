@@ -87,10 +87,13 @@ protected:
     const double m_logS0{0.0};
 
 private:
+    // helper
     mutable std::vector<double> m_times;
+
     mutable std::vector<double> m_drifts;
     mutable std::vector<double> m_stds;
 };
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION
@@ -105,21 +108,19 @@ ExoticBSEngine<Generator>::ExoticBSEngine(const PathDependent & p_product, Param
     , m_d(std::move(p_d))
     , m_vol(std::move(p_vol))
     , m_logS0(std::log(p_S0))
-    , m_times(m_pProduct->possibleCashFlowTimes())
+    , m_times(m_pProduct->lookAtTimes())
     , m_drifts(m_times.size())
     , m_stds(m_times.size())
 {
     // pre-calculate the drifts and the standard deviations
     m_stds[0] = std::sqrt(m_vol.integralSquare(0, m_times[0]));
-    // TODO: why do I need to be explicit about accessing the base class members in the body?
-    //        m_drifts[0] = m_r.Integral(0.0, m_times[0]);
     m_drifts[0] = m_r.integral(0.0, m_times[0]) - m_d.integral(0.0, m_times[0])
                   - 0.5 * m_stds[0] * m_stds[0];
 
-    for (size_t i = 1; i < m_drifts.size(); ++i)
+    for (size_t i = 1; i < m_times.size(); ++i)
     {
         m_stds[i] = std::sqrt(m_vol.integralSquare(m_times[i - 1], m_times[i]));
-        m_drifts[0] = m_r.integral(m_times[i - 1], m_times[i]) - m_d.integral(m_times[i - 1], m_times[i])
+        m_drifts[i] = m_r.integral(m_times[i - 1], m_times[i]) - m_d.integral(m_times[i - 1], m_times[i])
                       - 0.5 * m_stds[i] * m_stds[i];
     }
 }

@@ -9,7 +9,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstddef>
-#ifdef TESTING
+#ifdef DUMPINTERMEDIATE
     #include <fstream>
 #endif
 #include <stdexcept>
@@ -115,9 +115,9 @@ template <typename Derived, size_t DIM>
 std::vector<double> RandomBase<Derived, DIM>::gaussians(std::vector<double> && p_variates) const
 {
     //NOTE: here we provide a default implementation, can of course still be overloaded in the derived class
-    auto ret = uniforms(std::move(p_variates));
+    auto && ret = uniforms(std::move(p_variates));
     std::for_each(ret.begin(), ret.end(), invCDFNormal);
-#ifdef TESTING
+#ifdef DUMPINTERMEDIATE
     std::ofstream f {"../gaussians"};
     for(auto it = ret.begin(); it != ret.end() - 1; ++it)
     {
@@ -269,19 +269,18 @@ RandomParkMiller<DIM>::RandomParkMiller(long p_seed)
 template <size_t DIM>
 std::vector<double> RandomParkMiller<DIM>::uniforms(std::vector<double> && p_variates) const
 {
-    //TODO: move here?
-    auto ret = p_variates;
-    std::for_each(ret.begin(), ret.end(), [this](auto & el) { el = randInt() * m_reciprocal; });
-#ifdef TESTING
+//    auto ret = std::move(p_variates);
+    std::for_each(p_variates.begin(), p_variates.end(), [this](auto & el) { el = randInt() * m_reciprocal; });
+#ifdef DUMPINTERMEDIATE
     std::ofstream f {"../uniforms"};
-    for(auto it = ret.begin(); it != ret.end() - 1; ++it)
+    for(auto it = p_variates.begin(); it != p_variates.end() - 1; ++it)
     {
         f << *it << ", ";
     }
 
-    f << *(ret.end() - 1);
+    f << *(p_variates.end() - 1);
 #endif
-    return ret;
+    return std::move(p_variates);
 }
 
 template <size_t DIM>

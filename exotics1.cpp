@@ -5,6 +5,7 @@
  */
 
 #include <iostream>
+#include <sstream>
 
 // common libraries
 #include "common/io.h"
