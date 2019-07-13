@@ -120,6 +120,18 @@ add_executable(exotics1
     statistics.cpp
     )
 
+add_executable(trees1
+    ${HEADERS}
+    trees1.cpp
+    parameters.h
+    parameters.cpp
+    payoff2.h
+    payoff2.cpp
+    random.h
+    statistics.h
+    statistics.cpp
+    )
+
 target_link_libraries( mc1 ${PROJECT_LINK_LIBS} )
 target_link_libraries( mc2 ${PROJECT_LINK_LIBS} )
 target_link_libraries( mc3 ${PROJECT_LINK_LIBS} )
@@ -128,4 +140,6 @@ target_link_libraries( mc5 ${PROJECT_LINK_LIBS} )
 target_link_libraries( mc6 ${PROJECT_LINK_LIBS} )
 target_link_libraries( mc7 ${PROJECT_LINK_LIBS} )
 target_link_libraries( exotics1 ${PROJECT_LINK_LIBS} )
+target_link_libraries( trees1 ${PROJECT_LINK_LIBS} )
+
 
