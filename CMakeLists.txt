@@ -112,6 +112,8 @@ add_executable(trees1
     ${HEADERS}
     treeproduct.h
     treeproduct.cpp
+    tree.h
+    tree.cpp
     parameters.h
     parameters.cpp
     payoff2.h
