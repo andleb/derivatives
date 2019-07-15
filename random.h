@@ -11,6 +11,7 @@
 #include <cstddef>
 #ifdef DUMPINTERMEDIATE
     #include <fstream>
+    #include <filesystem>
 #endif
 #include <stdexcept>
 #include <vector>
@@ -117,8 +118,14 @@ std::vector<double> RandomBase<Derived, DIM>::gaussians(std::vector<double> && p
     //NOTE: here we provide a default implementation, can of course still be overloaded in the derived class
     auto && ret = uniforms(std::move(p_variates));
     std::for_each(ret.begin(), ret.end(), invCDFNormal);
+
 #ifdef DUMPINTERMEDIATE
-    std::ofstream f {"../gaussians"};
+    std::filesystem::path dataDir{"../data"};
+    if(!std::filesystem::exists(dataDir))
+    {
+        std::filesystem::create_directory(dataDir);
+    }
+    std::ofstream f {"../data/gaussians"};
     for(auto it = ret.begin(); it != ret.end() - 1; ++it)
     {
         f << *it << ", ";
@@ -271,8 +278,14 @@ std::vector<double> RandomParkMiller<DIM>::uniforms(std::vector<double> && p_var
 {
 //    auto ret = std::move(p_variates);
     std::for_each(p_variates.begin(), p_variates.end(), [this](auto & el) { el = randInt() * m_reciprocal; });
+
 #ifdef DUMPINTERMEDIATE
-    std::ofstream f {"../uniforms"};
+    std::filesystem::path dataDir{"../data"};
+    if(!std::filesystem::exists(dataDir))
+    {
+        std::filesystem::create_directory(dataDir);
+    }
+    std::ofstream f {"../data/uniforms"};
     for(auto it = p_variates.begin(); it != p_variates.end() - 1; ++it)
     {
         f << *it << ", ";
@@ -280,6 +293,7 @@ std::vector<double> RandomParkMiller<DIM>::uniforms(std::vector<double> && p_var
 
     f << *(p_variates.end() - 1);
 #endif
+
     return std::move(p_variates);
 }
 

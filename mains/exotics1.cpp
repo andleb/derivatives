@@ -11,10 +11,10 @@
 #include "common/io.h"
 #include <common/numeric.h>
 
-#include "exoticengine.h"
-#include "pathdependent.h"
-#include "payoff2.h"
-#include "random.h"
+#include "../exoticengine.h"
+#include "../pathdependent.h"
+#include "../payoff2.h"
+#include "../random.h"
 
 using namespace der;
 
@@ -24,23 +24,24 @@ int main()
     size_t nScen;
     size_t nDates;
 
-#ifndef NDEBUG
-    S0 = 100;
-    K = 90;
-    T = 30;
-    sigma = 0.5;
-    r = 0.02;
-    d = 0.01;
-    nScen = 10000;
-    nDates = 10;
-#else
-    std::cout << "enter spot, strike, time to expiry, vol, r, number of scenarios and the number of averaging dates:\n";
-    std::string inputParams;
-    std::getline(std::cin, inputParams);
-    std::istringstream iss{inputParams};
+//TODO: re-enable after testing
+//#ifndef NDEBUG
+S0 = 100;
+K = 90;
+T = 30;
+sigma = 0.2;
+r = 0.02;
+d = 0.01;
+nScen = 1E6;
+nDates = 10;
+//#else
+//    std::cout << "enter spot, strike, time to expiry, vol, r, number of scenarios and the number of averaging dates:\n";
+//    std::string inputParams;
+//    std::getline(std::cin, inputParams);
+//    std::istringstream iss{inputParams};
 
-    iss >> S0 >> K >> T >> sigma >> r >> nScen >> nDates;
-#endif
+//    iss >> S0 >> K >> T >> sigma >> r >> nScen >> nDates;
+//#endif
 
     Payoff2call payoff{K};
 
