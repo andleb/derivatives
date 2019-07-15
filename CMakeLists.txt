@@ -110,6 +110,8 @@ add_executable(exotics1
 
 add_executable(trees1
     ${HEADERS}
+    treeproduct.h
+    treeproduct.cpp
     parameters.h
     parameters.cpp
     payoff2.h

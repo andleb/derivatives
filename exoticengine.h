@@ -41,6 +41,7 @@ public:
     //! \param p_spots
     //! \return
     //! This is a pure virtual whose implementation will signify a choice of model & stochastic process
+    //! One could implement an exercise strategy here as well
     //! Returns an array of spot values
     virtual std::vector<double> path(std::vector<double> && p_spots) const = 0;
 
