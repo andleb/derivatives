@@ -14,9 +14,9 @@ TreeProduct::TreeProduct(double p_expiryTime, const Payoff2 & p_payoff)
     , m_pPayoff(p_payoff.clone())
 {}
 
-TreeProduct::TreeProduct(double p_expiryTime, std::unique_ptr<Payoff2> p_payoff)
+TreeProduct::TreeProduct(double p_expiryTime, std::unique_ptr<Payoff2> p_pPayoff)
     : m_expiryTime(p_expiryTime)
-      , m_pPayoff(std::move(p_payoff))
+    , m_pPayoff(std::move(p_pPayoff))
 {}
 
 TreeProduct::TreeProduct(const TreeProduct & p_other)
@@ -26,7 +26,7 @@ TreeProduct::TreeProduct(const TreeProduct & p_other)
 
 TreeProduct & TreeProduct::operator=(const TreeProduct & p_other)
 {
-    if(this != &p_other)
+    if (this != &p_other)
     {
         m_expiryTime = p_other.m_expiryTime;
         m_pPayoff = p_other.m_pPayoff->clone();
@@ -46,5 +46,38 @@ double TreeProduct::payoff(double p_spot) const
 }
 
 TreeProduct::~TreeProduct() = default;
+
+// TreeAmerican
+
+TreeAmerican::TreeAmerican(double p_expiryTime, const Payoff2 & p_payoff)
+    : TreeProduct(p_expiryTime, p_payoff)
+{}
+
+TreeAmerican::TreeAmerican(double p_expiryTime, std::unique_ptr<Payoff2> p_pPayoff)
+    : TreeProduct(p_expiryTime, std::move(p_pPayoff))
+{}
+
+double TreeAmerican::value(double p_spot, double /*p_t*/, double p_futureValue) const
+{
+    // the strategy doesn't depend on the time in question
+    return std::max(p_spot, p_futureValue);
+}
+
+// TreeEuropean
+
+TreeEuropean::TreeEuropean(double p_expiryTime, const Payoff2 & p_payoff)
+    : TreeProduct(p_expiryTime, p_payoff)
+{}
+
+TreeEuropean::TreeEuropean(double p_expiryTime, std::unique_ptr<Payoff2> p_pPayoff)
+    : TreeProduct(p_expiryTime, std::move(p_pPayoff))
+{}
+
+double TreeEuropean::value(double /*p_spot*/, double /*p_t*/, double p_futureValue) const
+{
+    // the European option has no exercise strategy, R-N pricing prescribes the value to be the discounted
+    // future value
+    return p_futureValue;
+}
 
 } // namespace der
