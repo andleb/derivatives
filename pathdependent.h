@@ -57,31 +57,62 @@ protected:
     std::vector<double> m_lookAtTimes;
 };
 
+//! \brief The AsianOption class
+//! An abstract class encapsulating common attributes to all Asian type options
+class AsianOption : public PathDependent
+{
+public:
+    //! \brief AsianOption
+    //! \param p_lookAtTimes: the averaging times
+    //! \param p_delivery:  the expiry date can be different from the last averaging date
+    //! \param p_payoff:    the simple payoff/option this option is composed of, i.e. vanilla call etc.
+    AsianOption(const std::vector<double> & p_lookAtTimes, double p_delivery, const Payoff2 & p_payoff);
+    AsianOption(const AsianOption & p_other);
+    AsianOption(AsianOption &&) = default;
+    AsianOption & operator=(const AsianOption & p_other);
+    AsianOption & operator=(AsianOption &&) = default;
+    ~AsianOption() override = default;
 
-class AsianOptionArith : public PathDependent
+
+    size_t maxNumberOfCashFlows() const override;
+    std::vector<double> possibleCashFlowTimes() const override;
+
+    // NOTE: these are still abstract!
+    //    std::unique_ptr<PathDependent> clone() const = 0;
+    //    std::vector<CashFlow> cashFlows(const std::vector<double> &, std::vector<CashFlow> &&) const = 0;
+
+protected:
+    double m_delivery;
+    std::unique_ptr<Payoff2> m_pPayoff;
+};
+
+class AsianOptionArith : public AsianOption
 {
 public:
     //! \brief AsianOptionArith
     //! \param p_lookAtTimes: the averaging times
     //! \param p_delivery:  the expiry date can be different from the last averaging date
     //! \param p_payoff:    the simple payoff/option this option is composed of, i.e. vanilla call etc.
-    //!
     AsianOptionArith(const std::vector<double> & p_lookAtTimes, double p_delivery, const Payoff2 & p_payoff);
-    AsianOptionArith(const AsianOptionArith & p_other);
-    AsianOptionArith(AsianOptionArith &&) = default;
-    AsianOptionArith & operator=(const AsianOptionArith & p_other);
-    AsianOptionArith & operator=(AsianOptionArith &&) = default;
-    ~AsianOptionArith() override = default;
 
     std::unique_ptr<PathDependent> clone() const override;
 
-    size_t maxNumberOfCashFlows() const override;
-    std::vector<double> possibleCashFlowTimes() const override;
     std::vector<CashFlow> cashFlows(const std::vector<double> & p_spots, std::vector<CashFlow> && p_flows) const override;
+};
 
-protected:
-    double m_delivery;
-    std::unique_ptr<Payoff2> m_pPayoff;
+class AsianOptionGeom : public AsianOption
+{
+public:
+    //! \brief AsianOptionGeom
+    //! \param p_lookAtTimes: the averaging times
+    //! \param p_delivery:  the expiry date can be different from the last averaging date
+    //! \param p_payoff:    the simple payoff/option this option is composed of, i.e. vanilla call etc.
+    //!
+    AsianOptionGeom(const std::vector<double> & p_lookAtTimes, double p_delivery, const Payoff2 & p_payoff);
+
+    std::unique_ptr<PathDependent> clone() const override;
+
+    std::vector<CashFlow> cashFlows(const std::vector<double> & p_spots, std::vector<CashFlow> && p_flows) const override;
 };
 
 } // namespace der
