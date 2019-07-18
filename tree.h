@@ -30,6 +30,9 @@ public:
     double price(const TreeProduct & p_product);
 
 private:
+    //! \brief m_tree
+    //! The tree structure, the first element of the pair holds the evolution of the spot, the second is the placeholder for the
+    //! option value at that node and gets overwritten
     cm::bTree<std::pair<double, double>> m_tree;
 
     std::vector<double> m_discountFactors;
