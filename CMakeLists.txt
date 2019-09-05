@@ -19,9 +19,7 @@ set(HEADERS
     derivatives.cpp
    )
 
-
-#include(cmake/libraries/threads.cmake)
-#include(cmake/libraries/boost.cmake)
+# External dependencies
 include(cmake/libraries/common.cmake)
 
 add_executable(mc1
