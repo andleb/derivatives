@@ -62,7 +62,7 @@ add_executable(mc4
     mains/mc4.cpp
     )
 
-add_executable(mc6
+add_executable(mc5
     ${HEADERS}
     src/payoff.h
     src/payoff.cpp
@@ -74,7 +74,7 @@ add_executable(mc6
     src/statistics.cpp
     src/vanillaoption.h
     src/vanillaoption.cpp
-    mains/mc6.cpp
+    mains/mc5.cpp
     )
 
 add_executable(mc7
@@ -130,7 +130,6 @@ target_link_libraries(mc2 ${PROJECT_LINK_LIBS})
 target_link_libraries(mc3 ${PROJECT_LINK_LIBS})
 target_link_libraries(mc4 ${PROJECT_LINK_LIBS})
 target_link_libraries(mc5 ${PROJECT_LINK_LIBS})
-target_link_libraries(mc6 ${PROJECT_LINK_LIBS})
 target_link_libraries(mc7 ${PROJECT_LINK_LIBS})
 target_link_libraries(exotics1 ${PROJECT_LINK_LIBS})
 target_link_libraries(trees1 ${PROJECT_LINK_LIBS})

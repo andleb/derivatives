@@ -1,6 +1,7 @@
-/** \file mc6.cpp
+/** \file mc5.cpp
  * \author Andrej Leban
  * \date 2/2019
+ *
  * Ch 5 Strategies, decoration, and statistics
  */
 
@@ -9,7 +10,6 @@
 
 #include "common/io.h"
 
-#include "../src/derivatives.h"
 #include "../src/parameters.h"
 #include "../src/simspot.h"
 #include "../src/statistics.h"
@@ -34,7 +34,7 @@ auto doMonteCarlo(const VanillaOption & option, const Parameters & sigma, const 
     return gatherer.resultsSoFar();
 }
 
-int main(int /*argc*/, char * /*argv*/ [])
+int main(int, char * [])
 {
     double S0, K, T, sigma, r;
     int nScen;

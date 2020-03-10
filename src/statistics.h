@@ -1,3 +1,10 @@
+/** \file statistics.h
+ * \author Andrej Leban
+ * \date 2/2019
+ *
+ * An abstract stats gatherer
+ */
+
 #ifndef STATISTICS_H
 #define STATISTICS_H
 
@@ -71,6 +78,7 @@ public:
 
 private:
     std::shared_ptr<StatisticsBase> m_pGatherer{};
+
     size_t m_count{2};
     // used for caching
     size_t m_nPathsDoneConvergence{0};
