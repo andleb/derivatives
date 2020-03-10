@@ -62,19 +62,6 @@ add_executable(mc4
     mains/mc4.cpp
     )
 
-add_executable(mc5
-    ${HEADERS}
-    src/payoff.h
-    src/payoff.cpp
-    src/parameters.h
-    src/parameters.cpp
-    src/simspot.h
-    src/simspot.cpp
-    src/vanillaoption.h
-    src/vanillaoption.cpp
-    mains/mc5.cpp
-    )
-
 add_executable(mc6
     ${HEADERS}
     src/payoff.h
