@@ -1,17 +1,17 @@
 /** \file mc2.cpp
  * \author Andrej Leban
  * \date 11/2018
+ *
+ * Ch. 2: Encapsulation
  */
 
 #include <iostream>
 #include <sstream>
 
-#include "../src/derivatives.h"
 #include "../src/payoff1.h"
 #include "../src/simspot.h"
 
-
-int main( int /*argc*/, char */*argv*/[] )
+int main(int, char * [])
 {
     double S0, K, T, sigma, r;
     int nScen;
@@ -20,7 +20,7 @@ int main( int /*argc*/, char */*argv*/[] )
     S0 = 100;
     K = 90;
     T = 30;
-    sigma  = 0.5;
+    sigma = 0.5;
     r = 0.02;
     nScen = 10000000;
 #else
@@ -36,16 +36,15 @@ int main( int /*argc*/, char */*argv*/[] )
     std::cout << S0 << " " << K << " " << T << " " << sigma << " " << r << " " << nScen << "\n";
 
     double sum = 0.0;
-    const der::simSpot spot {S0, T, sigma, r};
-    const der::payoff1 payoff {K, der::OptionsType::call};
+    const der::simSpot spot{S0, T, sigma, r};
+    const der::payoff1 payoff{K, der::OptionsType::call};
 
-    for( int i = 0; i < nScen; ++i )
+    for (int i = 0; i < nScen; ++i)
     {
         sum += payoff(spot());
     }
 
-    std::cout << "the price is: " << std::exp(-r*T) * (sum / nScen) << "\n";
-
+    std::cout << "the price is: " << std::exp(-r * T) * (sum / nScen) << "\n";
 
     return 0;
 }

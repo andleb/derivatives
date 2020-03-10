@@ -6,7 +6,7 @@
 #ifndef VANILLAOPTION_H
 #define VANILLAOPTION_H
 
-#include "payoff2.h"
+#include "payoff.h"
 
 namespace der
 {
@@ -14,7 +14,7 @@ namespace der
 class VanillaOption
 {
 public:
-    VanillaOption(std::unique_ptr<Payoff2> pPayoff, double expiry)
+    VanillaOption(std::unique_ptr<Payoff> pPayoff, double expiry)
         : m_pPayoff(std::move(pPayoff))
         , m_expiry(expiry)
     {}
@@ -28,7 +28,7 @@ public:
     double optionPayoff(double spot) const;
 
 private:
-    std::unique_ptr<Payoff2> m_pPayoff;
+    std::unique_ptr<Payoff> m_pPayoff;
     double m_expiry;
 };
 

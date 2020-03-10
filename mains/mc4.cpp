@@ -50,7 +50,7 @@ int main(int /*argc*/, char * /*argv*/ [])
 
     std::cout << S0 << " " << K << " " << T << " " << sigma << " " << r << " " << nScen << "\n";
 
-    std::cout << "the price is: " << doMonteCarlo(VanillaOption{std::make_unique<Payoff2call>(K), T}, sigma, r, S0, nScen) << "\n";
+    std::cout << "the price is: " << doMonteCarlo(VanillaOption{std::make_unique<PayoffCall>(K), T}, sigma, r, S0, nScen) << "\n";
 
     return 0;
 }

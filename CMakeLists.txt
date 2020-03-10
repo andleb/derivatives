@@ -40,8 +40,8 @@ add_executable(mc2
 
 add_executable(mc3
     ${HEADERS}
-    src/payoff2.h
-    src/payoff2.cpp
+    src/payoff.h
+    src/payoff.cpp
     src/parameters.h
     src/parameters.cpp
     src/simspot.h
@@ -51,8 +51,8 @@ add_executable(mc3
 
 add_executable(mc4
     ${HEADERS}
-    src/payoff2.h
-    src/payoff2.cpp
+    src/payoff.h
+    src/payoff.cpp
     src/vanillaoption.h
     src/vanillaoption.cpp
     src/payoffbridge.h
@@ -66,8 +66,8 @@ add_executable(mc4
 
 add_executable(mc5
     ${HEADERS}
-    src/payoff2.h
-    src/payoff2.cpp
+    src/payoff.h
+    src/payoff.cpp
     src/vanillaoption2.h
     src/vanillaoption2.cpp
     src/payoffbridge.h
@@ -85,8 +85,8 @@ add_executable(mc6
     src/parameters.cpp
     src/statistics.h
     src/statistics.cpp
-    src/payoff2.h
-    src/payoff2.cpp
+    src/payoff.h
+    src/payoff.cpp
     src/vanillaoption2.h
     src/vanillaoption2.cpp
     src/simspot.h
@@ -98,8 +98,8 @@ add_executable(mc7
     ${HEADERS}
     src/parameters.h
     src/parameters.cpp
-    src/payoff2.h
-    src/payoff2.cpp
+    src/payoff.h
+    src/payoff.cpp
     src/simspot.h
     src/simspot.cpp
     src/statistics.h
@@ -114,8 +114,8 @@ add_executable(exotics1
     src/exoticengine.cpp
     src/parameters.h
     src/parameters.cpp
-    src/payoff2.h
-    src/payoff2.cpp
+    src/payoff.h
+    src/payoff.cpp
     src/pathdependent.h
     src/pathdependent.cpp
     src/random.h
@@ -132,8 +132,8 @@ add_executable(trees1
     src/tree.cpp
     src/parameters.h
     src/parameters.cpp
-    src/payoff2.h
-    src/payoff2.cpp
+    src/payoff.h
+    src/payoff.cpp
     src/random.h
     src/statistics.h
     src/statistics.cpp

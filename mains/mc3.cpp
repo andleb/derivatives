@@ -1,29 +1,30 @@
 /** \file mc3.cpp
  * \author Andrej Leban
  * \date 12/2018
+ *
+ * Ch. 3: Inheritance and virtual functions
  */
 
 #include <iostream>
 #include <sstream>
 
-#include "../src/derivatives.h"
+#include "../src/payoff.h"
 #include "../src/simspot.h"
-#include "../src/payoff2.h"
 
-double doMonteCarlo(const der::Payoff2 & payoff, double T, double sigma, double r, double S0, int nScen)
+double doMonteCarlo(const der::Payoff & payoff, double T, double sigma, double r, double S0, int nScen)
 {
     double sum = 0.0;
-    const der::simSpot spot {S0, T, sigma, r};
+    const der::simSpot spot{S0, T, sigma, r};
 
-    for( int i = 0; i < nScen; ++i )
+    for (int i = 0; i < nScen; ++i)
     {
         sum += payoff(spot());
     }
 
-    return std::exp(-r*T) * (sum / nScen);
+    return std::exp(-r * T) * (sum / nScen);
 }
 
-int main( int /*argc*/, char */*argv*/[] )
+int main(int, char * [])
 {
     double S0, K, T, sigma, r;
     int nScen;
@@ -32,7 +33,7 @@ int main( int /*argc*/, char */*argv*/[] )
     S0 = 100;
     K = 90;
     T = 30;
-    sigma  = 0.5;
+    sigma = 0.5;
     r = 0.02;
     nScen = 10000000;
 #else
@@ -47,7 +48,7 @@ int main( int /*argc*/, char */*argv*/[] )
 
     std::cout << S0 << " " << K << " " << T << " " << sigma << " " << r << " " << nScen << "\n";
 
-    std::cout << "the price is: " << doMonteCarlo(der::Payoff2call{K}, T, sigma, r, S0, nScen)  << "\n";
+    std::cout << "the price is: " << doMonteCarlo(der::PayoffCall{K}, T, sigma, r, S0, nScen) << "\n";
 
     return 0;
 }

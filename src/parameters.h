@@ -1,6 +1,8 @@
 /** \file parameters.h
  *  \author Andrej Leban
  *  \date 2/2019
+ *
+ * PIMPL class that allows for generic parameter types
  */
 
 #ifndef PARAMETERS_H
@@ -11,6 +13,8 @@
 namespace der
 {
 
+
+//! \brief The abstract base class for parameter implementations
 class ParametersInner
 {
 
@@ -27,6 +31,7 @@ public:
     virtual double integralSquare(double time1, double time2) const = 0;
 };
 
+//! \brief The PIPML interface class
 class Parameters
 {
 
@@ -49,6 +54,7 @@ private:
     std::unique_ptr<ParametersInner> m_pImpl {nullptr};
 };
 
+//! \brief A constant-type implementation
 class ParametersConstant : public ParametersInner
 {
 

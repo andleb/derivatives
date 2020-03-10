@@ -40,13 +40,14 @@ Tree::Tree(double p_S0, const Parameters & p_r, const Parameters & p_d, double p
    // root node
    m_tree[0].first = std::exp(logS);
 
-   for(size_t l = 1; l <= p_nSteps; ++l)
+   for(long l = 1; l <= p_nSteps; ++l)
    {
        time = l * m_deltaT;
        logS = logS0 + m_r.integral(0, time) - m_d.integral(0, time) - 0.5 * m_sigma * m_sigma * time;
 
        // fill the tree abreast
-       for(long j = -l, k = 0; j <= l; j = j + 2, ++k)
+       size_t k = 0;
+       for(long j = -l; j <= l; j = j + 2, ++k)
        {
            m_tree[cumulative + k].first = std::exp(logS + j * m_sigma * sqrtDeltaT);
        }

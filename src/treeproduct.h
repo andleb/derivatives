@@ -9,7 +9,7 @@
 
 #include <vector>
 
-#include "payoff2.h"
+#include "payoff.h"
 
 namespace der
 {
@@ -17,8 +17,8 @@ namespace der
 class TreeProduct
 {
 public:
-    TreeProduct(double p_expiryTime, const Payoff2 & p_payoff);
-    TreeProduct(double p_expiryTime, std::unique_ptr<Payoff2> p_pPayoff);
+    TreeProduct(double p_expiryTime, const Payoff & p_payoff);
+    TreeProduct(double p_expiryTime, std::unique_ptr<Payoff> p_pPayoff);
 
     TreeProduct(const TreeProduct & p_other);
     TreeProduct(TreeProduct && p_other) = default;
@@ -32,14 +32,14 @@ public:
 
 protected:
     double m_expiryTime{0};
-    std::unique_ptr<Payoff2> m_pPayoff{nullptr};
+    std::unique_ptr<Payoff> m_pPayoff{nullptr};
 };
 
 class TreeAmerican : public TreeProduct
 {
 public:
-    TreeAmerican(double p_expiryTime, const Payoff2 & p_payoff);
-    TreeAmerican(double p_expiryTime, std::unique_ptr<Payoff2> p_pPayoff);
+    TreeAmerican(double p_expiryTime, const Payoff & p_payoff);
+    TreeAmerican(double p_expiryTime, std::unique_ptr<Payoff> p_pPayoff);
 
     double value(double p_spot, double p_t, double p_futureValue) const override;
 };
@@ -47,8 +47,8 @@ public:
 class TreeEuropean : public TreeProduct
 {
 public:
-    TreeEuropean(double p_expiryTime, const Payoff2 & p_payoff);
-    TreeEuropean(double p_expiryTime, std::unique_ptr<Payoff2> p_pPayoff);
+    TreeEuropean(double p_expiryTime, const Payoff & p_payoff);
+    TreeEuropean(double p_expiryTime, std::unique_ptr<Payoff> p_pPayoff);
 
     double value(double p_spot, double p_t, double p_futureValue) const override;
 };

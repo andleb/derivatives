@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <vector>
 
-#include "payoff2.h"
+#include "payoff.h"
 
 #include "pathdependent.h"
 
@@ -29,7 +29,7 @@ std::vector<double> PathDependent::lookAtTimes() const
 
 // AsianOption
 
-AsianOption::AsianOption(const std::vector<double> & p_lookAtTimes, double p_delivery, const Payoff2 & p_payoff)
+AsianOption::AsianOption(const std::vector<double> & p_lookAtTimes, double p_delivery, const Payoff & p_payoff)
     : PathDependent(p_lookAtTimes)
     , m_delivery(p_delivery)
     , m_pPayoff(p_payoff.clone())
@@ -65,7 +65,7 @@ std::vector<double> AsianOption::possibleCashFlowTimes() const
 
 // AsianOptionArith
 
-AsianOptionArith::AsianOptionArith(const std::vector<double> & p_lookAtTimes, double p_delivery, const Payoff2 & p_payoff)
+AsianOptionArith::AsianOptionArith(const std::vector<double> & p_lookAtTimes, double p_delivery, const Payoff & p_payoff)
     : AsianOption(p_lookAtTimes, p_delivery, p_payoff)
 {}
 
@@ -88,7 +88,7 @@ std::vector<CashFlow> AsianOptionArith::cashFlows(const std::vector<double> & p_
 
 // AsianOptionGeom
 
-AsianOptionGeom::AsianOptionGeom(const std::vector<double> & p_lookAtTimes, double p_delivery, const Payoff2 & p_payoff)
+AsianOptionGeom::AsianOptionGeom(const std::vector<double> & p_lookAtTimes, double p_delivery, const Payoff & p_payoff)
     : AsianOption(p_lookAtTimes, p_delivery, p_payoff)
 {}
 

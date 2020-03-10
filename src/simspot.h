@@ -1,6 +1,8 @@
 /** \file simspot.h
  * \author Andrej Leban
  * \date 3/2020
+ *
+ * Implements structures that simulate a spot price using a Black-Scholes process.
  */
 
 #ifndef DER_SIMSPOT_H
@@ -30,7 +32,7 @@ struct simSpot
 };
 
 //! \brief The simSpotParams struct
-//! Allows for variable volatilities & interest rates
+//! Allows for generic volatilities & interest rates
 struct simSpotParams
 {
     simSpotParams() = default;
@@ -43,22 +45,17 @@ struct simSpotParams
     double m_precalc{0.0};
 };
 
+
+//! \brief The simSpotParamsMultiple struct
+//! Allows a compile-time selection of a RNG, in addition to generic Parameters
 template <typename Generator = std::nullptr_t>
 struct simSpotParamsMultiple : public simSpotParams
 {
     simSpotParamsMultiple() = default;
 
-    simSpotParamsMultiple(double p_S0, double p_t, const Parameters & p_sigma, const Parameters & p_r)
-        : simSpotParams(p_S0, p_t, p_sigma, p_r)
-    {}
-    simSpotParamsMultiple(double p_S0, double p_t, const Parameters & p_sigma, const Parameters & p_r, size_t p_seed)
-        : simSpotParams(p_S0, p_t, p_sigma, p_r)
-        , m_generator(p_seed)
-    {}
-    simSpotParamsMultiple(double p_S0, double p_t, const Parameters & p_sigma, const Parameters & p_r, Generator & p_generator)
-        : simSpotParams(p_S0, p_t, p_sigma, p_r)
-        , m_generator(p_generator)
-    {}
+    simSpotParamsMultiple(double p_S0, double p_t, const Parameters & p_sigma, const Parameters & p_r);
+    simSpotParamsMultiple(double p_S0, double p_t, const Parameters & p_sigma, const Parameters & p_r, size_t p_seed);
+    simSpotParamsMultiple(double p_S0, double p_t, const Parameters & p_sigma, const Parameters & p_r, Generator & p_generator);
 
     double operator()() const;
 
@@ -70,6 +67,25 @@ struct simSpotParamsMultiple : public simSpotParams
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <typename Generator>
+simSpotParamsMultiple<Generator>::simSpotParamsMultiple(double p_S0, double p_t, const Parameters & p_sigma, const Parameters & p_r)
+    : simSpotParams(p_S0, p_t, p_sigma, p_r)
+{}
+
+template <typename Generator>
+simSpotParamsMultiple<Generator>::simSpotParamsMultiple(double p_S0, double p_t, const Parameters & p_sigma, const Parameters & p_r,
+                                                        size_t p_seed)
+    : simSpotParams(p_S0, p_t, p_sigma, p_r)
+    , m_generator(p_seed)
+{}
+
+template <typename Generator>
+simSpotParamsMultiple<Generator>::simSpotParamsMultiple(double p_S0, double p_t, const Parameters & p_sigma, const Parameters & p_r,
+                                                        Generator & p_generator)
+    : simSpotParams(p_S0, p_t, p_sigma, p_r)
+    , m_generator(p_generator)
+{}
 
 template <typename Generator>
 double simSpotParamsMultiple<Generator>::operator()() const

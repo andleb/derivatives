@@ -51,7 +51,7 @@ int main(int /*argc*/, char * /*argv*/ [])
 
     std::cout << S0 << " " << K << " " << T << " " << sigma << " " << r << " " << nScen << "\n";
 
-    VanillaOption2 option{Payoff2call{K}, T};
+    VanillaOption2 option{PayoffCall{K}, T};
 
     std::cout << "the price is: " << doMonteCarlo(option, ParametersConstant{sigma}, ParametersConstant{r}, S0, nScen) << "\n";
 

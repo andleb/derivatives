@@ -11,7 +11,7 @@
 #include "common/io.h"
 #include <common/numeric.h>
 
-#include "../src/payoff2.h"
+#include "../src/payoff.h"
 #include "../src/random.h"
 
 using namespace der;

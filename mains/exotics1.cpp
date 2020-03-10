@@ -13,7 +13,7 @@
 
 #include "../src/exoticengine.h"
 #include "../src/pathdependent.h"
-#include "../src/payoff2.h"
+#include "../src/payoff.h"
 #include "../src/random.h"
 
 using namespace der;
@@ -43,7 +43,7 @@ nDates = 10;
 //    iss >> S0 >> K >> T >> sigma >> r >> nScen >> nDates;
 //#endif
 
-    Payoff2call payoff{K};
+    PayoffCall payoff{K};
 
     // not interested in time 0, which we'll discard
     std::vector<double> dates = cm::linspace(0.0, T, nDates + 1, true);

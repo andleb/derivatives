@@ -3,10 +3,12 @@
  *  \date 2/2018
  */
 
+//FIXME: Isn't this completely deprecated with unique_ptr?
+
 #ifndef PAYOFFBRIDGE_H
 #define PAYOFFBRIDGE_H
 
-#include "payoff2.h"
+#include "payoff.h"
 
 namespace der
 {
@@ -15,7 +17,7 @@ class PayoffBridge
 {
 public:
     //NOTE: we wish to have implicit conversion
-    PayoffBridge(const Payoff2 & payoff)
+    PayoffBridge(const Payoff & payoff)
         : m_pPayoff(payoff.clone())
     {}
     ~PayoffBridge() = default;
@@ -31,7 +33,7 @@ public:
     double operator() (double p_spot) const { return (*m_pPayoff)(p_spot); }
 
 private:
-    std::unique_ptr<Payoff2> m_pPayoff;
+    std::unique_ptr<Payoff> m_pPayoff;
 };
 
 } // namespace der

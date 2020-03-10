@@ -32,7 +32,7 @@ int main(int, char * [])
     T = 30;
     sigma = 0.5;
     r = 0.02;
-    nScen = 1000;
+    nScen = 10000000;
 #else
     std::cout << "enter spot, strike, time to expiry, vol, r and number of scenarios:\n";
     std::string inputParams;
@@ -51,6 +51,7 @@ int main(int, char * [])
         sum += payoff(simSpot(S0, T, sigma, r), K);
     }
 
+    // NOTE: this is wildly inaccurate due to the numerical inaccuracy of the simSpot call
     std::cout << "the price is: " << std::exp(-r * T) * (sum / nScen) << "\n";
 
     return 0;

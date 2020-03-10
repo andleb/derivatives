@@ -14,6 +14,9 @@ namespace der
 {
 
 template <typename T>
+
+//! \brief Returns a normally distributed number of type \p T
+//! \return
 T normalDist()
 {
     static std::random_device rDev;

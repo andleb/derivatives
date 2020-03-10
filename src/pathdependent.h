@@ -16,7 +16,7 @@ namespace der
 {
 
 //Forward declarations
-class Payoff2;
+class Payoff;
 
 // no ctors => an aggregation hence can be aggregate-initialized!
 
@@ -66,7 +66,7 @@ public:
     //! \param p_lookAtTimes: the averaging times
     //! \param p_delivery:  the expiry date can be different from the last averaging date
     //! \param p_payoff:    the simple payoff/option this option is composed of, i.e. vanilla call etc.
-    AsianOption(const std::vector<double> & p_lookAtTimes, double p_delivery, const Payoff2 & p_payoff);
+    AsianOption(const std::vector<double> & p_lookAtTimes, double p_delivery, const Payoff & p_payoff);
     AsianOption(const AsianOption & p_other);
     AsianOption(AsianOption &&) = default;
     AsianOption & operator=(const AsianOption & p_other);
@@ -83,7 +83,7 @@ public:
 
 protected:
     double m_delivery;
-    std::unique_ptr<Payoff2> m_pPayoff;
+    std::unique_ptr<Payoff> m_pPayoff;
 };
 
 class AsianOptionArith : public AsianOption
@@ -93,7 +93,7 @@ public:
     //! \param p_lookAtTimes: the averaging times
     //! \param p_delivery:  the expiry date can be different from the last averaging date
     //! \param p_payoff:    the simple payoff/option this option is composed of, i.e. vanilla call etc.
-    AsianOptionArith(const std::vector<double> & p_lookAtTimes, double p_delivery, const Payoff2 & p_payoff);
+    AsianOptionArith(const std::vector<double> & p_lookAtTimes, double p_delivery, const Payoff & p_payoff);
 
     std::unique_ptr<PathDependent> clone() const override;
 
@@ -108,7 +108,7 @@ public:
     //! \param p_delivery:  the expiry date can be different from the last averaging date
     //! \param p_payoff:    the simple payoff/option this option is composed of, i.e. vanilla call etc.
     //!
-    AsianOptionGeom(const std::vector<double> & p_lookAtTimes, double p_delivery, const Payoff2 & p_payoff);
+    AsianOptionGeom(const std::vector<double> & p_lookAtTimes, double p_delivery, const Payoff & p_payoff);
 
     std::unique_ptr<PathDependent> clone() const override;
 

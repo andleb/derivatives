@@ -70,7 +70,7 @@ int main(int /*argc*/, char * /*argv*/ [])
     std::cin >> S0 >> K >> T >> sigma >> r >> nScen;
 #endif
 
-    VanillaOption2 option{Payoff2call{K}, T};
+    VanillaOption2 option{PayoffCall{K}, T};
     StatisticsMean gathererInner{};
 
     ConvergenceTable gatherer1{std::make_unique<StatisticsMean>(gathererInner)};
