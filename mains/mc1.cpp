@@ -1,29 +1,26 @@
-/** \file mc1.cpp
+/** \file ml1.cpp
  * \author Andrej Leban
  * \date 11/2018
+ *
+ * Chapter 1. A simple Monte Carlo model
  */
 
-#include <algorithm>
 #include <cmath>
-#include <iomanip>
 #include <iostream>
 
-#include "derivatives.h"
-
+#include "src/derivatives.h"
 
 double payoff(double p_spot, double p_strike)
 {
     return std::max<double>((p_spot - p_strike), 0);
 }
 
-
 double simSpot(double p_S0, double p_t, double p_sigma, double p_r)
 {
-    return p_S0 * std::exp( (p_r - 0.5*p_sigma*p_sigma)*p_t + p_sigma * std::sqrt(p_t) * der::normalDist() );
+    return p_S0 * std::exp((p_r - 0.5 * p_sigma * p_sigma) * p_t + p_sigma * std::sqrt(p_t) * der::normalDist());
 }
 
-
-int main( int /*argc*/, char */*argv*/[] )
+int main(int, char * [])
 {
 
     double S0, K, T, sigma, r;
@@ -33,7 +30,7 @@ int main( int /*argc*/, char */*argv*/[] )
     S0 = 100;
     K = 90;
     T = 30;
-    sigma  = 0.5;
+    sigma = 0.5;
     r = 0.02;
     nScen = 1000;
 #else
@@ -49,13 +46,12 @@ int main( int /*argc*/, char */*argv*/[] )
     std::cout << S0 << " " << K << " " << T << " " << sigma << " " << r << " " << nScen << "\n";
 
     double sum = 0.0;
-    for( int i = 0; i < nScen; ++i )
+    for (int i = 0; i < nScen; ++i)
     {
         sum += payoff(simSpot(S0, T, sigma, r), K);
     }
 
-//    std::cout << "sum= " << sum << "\n";
-    std::cout << "the price is: " << std::exp(-r*T) * (sum / nScen) << "\n";
+    std::cout << "the price is: " << std::exp(-r * T) * (sum / nScen) << "\n";
 
     return 0;
 }

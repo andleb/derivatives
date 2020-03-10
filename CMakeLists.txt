@@ -8,18 +8,18 @@ include(cmake/dirs.cmake)
 
 # NOTE: CMAKE_BUILD_TYPE can and should be overriden by the IDE
 if(CMAKE_BUILD_TYPE MATCHES "Debug")
+    message("Building in DEBUG mode, enabling testing macros.")
     add_definitions(-DTESTING)
 #    add_definitions(-DDUMPINTERMEDIATE)
 endif()
 
-# Headers are located in root
-include_directories(.)
+# Common headers
 set(HEADERS
-    derivatives.h
-    derivatives.cpp
+    src/derivatives.h
    )
 
 # External dependencies
+# My roll-your-own library of data structures etc.
 include(cmake/libraries/common.cmake)
 
 add_executable(mc1
@@ -29,96 +29,96 @@ add_executable(mc1
 
 add_executable(mc2
     ${HEADERS}
-    payoff1.h
-    payoff1.cpp
+src/payoff1.h
+    src/payoff1.cpp
     mains/mc2.cpp
     )
 
 add_executable(mc3
     ${HEADERS}
-    payoff2.h
-    payoff2.cpp
+    src/payoff2.h
+    src/payoff2.cpp
     mains/mc3.cpp
     )
 
 add_executable(mc4
     ${HEADERS}
-    payoff2.h
-    payoff2.cpp
-    vanillaoption.h
-    vanillaoption.cpp
-    payoffbridge.h
-    payoffbridge.cpp
+    src/payoff2.h
+    src/payoff2.cpp
+    src/vanillaoption.h
+    src/vanillaoption.cpp
+    src/payoffbridge.h
+    src/payoffbridge.cpp
     mains/mc4.cpp
     )
 
 add_executable(mc5
     ${HEADERS}
-    payoff2.h
-    payoff2.cpp
-    vanillaoption2.h
-    vanillaoption2.cpp
-    payoffbridge.h
-    payoffbridge.cpp
-    parameters.h
-    parameters.cpp
+    src/payoff2.h
+    src/payoff2.cpp
+    src/vanillaoption2.h
+    src/vanillaoption2.cpp
+    src/payoffbridge.h
+    src/payoffbridge.cpp
+    src/parameters.h
+    src/parameters.cpp
     mains/mc5.cpp
     )
 
 add_executable(mc6
     ${HEADERS}
-    parameters.h
-    parameters.cpp
-    statistics.h
-    statistics.cpp
-    payoff2.h
-    payoff2.cpp
-    vanillaoption2.h
-    vanillaoption2.cpp
+    src/parameters.h
+    src/parameters.cpp
+    src/statistics.h
+    src/statistics.cpp
+    src/payoff2.h
+    src/payoff2.cpp
+    src/vanillaoption2.h
+    src/vanillaoption2.cpp
     mains/mc6.cpp
     )
 
 add_executable(mc7
     ${HEADERS}
-    parameters.h
-    parameters.cpp
-    payoff2.h
-    payoff2.cpp
-    statistics.h
-    statistics.cpp
-    random.h
+    src/parameters.h
+    src/parameters.cpp
+    src/payoff2.h
+    src/payoff2.cpp
+    src/statistics.h
+    src/statistics.cpp
+    src/random.h
     mains/mc7.cpp
     )
 
 add_executable(exotics1
     ${HEADERS}
-    exoticengine.h
-    exoticengine.cpp
-    parameters.h
-    parameters.cpp
-    payoff2.h
-    payoff2.cpp
-    pathdependent.h
-    pathdependent.cpp
-    random.h
-    statistics.h
-    statistics.cpp
+    src/exoticengine.h
+    src/exoticengine.cpp
+    src/parameters.h
+    src/parameters.cpp
+    src/payoff2.h
+    src/payoff2.cpp
+    src/pathdependent.h
+    src/pathdependent.cpp
+    src/random.h
+    src/statistics.h
+    src/statistics.cpp
     mains/exotics1.cpp
     )
 
 add_executable(trees1
     ${HEADERS}
-    treeproduct.h
-    treeproduct.cpp
-    tree.h
-    tree.cpp
-    parameters.h
-    parameters.cpp
-    payoff2.h
-    payoff2.cpp
-    random.h
-    statistics.h
-    statistics.cpp
+    src/treeproduct.h
+    src/treeproduct.cpp
+    src/tree.h
+    src/tree.cpp
+    src/parameters.h
+    src/parameters.cpp
+    src/payoff2.h
+    src/payoff2.cpp
+    src/random.h
+    src/statistics.h
+    src/statistics.cpp
     mains/trees1.cpp
     )
 
