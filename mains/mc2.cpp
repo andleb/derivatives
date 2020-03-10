@@ -6,8 +6,9 @@
 #include <iostream>
 #include <sstream>
 
-#include "derivatives.h"
-#include "payoff1.h"
+#include "../src/derivatives.h"
+#include "../src/payoff1.h"
+#include "../src/simspot.h"
 
 
 int main( int /*argc*/, char */*argv*/[] )

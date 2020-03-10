@@ -134,7 +134,7 @@ std::vector<double> RandomBase<Derived, DIM>::gaussians(std::vector<double> && p
     f << *(ret.end() - 1);
 #endif
 
-    return ret;
+    return std::move(ret);
 }
 
 template <typename Derived, size_t DIM>

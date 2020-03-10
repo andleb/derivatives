@@ -7,9 +7,10 @@
 #include <iostream>
 #include <sstream>
 
-#include "derivatives.h"
-#include "payoffbridge.h"
-#include "vanillaoption2.h"
+#include "../src/derivatives.h"
+#include "../src/payoffbridge.h"
+#include "../src/simspot.h"
+#include "../src/vanillaoption2.h"
 
 using namespace der;
 

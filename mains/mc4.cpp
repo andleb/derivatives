@@ -7,8 +7,9 @@
 #include <iostream>
 #include <sstream>
 
-#include "derivatives.h"
-#include "vanillaoption.h"
+#include "../src/derivatives.h"
+#include "../src/simspot.h"
+#include "../src/vanillaoption.h"
 
 using namespace der;
 

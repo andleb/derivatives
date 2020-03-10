@@ -1,4 +1,4 @@
-/** \file ml1.cpp
+/** \file mc1.cpp
  * \author Andrej Leban
  * \date 11/2018
  *
@@ -8,7 +8,7 @@
 #include <cmath>
 #include <iostream>
 
-#include "src/derivatives.h"
+#include "../src/derivatives.h"
 
 double payoff(double p_spot, double p_strike)
 {
@@ -17,7 +17,7 @@ double payoff(double p_spot, double p_strike)
 
 double simSpot(double p_S0, double p_t, double p_sigma, double p_r)
 {
-    return p_S0 * std::exp((p_r - 0.5 * p_sigma * p_sigma) * p_t + p_sigma * std::sqrt(p_t) * der::normalDist());
+    return p_S0 * std::exp((p_r - 0.5 * p_sigma * p_sigma) * p_t + p_sigma * std::sqrt(p_t) * der::normalDist<double>());
 }
 
 int main(int, char * [])

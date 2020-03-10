@@ -36,6 +36,7 @@ public:
     ~Parameters();
     Parameters(const Parameters & other);
     Parameters(Parameters && other) noexcept;
+
     Parameters & operator=(const Parameters & other);
     Parameters & operator=(Parameters && other) noexcept;
 

@@ -11,10 +11,10 @@
 #include "common/io.h"
 #include <common/numeric.h>
 
-#include "../exoticengine.h"
-#include "../pathdependent.h"
-#include "../payoff2.h"
-#include "../random.h"
+#include "../src/exoticengine.h"
+#include "../src/pathdependent.h"
+#include "../src/payoff2.h"
+#include "../src/random.h"
 
 using namespace der;
 

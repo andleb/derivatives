@@ -6,8 +6,9 @@
 #include <iostream>
 #include <sstream>
 
-#include "derivatives.h"
-#include "payoff2.h"
+#include "../src/derivatives.h"
+#include "../src/simspot.h"
+#include "../src/payoff2.h"
 
 double doMonteCarlo(const der::Payoff2 & payoff, double T, double sigma, double r, double S0, int nScen)
 {

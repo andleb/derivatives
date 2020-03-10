@@ -9,12 +9,12 @@
 
 #include "common/io.h"
 
-#include "derivatives.h"
+#include "../src/derivatives.h"
 
-#include "parameters.h"
-#include "random.h"
-#include "statistics.h"
-#include "vanillaoption2.h"
+#include "../src/random.h"
+#include "../src/simspot.h"
+#include "../src/statistics.h"
+#include "../src/vanillaoption2.h"
 
 using namespace der;
 
