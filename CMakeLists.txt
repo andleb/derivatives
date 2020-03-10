@@ -53,14 +53,12 @@ add_executable(mc4
     ${HEADERS}
     src/payoff.h
     src/payoff.cpp
-    src/vanillaoption.h
-    src/vanillaoption.cpp
-    src/payoffbridge.h
-    src/payoffbridge.cpp
     src/parameters.h
     src/parameters.cpp
     src/simspot.h
     src/simspot.cpp
+    src/vanillaoption.h
+    src/vanillaoption.cpp
     mains/mc4.cpp
     )
 
@@ -68,29 +66,27 @@ add_executable(mc5
     ${HEADERS}
     src/payoff.h
     src/payoff.cpp
-    src/vanillaoption2.h
-    src/vanillaoption2.cpp
-    src/payoffbridge.h
-    src/payoffbridge.cpp
     src/parameters.h
     src/parameters.cpp
     src/simspot.h
     src/simspot.cpp
+    src/vanillaoption.h
+    src/vanillaoption.cpp
     mains/mc5.cpp
     )
 
 add_executable(mc6
     ${HEADERS}
-    src/parameters.h
-    src/parameters.cpp
-    src/statistics.h
-    src/statistics.cpp
     src/payoff.h
     src/payoff.cpp
-    src/vanillaoption2.h
-    src/vanillaoption2.cpp
+    src/parameters.h
+    src/parameters.cpp
     src/simspot.h
     src/simspot.cpp
+    src/statistics.h
+    src/statistics.cpp
+    src/vanillaoption.h
+    src/vanillaoption.cpp
     mains/mc6.cpp
     )
 
@@ -105,6 +101,8 @@ add_executable(mc7
     src/statistics.h
     src/statistics.cpp
     src/random.h
+    src/vanillaoption.h
+    src/vanillaoption.cpp
     mains/mc7.cpp
     )
 

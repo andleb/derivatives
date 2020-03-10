@@ -14,10 +14,8 @@ namespace der
 class VanillaOption
 {
 public:
-    VanillaOption(std::unique_ptr<Payoff> pPayoff, double expiry)
-        : m_pPayoff(std::move(pPayoff))
-        , m_expiry(expiry)
-    {}
+    VanillaOption(std::unique_ptr<Payoff> pPayoff, double expiry);
+    VanillaOption(const Payoff & pPayoff, double expiry);
     ~VanillaOption() = default;
     VanillaOption(const VanillaOption & p_othr);
     VanillaOption(VanillaOption && p_othr) noexcept;

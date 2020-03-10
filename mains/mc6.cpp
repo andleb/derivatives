@@ -11,16 +11,14 @@
 
 #include "../src/derivatives.h"
 #include "../src/parameters.h"
-#include "../src/payoffbridge.h"
 #include "../src/simspot.h"
 #include "../src/statistics.h"
-#include "../src/vanillaoption2.h"
-
+#include "../src/vanillaoption.h"
 
 using namespace der;
 
-auto doMonteCarlo(const VanillaOption2 & option, const Parameters & sigma, const Parameters & r, double S0, int nScen,
-                    StatisticsBase & gatherer)
+auto doMonteCarlo(const VanillaOption & option, const Parameters & sigma, const Parameters & r, double S0, int nScen,
+                  StatisticsBase & gatherer)
 {
     const simSpotParams spot{S0, option.expiry(), sigma, r};
     auto discount = std::exp(-r.integral(0, option.expiry()));
@@ -60,10 +58,10 @@ int main(int /*argc*/, char * /*argv*/ [])
 
     std::cout << S0 << " " << K << " " << T << " " << sigma << " " << r << " " << nScen << "\n";
 
-    VanillaOption2 option{PayoffCall{K}, T};
+    VanillaOption option{PayoffCall{K}, T};
 
     StatisticsMean gathererInner{};
-    ConvergenceTable gatherer{ std::make_unique<StatisticsMean>(std::move(gathererInner))};
+    ConvergenceTable gatherer{std::make_unique<StatisticsMean>(std::move(gathererInner))};
 
     auto results = doMonteCarlo(option, ParametersConstant{sigma}, ParametersConstant{r},
                                 S0, nScen, gatherer);

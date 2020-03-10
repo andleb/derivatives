@@ -5,8 +5,20 @@
 
 #include "vanillaoption.h"
 
+#include "payoff.h"
+
 namespace der
 {
+
+VanillaOption::VanillaOption(std::unique_ptr<Payoff> pPayoff, double expiry)
+    : m_pPayoff(std::move(pPayoff))
+    , m_expiry(expiry)
+{}
+
+VanillaOption::VanillaOption(const Payoff & pPayoff, double expiry)
+    : m_pPayoff(pPayoff.clone())
+    , m_expiry(expiry)
+{}
 
 VanillaOption::VanillaOption(const VanillaOption & p_othr)
     : m_pPayoff(p_othr.m_pPayoff->clone())
@@ -29,7 +41,7 @@ VanillaOption & VanillaOption::operator=(const VanillaOption & p_othr)
     return *this;
 }
 
-VanillaOption &VanillaOption::operator=(VanillaOption && p_othr) noexcept
+VanillaOption & VanillaOption::operator=(VanillaOption && p_othr) noexcept
 {
     if (this != &p_othr)
     {

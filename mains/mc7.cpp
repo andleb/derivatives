@@ -14,13 +14,13 @@
 #include "../src/random.h"
 #include "../src/simspot.h"
 #include "../src/statistics.h"
-#include "../src/vanillaoption2.h"
+#include "../src/vanillaoption.h"
 
 using namespace der;
 
 // generator is passed by value so there is no state persistence
 template<typename Generator>
-auto doMonteCarlo(const VanillaOption2 & option, const Parameters & sigma, const Parameters & r, double S0, size_t nScen,
+auto doMonteCarlo(const VanillaOption & option, const Parameters & sigma, const Parameters & r, double S0, size_t nScen,
                   StatisticsBase & gatherer, std::unique_ptr<Generator> p_pGenerator = nullptr)
 {
     simSpotParamsMultiple<Generator> spot;
@@ -70,7 +70,7 @@ int main(int /*argc*/, char * /*argv*/ [])
     std::cin >> S0 >> K >> T >> sigma >> r >> nScen;
 #endif
 
-    VanillaOption2 option{PayoffCall{K}, T};
+    VanillaOption option{PayoffCall{K}, T};
     StatisticsMean gathererInner{};
 
     ConvergenceTable gatherer1{std::make_unique<StatisticsMean>(gathererInner)};

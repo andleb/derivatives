@@ -1,13 +1,13 @@
 /** \file mc4.cpp
  * \author Andrej Leban
  * \date 2/2019
- * Ch 4.2 Bridging with a virtual ctor
+ *
+ * Ch 4. Bridging with a virtual constructor
  */
 
 #include <iostream>
 #include <sstream>
 
-#include "../src/derivatives.h"
 #include "../src/simspot.h"
 #include "../src/vanillaoption.h"
 
@@ -26,7 +26,7 @@ double doMonteCarlo(const VanillaOption & option, double sigma, double r, double
     return std::exp(-r * option.expiry()) * (sum / nScen);
 }
 
-int main(int /*argc*/, char * /*argv*/ [])
+int main(int, char * [])
 {
     double S0, K, T, sigma, r;
     int nScen;

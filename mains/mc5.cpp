@@ -8,13 +8,12 @@
 #include <sstream>
 
 #include "../src/derivatives.h"
-#include "../src/payoffbridge.h"
 #include "../src/simspot.h"
-#include "../src/vanillaoption2.h"
+#include "../src/vanillaoption.h"
 
 using namespace der;
 
-double doMonteCarlo(const VanillaOption2 & option, const Parameters & sigma, const Parameters & r, double S0, int nScen)
+double doMonteCarlo(const VanillaOption & option, const Parameters & sigma, const Parameters & r, double S0, int nScen)
 {
     double sum = 0.0;
     const simSpotParams spot{S0, option.expiry(), sigma, r};
@@ -51,7 +50,7 @@ int main(int /*argc*/, char * /*argv*/ [])
 
     std::cout << S0 << " " << K << " " << T << " " << sigma << " " << r << " " << nScen << "\n";
 
-    VanillaOption2 option{PayoffCall{K}, T};
+    VanillaOption option{PayoffCall{K}, T};
 
     std::cout << "the price is: " << doMonteCarlo(option, ParametersConstant{sigma}, ParametersConstant{r}, S0, nScen) << "\n";
 
