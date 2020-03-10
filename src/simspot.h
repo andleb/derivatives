@@ -24,6 +24,9 @@ struct simSpot
 {
     simSpot(double p_S0, double p_t, double p_sigma, double p_r);
 
+
+    //! \brief operator ()
+    //! \return the simulated value
     double operator()() const;
 
     double m_t;
@@ -38,6 +41,9 @@ struct simSpotParams
     simSpotParams() = default;
     simSpotParams(double p_S0, double p_t, const Parameters & p_sigma, const Parameters & p_r);
 
+
+    //! \brief operator ()
+    //! \return the simulated value
     double operator()() const;
 
     double m_t{0.0};
@@ -46,7 +52,7 @@ struct simSpotParams
 };
 
 
-//! \brief The simSpotParamsMultiple struct
+//! \brief The simSpotParamsMultiple struct also simulates a number of spot values
 //! Allows a compile-time selection of a RNG, in addition to generic Parameters
 template <typename Generator = std::nullptr_t>
 struct simSpotParamsMultiple : public simSpotParams
@@ -57,8 +63,13 @@ struct simSpotParamsMultiple : public simSpotParams
     simSpotParamsMultiple(double p_S0, double p_t, const Parameters & p_sigma, const Parameters & p_r, size_t p_seed);
     simSpotParamsMultiple(double p_S0, double p_t, const Parameters & p_sigma, const Parameters & p_r, Generator & p_generator);
 
+    //! \brief operator ()
+    //! \return a single simulated value
     double operator()() const;
 
+    //! \brief simSpotMultiple
+    //! \param p_nValues
+    //! \return a vector sized \p p_nValues of simulated spot values
     std::vector<double> simSpotMultiple(size_t p_nValues);
 
     mutable Generator m_generator;

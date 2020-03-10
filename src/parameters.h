@@ -26,8 +26,18 @@ public:
     ParametersInner & operator=(const ParametersInner &) = default;
     ParametersInner & operator=(ParametersInner &&) = default;
 
+    //! \brief clone
+    //! \return
     virtual std::unique_ptr<ParametersInner> clone() const = 0;
+    //! \brief a definite integral
+    //! \param time1
+    //! \param time2
+    //! \return
     virtual double integral(double time1, double time2) const = 0;
+    //! \brief a definite integral of the square of the function
+    //! \param time1
+    //! \param time2
+    //! \return
     virtual double integralSquare(double time1, double time2) const = 0;
 };
 
@@ -45,9 +55,25 @@ public:
     Parameters & operator=(const Parameters & other);
     Parameters & operator=(Parameters && other) noexcept;
 
+    //! \brief a definite integral
+    //! \param time1
+    //! \param time2
+    //! \return
     double integral(double time1, double time2) const;
+    //! \brief a definite integral of the square of the function
+    //! \param time1
+    //! \param time2
+    //! \return
     double integralSquare(double time1, double time2) const;
+    //! \brief the mean value on the interval
+    //! \param time1
+    //! \param time2
+    //! \return
     double mean(double time1, double time2) const;
+    //! \brief the root-mean-square on the interval
+    //! \param time1
+    //! \param time2
+    //! \return
     double RMS(double time1, double time2) const;
 
 private:

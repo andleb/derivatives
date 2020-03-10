@@ -3,9 +3,9 @@
 *   \date 2/2018
 */
 
-#include "vanillaoption.h"
-
 #include "payoff.h"
+
+#include "vanillaoption.h"
 
 namespace der
 {
