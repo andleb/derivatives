@@ -75,7 +75,6 @@ public:
 
     //! @name Additional interface
     ///@{
-
     //! \brief The maximum possible number.
     static constexpr long max();
     //! \brief The minimum possible number.
@@ -117,7 +116,6 @@ public:
 
     //! @name Additional interface
     ///@{
-
     //! \brief The maximum possible number.
     constexpr auto max();
     //! \brief The minimum possible number.
@@ -131,7 +129,7 @@ private:
     // can be static since it's just an interface to /dev/random by default
     static std::random_device m_rDev;
     // not static since we want different instances, e.g. with different seeds
-    std::mt19937_64 m_rng;
+    mutable std::mt19937_64 m_rng;
     static std::normal_distribution<double> m_normalDist;
     static std::uniform_int_distribution<size_t> m_uniformDist;
 };
@@ -380,14 +378,14 @@ MersenneTwister<DIM>::MersenneTwister(long p_seed)
 template <size_t DIM>
 std::vector<double> MersenneTwister<DIM>::uniforms(std::vector<double> && p_variates) const
 {
-    std::for_each(p_variates.begin(), p_variates.end(), m_uniformDist(m_rng));
+    std::for_each(p_variates.begin(), p_variates.end(), [this](auto & el) { el = m_uniformDist(m_rng); });
     return std::move(p_variates);
 }
 
 template <size_t DIM>
 std::vector<double> MersenneTwister<DIM>::gaussians(std::vector<double> && p_variates) const
 {
-    std::for_each(p_variates.begin(), p_variates.end(), m_normalDist(m_rng));
+    std::for_each(p_variates.begin(), p_variates.end(), [this](auto & el) { el = m_normalDist(m_rng); });
     return std::move(p_variates);
 }
 

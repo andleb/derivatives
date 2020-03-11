@@ -104,7 +104,16 @@ int main(int, char * [])
                                                                              ParametersConstant{r}, S0, nScen, gatherer3);
 
     std::cout << "Mersenne twister: number of paths were: " << gatherer3.simsSoFar() << "\n";
-    std::cout << "the results are: " << results3 << "\n";
+    std::cout << "the results are: " << results3 << "\n\n";;
+
+    // Anti-Thetic Mersenne-twister
+    ConvergenceTable gatherer4{std::make_unique<StatisticsMean>(gathererInner)};
+    AntiThetic<MersenneTwister<1>, 1> generator4{};
+    std::vector<std::vector<double>> results4 = doMonteCarlo(option, ParametersConstant{sigma}, ParametersConstant{r}, S0, nScen,
+                                                             gatherer4, generator4);
+
+    std::cout << "Anti-thetic Mersenne twister: number of paths were: " << gatherer4.simsSoFar() << "\n";
+    std::cout << "the results are: " << results4 << "\n";
 
     return 0;
 }
