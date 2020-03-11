@@ -8,6 +8,11 @@
 #include <iostream>
 #include <sstream>
 
+#ifdef DUMPRESULTS
+#include <filesystem>
+#include <fstream>
+#endif
+
 #include "common/io.h"
 
 #include "../src/random.h"
@@ -50,6 +55,25 @@ auto doMonteCarlo(const VanillaOption & option, const Parameters & sigma, const 
     return gatherer.resultsSoFar();
 }
 
+#ifdef DUMPRESULTS
+void dumpResults(std::vector<std::vector<double>> p_results, std::string p_name)
+{
+    std::filesystem::path dataDir{"../data"};
+    if (!std::filesystem::exists(dataDir))
+    {
+        std::filesystem::create_directory(dataDir);
+    }
+
+    std::ofstream f{"../data/" + p_name};
+    for (auto it = p_results.begin(); it != p_results.end() - 1; ++it)
+    {
+        f << (*it)[0] << " " << (*it)[1] << "\n";
+    }
+
+    f << (*(p_results.end() - 1))[0] << " " << (*(p_results.end() - 1))[1];
+}
+#endif
+
 int main(int, char * [])
 {
 
@@ -62,7 +86,7 @@ int main(int, char * [])
     T = 30;
     sigma = 0.5;
     r = 0.02;
-    nScen = 20;
+    nScen = 1e7;
 #else
     std::cout << "enter spot, strike, time to expiry, vol, r and number of scenarios:\n";
     std::string inputParams;
@@ -78,7 +102,7 @@ int main(int, char * [])
 
     // Park-Miller generator
     ConvergenceTable gatherer1{std::make_unique<StatisticsMean>(gathererInner)};
-    RandomParkMiller<1> generator1{};
+    RandomParkMiller<1> generator1{1};
 
     std::vector<std::vector<double>> results1 = doMonteCarlo(option, ParametersConstant{sigma}, ParametersConstant{r}, S0, nScen,
                                                              gatherer1, generator1);
@@ -88,7 +112,7 @@ int main(int, char * [])
 
     // Anti-Thetic generator
     ConvergenceTable gatherer2{std::make_unique<StatisticsMean>(gathererInner)};
-    AntiThetic<RandomParkMiller<1>, 1> generator2{};
+    AntiThetic<RandomParkMiller<1>, 1> generator2{42};
 
     std::vector<std::vector<double>> results2 = doMonteCarlo(option, ParametersConstant{sigma}, ParametersConstant{r}, S0, nScen,
                                                              gatherer2, generator2);
@@ -104,7 +128,7 @@ int main(int, char * [])
                                                                              ParametersConstant{r}, S0, nScen, gatherer3);
 
     std::cout << "Mersenne twister: number of paths were: " << gatherer3.simsSoFar() << "\n";
-    std::cout << "the results are: " << results3 << "\n\n";;
+    std::cout << "the results are: " << results3 << "\n\n";
 
     // Anti-Thetic Mersenne-twister
     ConvergenceTable gatherer4{std::make_unique<StatisticsMean>(gathererInner)};
@@ -114,6 +138,13 @@ int main(int, char * [])
 
     std::cout << "Anti-thetic Mersenne twister: number of paths were: " << gatherer4.simsSoFar() << "\n";
     std::cout << "the results are: " << results4 << "\n";
+
+#ifdef DUMPRESULTS
+    dumpResults(results1, "PM");
+    dumpResults(results2, "PM-AT");
+    dumpResults(results3, "MT");
+    dumpResults(results4, "MT-AT");
+#endif
 
     return 0;
 }

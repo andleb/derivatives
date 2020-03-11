@@ -7,6 +7,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <sstream>
 
 #include "../src/derivatives.h"
 

@@ -16,4 +16,5 @@ gaussians
 uniforms
 docs/html/
 docs/
+data/
 *.pyc

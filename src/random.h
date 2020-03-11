@@ -117,9 +117,9 @@ public:
     //! @name Additional interface
     ///@{
     //! \brief The maximum possible number.
-    constexpr auto max();
+    constexpr auto max() const;
     //! \brief The minimum possible number.
-    constexpr auto min();
+    constexpr auto min() const;
     //! \brief Generates a single uniformly distributed random number.
     long randInt() const;
     ///@}
@@ -132,6 +132,8 @@ private:
     mutable std::mt19937_64 m_rng;
     static std::normal_distribution<double> m_normalDist;
     static std::uniform_int_distribution<size_t> m_uniformDist;
+
+    double m_reciprocal = 1. / (1. + max());
 };
 
 //! \brief Implements Anti-Thetic sampling using on top of \p Generator.
@@ -378,7 +380,7 @@ MersenneTwister<DIM>::MersenneTwister(long p_seed)
 template <size_t DIM>
 std::vector<double> MersenneTwister<DIM>::uniforms(std::vector<double> && p_variates) const
 {
-    std::for_each(p_variates.begin(), p_variates.end(), [this](auto & el) { el = m_uniformDist(m_rng); });
+    std::for_each(p_variates.begin(), p_variates.end(), [this](auto & el) { el = m_uniformDist(m_rng) * m_reciprocal; });
     return std::move(p_variates);
 }
 
@@ -408,13 +410,13 @@ void MersenneTwister<DIM>::reset()
 }
 
 template <size_t DIM>
-constexpr auto MersenneTwister<DIM>::max()
+constexpr auto MersenneTwister<DIM>::max() const
 {
     return m_rng.max();
 }
 
 template <size_t DIM>
-constexpr auto MersenneTwister<DIM>::min()
+constexpr auto MersenneTwister<DIM>::min() const
 {
     m_rng.min();
 }
@@ -443,7 +445,7 @@ std::vector<double> AntiThetic<Generator, DIM>::uniforms(std::vector<double> && 
     std::move(tmp.begin(), tmp.end(), p_variates.begin());
 
     // anti-thetic in the second half
-    for (auto it = midpoint + 1; it != p_variates.end(); ++it)
+    for (auto it = midpoint; it != p_variates.end(); ++it)
     {
         *it = 1.0 - *(it - half);
     }
