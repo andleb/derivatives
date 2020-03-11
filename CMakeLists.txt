@@ -10,7 +10,7 @@ include(cmake/dirs.cmake)
 if(CMAKE_BUILD_TYPE MATCHES "Debug")
     message("Building in DEBUG mode, enabling testing macros.")
     add_definitions(-DTESTING)
-    add_definitions(-DDUMPINTERMEDIATE)
+#    add_definitions(-DDUMPINTERMEDIATE)
 endif()
 
 # Common headers

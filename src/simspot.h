@@ -57,7 +57,9 @@ struct simSpotParamsMultiple : public simSpotParams
     simSpotParamsMultiple() = default;
 
     simSpotParamsMultiple(double p_S0, double p_t, const Parameters & p_sigma, const Parameters & p_r);
+    //! \brief Overload using built-in RNG but initializing with \p p_seed
     simSpotParamsMultiple(double p_S0, double p_t, const Parameters & p_sigma, const Parameters & p_r, size_t p_seed);
+    //! \brief Overload using a custom \p p_generator
     simSpotParamsMultiple(double p_S0, double p_t, const Parameters & p_sigma, const Parameters & p_r, Generator & p_generator);
 
     //! \brief operator ()
@@ -69,6 +71,7 @@ struct simSpotParamsMultiple : public simSpotParams
     //! \return a vector sized \p p_nValues of simulated spot values
     std::vector<double> simSpotMultiple(size_t p_nValues);
 
+    ///! \note In case no generator is provided - the built-in is used, this can store an initial seed value.
     mutable Generator m_generator;
 };
 
@@ -99,11 +102,15 @@ template <typename Generator>
 double simSpotParamsMultiple<Generator>::operator()() const
 {
     {
-        // make use of custom generator
         if constexpr (std::is_same<Generator, std::nullptr_t>::value)
         {
             return m_precalc * std::exp(sqrt(m_sigma.integralSquare(0, m_t)) * normalDist<double>());
         }
+        else if constexpr (std::is_same<Generator, size_t>::value)
+        {                                                                               // this is the seed, only used once
+            return m_precalc * std::exp(sqrt(m_sigma.integralSquare(0, m_t)) * normalDist<double>(m_generator));
+        }
+        // make use of custom generator
         else
         {
             return m_precalc * std::exp(sqrt(m_sigma.integralSquare(0, m_t)) * m_generator.gaussians(std::vector<double>(1)));
