@@ -10,7 +10,6 @@
 
 #include "common/io.h"
 
-#include "../src/parameters.h"
 #include "../src/simspot.h"
 #include "../src/statistics.h"
 #include "../src/vanillaoption.h"
@@ -66,7 +65,7 @@ int main(int, char * [])
     auto results = doMonteCarlo(option, ParametersConstant{sigma}, ParametersConstant{r},
                                 S0, nScen, gatherer);
 
-    std::cout << "the price is: " << results.back().front() << "\n";
+    std::cout << "the price is: " << results.back().back() << "\n";
     std::cout << "number of paths were: " << gatherer.simsSoFar() << "\n";
     std::cout << "the results are: " << results << "\n";
 

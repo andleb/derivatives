@@ -26,8 +26,8 @@ double doMonteCarlo(const VanillaOption & option, double sigma, double r, double
     return std::exp(-r * option.expiry()) * (sum / nScen);
 }
 
-double doMonteCarloParams(const VanillaOption & option, const Parameters & sigma, const Parameters & r,
-                          double S0, int nScen)
+double doMonteCarlo(const VanillaOption & option, const Parameters & sigma, const Parameters & r,
+                    double S0, int nScen)
 {
     double sum = 0.0;
     const simSpotParams spot{S0, option.expiry(), sigma, r};
@@ -64,12 +64,10 @@ int main(int, char * [])
 
     VanillaOption option{PayoffCall{K}, T};
 
-
     std::cout << S0 << " " << K << " " << T << " " << sigma << " " << r << " " << nScen << "\n";
 
     std::cout << "the price is: " << doMonteCarlo(option, sigma, r, S0, nScen) << "\n";
-    std::cout << "the price is: " << doMonteCarloParams(option, ParametersConstant{sigma},
-                                                        ParametersConstant{r}, S0, nScen) << "\n";
+    std::cout << "the price is: " << doMonteCarlo(option, ParametersConstant{sigma}, ParametersConstant{r}, S0, nScen) << "\n";
 
     return 0;
 }
