@@ -1,4 +1,4 @@
-/** \file mc1.cpp
+/** \file ch1.cpp
  * \author Andrej Leban
  * \date 11/2018
  *

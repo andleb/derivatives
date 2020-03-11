@@ -96,7 +96,8 @@ private:
         static constexpr long m = 2147483647;
         static constexpr long q = 127773;
         static constexpr long r = 2836;
-    } m_coeffs;
+    } m_coeffs
+        {};  // GCC bug requires static constexpr's to be initialized, Clang doesn't
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

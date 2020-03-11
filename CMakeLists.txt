@@ -10,7 +10,7 @@ include(cmake/dirs.cmake)
 if(CMAKE_BUILD_TYPE MATCHES "Debug")
     message("Building in DEBUG mode, enabling testing macros.")
     add_definitions(-DTESTING)
-#    add_definitions(-DDUMPINTERMEDIATE)
+    add_definitions(-DDUMPINTERMEDIATE)
 endif()
 
 # Common headers
@@ -22,12 +22,12 @@ set(HEADERS
 # My roll-your-own library of data structures etc.
 include(cmake/libraries/common.cmake)
 
-add_executable(mc1
+add_executable(ch1
     ${HEADERS}
-    mains/mc1.cpp
+    mains/ch1.cpp
     )
 
-add_executable(mc2
+add_executable(ch2
     ${HEADERS}
     src/payoff1.h
     src/payoff1.cpp
@@ -35,10 +35,10 @@ add_executable(mc2
     src/parameters.cpp
     src/simspot.h
     src/simspot.cpp
-    mains/mc2.cpp
+    mains/ch2.cpp
     )
 
-add_executable(mc3
+add_executable(ch3
     ${HEADERS}
     src/payoff.h
     src/payoff.cpp
@@ -46,10 +46,10 @@ add_executable(mc3
     src/parameters.cpp
     src/simspot.h
     src/simspot.cpp
-    mains/mc3.cpp
+    mains/ch3.cpp
     )
 
-add_executable(mc4
+add_executable(ch4
     ${HEADERS}
     src/payoff.h
     src/payoff.cpp
@@ -59,10 +59,10 @@ add_executable(mc4
     src/simspot.cpp
     src/vanillaoption.h
     src/vanillaoption.cpp
-    mains/mc4.cpp
+    mains/ch4.cpp
     )
 
-add_executable(mc5
+add_executable(ch5
     ${HEADERS}
     src/payoff.h
     src/payoff.cpp
@@ -74,10 +74,10 @@ add_executable(mc5
     src/statistics.cpp
     src/vanillaoption.h
     src/vanillaoption.cpp
-    mains/mc5.cpp
+    mains/ch5.cpp
     )
 
-add_executable(mc7
+add_executable(ch6
     ${HEADERS}
     src/parameters.h
     src/parameters.cpp
@@ -90,7 +90,7 @@ add_executable(mc7
     src/random.h
     src/vanillaoption.h
     src/vanillaoption.cpp
-    mains/mc7.cpp
+    mains/ch6.cpp
     )
 
 add_executable(exotics1
@@ -125,11 +125,11 @@ add_executable(trees1
     mains/trees1.cpp
     )
 
-target_link_libraries(mc1 ${PROJECT_LINK_LIBS})
-target_link_libraries(mc2 ${PROJECT_LINK_LIBS})
-target_link_libraries(mc3 ${PROJECT_LINK_LIBS})
-target_link_libraries(mc4 ${PROJECT_LINK_LIBS})
-target_link_libraries(mc5 ${PROJECT_LINK_LIBS})
-target_link_libraries(mc7 ${PROJECT_LINK_LIBS})
+target_link_libraries(ch1 ${PROJECT_LINK_LIBS})
+target_link_libraries(ch2 ${PROJECT_LINK_LIBS})
+target_link_libraries(ch3 ${PROJECT_LINK_LIBS})
+target_link_libraries(ch4 ${PROJECT_LINK_LIBS})
+target_link_libraries(ch5 ${PROJECT_LINK_LIBS})
+target_link_libraries(ch6 ${PROJECT_LINK_LIBS})
 target_link_libraries(exotics1 ${PROJECT_LINK_LIBS})
 target_link_libraries(trees1 ${PROJECT_LINK_LIBS})

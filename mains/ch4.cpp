@@ -1,4 +1,4 @@
-/** \file mc4.cpp
+/** \file ch4.cpp
  * \author Andrej Leban
  * \date 2/2019
  *

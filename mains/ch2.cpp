@@ -1,28 +1,15 @@
-/** \file mc3.cpp
+/** \file ch2.cpp
  * \author Andrej Leban
- * \date 12/2018
+ * \date 11/2018
  *
- * Ch. 3: Inheritance and virtual functions
+ * Ch. 2: Encapsulation
  */
 
 #include <iostream>
 #include <sstream>
 
-#include "../src/payoff.h"
+#include "../src/payoff1.h"
 #include "../src/simspot.h"
-
-double doMonteCarlo(const der::Payoff & payoff, double T, double sigma, double r, double S0, int nScen)
-{
-    double sum = 0.0;
-    const der::simSpot spot{S0, T, sigma, r};
-
-    for (int i = 0; i < nScen; ++i)
-    {
-        sum += payoff(spot());
-    }
-
-    return std::exp(-r * T) * (sum / nScen);
-}
 
 int main(int, char * [])
 {
@@ -48,7 +35,16 @@ int main(int, char * [])
 
     std::cout << S0 << " " << K << " " << T << " " << sigma << " " << r << " " << nScen << "\n";
 
-    std::cout << "the price is: " << doMonteCarlo(der::PayoffCall{K}, T, sigma, r, S0, nScen) << "\n";
+    double sum = 0.0;
+    const der::simSpot spot{S0, T, sigma, r};
+    const der::payoff1 payoff{K, der::OptionsType::call};
+
+    for (int i = 0; i < nScen; ++i)
+    {
+        sum += payoff(spot());
+    }
+
+    std::cout << "the price is: " << std::exp(-r * T) * (sum / nScen) << "\n";
 
     return 0;
 }

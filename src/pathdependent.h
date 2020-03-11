@@ -7,7 +7,7 @@
 #ifndef PATHDEPENDENT_H
 #define PATHDEPENDENT_H
 
-#include <utility>
+#include <memory>
 #include <vector>
 
 #include "derivatives.h"
@@ -47,10 +47,13 @@ public:
 
     std::vector<double> lookAtTimes() const;
 
-    virtual constexpr size_t maxNumberOfCashFlows() const = 0;
-    virtual constexpr std::vector<double> possibleCashFlowTimes() const = 0;
+    // C++ 20+ allows for virtual constexpr functions, as would come into play here,
+    // since we need virtual for the interface, but an implementation could be constexpr
+    // Interestingly, Clang 8 allows it even now
+    virtual size_t maxNumberOfCashFlows() const = 0;
+    virtual std::vector<double> possibleCashFlowTimes() const = 0;
 
-    //NOTE: return a modified version of the input, prefering this to input/output params
+    //NOTE: return a modified version of the input, preferring this to input/output params
     virtual std::vector<CashFlow> cashFlows(const std::vector<double> & p_spots, std::vector<CashFlow> && p_flows) const = 0;
 
 protected:

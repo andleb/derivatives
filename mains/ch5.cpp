@@ -1,8 +1,8 @@
-/** \file mc5.cpp
+/** \file ch5.cpp
  * \author Andrej Leban
  * \date 2/2019
  *
- * Ch 5 Strategies, decoration, and statistics
+ * Ch. 5: Strategies, decoration, and statistics.
  */
 
 #include <iostream>
