@@ -28,7 +28,7 @@ namespace der
 
 //! \brief The interface class for random generators.
 //! Never used on its own.
-//! //! \p DIM is left aside for possible future implementation of multivariate generators.
+//! \p DIM is left aside for possible future implementation of multivariate generators.
 template <typename Derived, size_t DIM>
 class RandomBase
 {
@@ -37,6 +37,7 @@ public:
 
     //! @name Distribution functions
     ///@{
+
     //! \brief Uniform numbers.
     //! \param p_variates should be pre-allocated to the desired size.
     std::vector<double> uniforms(std::vector<double> && p_variates) const;
@@ -47,6 +48,7 @@ public:
 
     //! @name Additional interface
     ///@{
+
     //! \brief Skip (waste) next \p p_nPaths values.
     void skip(size_t p_nPaths);
     //! \brief Set the seed.
@@ -75,6 +77,7 @@ public:
 
     //! @name Additional interface
     ///@{
+
     //! \brief The maximum possible number.
     static constexpr long max();
     //! \brief The minimum possible number.
@@ -116,6 +119,7 @@ public:
 
     //! @name Additional interface
     ///@{
+
     //! \brief The maximum possible number.
     constexpr auto max() const;
     //! \brief The minimum possible number.
