@@ -24,7 +24,7 @@ double doMonteCarlo(const der::Payoff & payoff, double T, double sigma, double r
     return std::exp(-r * T) * (sum / nScen);
 }
 
-int main(int, char * [])
+int main()
 {
     double S0, K, T, sigma, r;
     int nScen;

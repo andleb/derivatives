@@ -32,7 +32,7 @@ auto doMonteCarlo(const VanillaOption & option, const Parameters & sigma, const 
     return gatherer.resultsSoFar();
 }
 
-int main(int, char * [])
+int main()
 {
     double S0, K, T, sigma, r;
     int nScen;

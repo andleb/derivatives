@@ -18,7 +18,7 @@ double simSpot(double p_S0, double p_t, double p_sigma, double p_r)
     return p_S0 * std::exp((p_r - 0.5 * p_sigma * p_sigma) * p_t + p_sigma * std::sqrt(p_t) * der::normalDist<double>());
 }
 
-int main(int, char * [])
+int main()
 {
 
     double S0, K, T, sigma, r;

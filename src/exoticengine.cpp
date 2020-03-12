@@ -56,7 +56,6 @@ double ExoticEngine::doOnePath(const std::vector<double> & p_spots) const
     // spots are passed into the products
     // the price of one path is the weighted(by the discounts) sum of amounts
 
-    // TODO: does this take advantage of the move?
     m_cashflows = m_pProduct->cashFlows(p_spots, std::move(m_cashflows));
 
     double val = 0.0;

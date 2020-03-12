@@ -17,7 +17,7 @@ namespace der
 
 // PathDependent
 
-PathDependent::PathDependent(const std::vector<double> & p_lookAtTimes) : m_lookAtTimes(p_lookAtTimes) {}
+PathDependent::PathDependent(std::vector<double> p_lookAtTimes) : m_lookAtTimes(std::move(p_lookAtTimes)) {}
 
 PathDependent::~PathDependent() = default;
 

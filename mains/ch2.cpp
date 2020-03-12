@@ -11,7 +11,7 @@
 #include "../src/payoff1.h"
 #include "../src/simspot.h"
 
-int main(int, char * [])
+int main()
 {
     double S0, K, T, sigma, r;
     int nScen;

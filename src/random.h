@@ -341,12 +341,6 @@ long RandomParkMiller<DIM>::randInt() const
         m_seed += m_coeffs.m;
     }
 
-    // TODO: remove this after debug:
-    if (m_seed > max())
-    {
-        throw std::runtime_error{"random generator out of bounds"};
-    }
-
     return m_seed;
 }
 

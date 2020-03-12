@@ -65,7 +65,7 @@ public:
     //! \param p_spots
     //! \param p_flows
     //! \return
-    // NOTE: returns a modified version of the input, preferring this to input/output params.
+    // NOTE: returns a mutated version of the input, preferring this to input/output params.
     virtual std::vector<CashFlow> cashFlows(const std::vector<double> & p_spots, std::vector<CashFlow> && p_flows) const = 0;
 
 protected:
@@ -91,7 +91,7 @@ public:
     size_t maxNumberOfCashFlows() const override;
     std::vector<double> possibleCashFlowTimes() const override;
 
-    // NOTE: these still remain unimplemented:
+    // NOTE: these still remain pure:
     // std::unique_ptr<PathDependent> clone() const = 0;
     // std::vector<CashFlow> cashFlows(const std::vector<double> &, std::vector<CashFlow> &&) const = 0;
 

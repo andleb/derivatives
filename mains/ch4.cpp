@@ -39,7 +39,7 @@ double doMonteCarlo(const VanillaOption & option, const Parameters & sigma, cons
     return std::exp(-r.integral(0, option.expiry())) * (sum / nScen);
 }
 
-int main(int, char * [])
+int main()
 {
     double S0, K, T, sigma, r;
     int nScen;

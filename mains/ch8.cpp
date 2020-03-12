@@ -18,8 +18,6 @@ using namespace der;
 
 int main()
 {
-
-
     return 0;
 }
 

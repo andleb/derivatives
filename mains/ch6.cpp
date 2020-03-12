@@ -56,21 +56,21 @@ auto doMonteCarlo(const VanillaOption & option, const Parameters & sigma, const 
 }
 
 #ifdef DUMPRESULTS
-void dumpResults(std::vector<std::vector<double>> p_results, std::string p_name)
-{
-    std::filesystem::path dataDir{"../data"};
-    if (!std::filesystem::exists(dataDir))
+    void dumpResults(std::vector<std::vector<double>> p_results, const std::string & p_name)
     {
-        std::filesystem::create_directory(dataDir);
-    }
+        std::filesystem::path dataDir {"../data"};
+        if (!std::filesystem::exists(dataDir))
+        {
+            std::filesystem::create_directory(dataDir);
+        }
 
-    std::ofstream f{"../data/" + p_name};
-    for (auto it = p_results.begin(); it != p_results.end() - 1; ++it)
-    {
-        f << (*it)[0] << " " << (*it)[1] << "\n";
-    }
+        std::ofstream f {"../data/" + p_name};
+        for (auto it = p_results.begin(); it != p_results.end() - 1; ++it)
+        {
+            f << (*it)[0] << " " << (*it)[1] << "\n";
+        }
 
-    f << (*(p_results.end() - 1))[0] << " " << (*(p_results.end() - 1))[1];
+        f << (*(p_results.end() - 1))[0] << " " << (*(p_results.end() - 1))[1];
 }
 #endif
 

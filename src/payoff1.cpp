@@ -19,7 +19,7 @@ double der::payoff1::operator()(double p_spot) const
     case OptionsType::put:
         return std::max<double>(m_strike - p_spot, 0);
     case OptionsType::digital:
-        return p_spot > m_strike;
+        return static_cast<double>(p_spot > m_strike);
 
     // good practice to leave a default in in case values are added to the enum and not updated
     default:
