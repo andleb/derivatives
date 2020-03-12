@@ -9,19 +9,14 @@
 namespace der
 {
 
-TreeProduct::TreeProduct(double p_expiryTime, const Payoff & p_payoff)
-    : m_expiryTime(p_expiryTime)
-    , m_pPayoff(p_payoff.clone())
+TreeProduct::TreeProduct(double p_expiryTime, const Payoff & p_payoff) : m_expiryTime(p_expiryTime), m_pPayoff(p_payoff.clone())
 {}
 
 TreeProduct::TreeProduct(double p_expiryTime, std::unique_ptr<Payoff> p_pPayoff)
-    : m_expiryTime(p_expiryTime)
-    , m_pPayoff(std::move(p_pPayoff))
+    : m_expiryTime(p_expiryTime), m_pPayoff(std::move(p_pPayoff))
 {}
 
-TreeProduct::TreeProduct(const TreeProduct & p_other)
-    : m_expiryTime(p_other.m_expiryTime)
-    , m_pPayoff(p_other.m_pPayoff->clone())
+TreeProduct::TreeProduct(const TreeProduct & p_other) : m_expiryTime(p_other.m_expiryTime), m_pPayoff(p_other.m_pPayoff->clone())
 {}
 
 TreeProduct & TreeProduct::operator=(const TreeProduct & p_other)
@@ -35,23 +30,15 @@ TreeProduct & TreeProduct::operator=(const TreeProduct & p_other)
     return *this;
 }
 
-double TreeProduct::expiryTime() const
-{
-    return m_expiryTime;
-}
+double TreeProduct::expiryTime() const { return m_expiryTime; }
 
-double TreeProduct::payoff(double p_spot) const
-{
-    return (*m_pPayoff)(p_spot);
-}
+double TreeProduct::payoff(double p_spot) const { return (*m_pPayoff)(p_spot); }
 
 TreeProduct::~TreeProduct() = default;
 
 // TreeAmerican
 
-TreeAmerican::TreeAmerican(double p_expiryTime, const Payoff & p_payoff)
-    : TreeProduct(p_expiryTime, p_payoff)
-{}
+TreeAmerican::TreeAmerican(double p_expiryTime, const Payoff & p_payoff) : TreeProduct(p_expiryTime, p_payoff) {}
 
 TreeAmerican::TreeAmerican(double p_expiryTime, std::unique_ptr<Payoff> p_pPayoff)
     : TreeProduct(p_expiryTime, std::move(p_pPayoff))
@@ -65,9 +52,7 @@ double TreeAmerican::value(double p_spot, double /*p_t*/, double p_futureValue) 
 
 // TreeEuropean
 
-TreeEuropean::TreeEuropean(double p_expiryTime, const Payoff & p_payoff)
-    : TreeProduct(p_expiryTime, p_payoff)
-{}
+TreeEuropean::TreeEuropean(double p_expiryTime, const Payoff & p_payoff) : TreeProduct(p_expiryTime, p_payoff) {}
 
 TreeEuropean::TreeEuropean(double p_expiryTime, std::unique_ptr<Payoff> p_pPayoff)
     : TreeProduct(p_expiryTime, std::move(p_pPayoff))

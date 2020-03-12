@@ -63,7 +63,6 @@ protected:
     mutable std::vector<CashFlow> m_cashflows;
 
 private:
-
     //! \brief Pre-calculates the discount factors \p m_discounts given the interest rate \p m_r.
     void precalculate();
 };
@@ -110,11 +109,10 @@ private:
 // IMPLEMENTATION
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//ExoticBSEngine
+// ExoticBSEngine
 
 template <typename Generator>
-ExoticBSEngine<Generator>::ExoticBSEngine(const PathDependent & p_product, Parameters p_r, Parameters p_d,
-                                          Parameters p_vol, double p_S0)
+ExoticBSEngine<Generator>::ExoticBSEngine(const PathDependent & p_product, Parameters p_r, Parameters p_d, Parameters p_vol, double p_S0)
     : ExoticEngine(p_product, p_r)
     , m_d(std::move(p_d))
     , m_vol(std::move(p_vol))
@@ -127,8 +125,7 @@ ExoticBSEngine<Generator>::ExoticBSEngine(const PathDependent & p_product, Param
 }
 
 template <typename Generator>
-ExoticBSEngine<Generator>::ExoticBSEngine(std::unique_ptr<PathDependent> p_product, Parameters p_r, Parameters p_d,
-                                          Parameters p_vol, double p_S0)
+ExoticBSEngine<Generator>::ExoticBSEngine(std::unique_ptr<PathDependent> p_product, Parameters p_r, Parameters p_d, Parameters p_vol, double p_S0)
     : ExoticEngine(std::move(p_product), p_r)
     , m_d(std::move(p_d))
     , m_vol(std::move(p_vol))
@@ -145,14 +142,12 @@ void ExoticBSEngine<Generator>::precalculate()
 {
     // pre-calculate the drifts and the standard deviations
     m_stds[0] = std::sqrt(m_vol.integralSquare(0, m_times[0]));
-    m_drifts[0] = m_r.integral(0.0, m_times[0]) - m_d.integral(0.0, m_times[0])
-                  - 0.5 * m_stds[0] * m_stds[0];
+    m_drifts[0] = m_r.integral(0.0, m_times[0]) - m_d.integral(0.0, m_times[0]) - 0.5 * m_stds[0] * m_stds[0];
 
     for (size_t i = 1; i < m_times.size(); ++i)
     {
         m_stds[i] = std::sqrt(m_vol.integralSquare(m_times[i - 1], m_times[i]));
-        m_drifts[i] = m_r.integral(m_times[i - 1], m_times[i]) - m_d.integral(m_times[i - 1], m_times[i])
-                      - 0.5 * m_stds[i] * m_stds[i];
+        m_drifts[i] = m_r.integral(m_times[i - 1], m_times[i]) - m_d.integral(m_times[i - 1], m_times[i]) - 0.5 * m_stds[i] * m_stds[i];
     }
 }
 

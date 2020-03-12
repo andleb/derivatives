@@ -26,8 +26,7 @@ double doMonteCarlo(const VanillaOption & option, double sigma, double r, double
     return std::exp(-r * option.expiry()) * (sum / nScen);
 }
 
-double doMonteCarlo(const VanillaOption & option, const Parameters & sigma, const Parameters & r,
-                    double S0, int nScen)
+double doMonteCarlo(const VanillaOption & option, const Parameters & sigma, const Parameters & r, double S0, int nScen)
 {
     double sum = 0.0;
     const simSpotParams spot{S0, option.expiry(), sigma, r};

@@ -13,10 +13,11 @@
 
 #include <common/btree.h>
 
-#include "treeproduct.h"
 #include "parameters.h"
+#include "treeproduct.h"
 
-namespace der {
+namespace der
+{
 
 class Tree
 {

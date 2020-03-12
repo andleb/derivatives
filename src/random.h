@@ -129,7 +129,7 @@ public:
     ///@}
 
 private:
-    //no const on these since generation mutates state
+    // no const on these since generation mutates state
     // can be static since it's just an interface to /dev/random by default
     static std::random_device m_rDev;
     // not static since we want different instances, e.g. with different seeds
@@ -167,14 +167,14 @@ private:
 template <typename Derived, size_t DIM>
 std::vector<double> RandomBase<Derived, DIM>::uniforms(std::vector<double> && p_variates) const
 {
-    //the implementation provides the uniforms
+    // the implementation provides the uniforms
     return static_cast<const Derived *>(this)->uniforms(std::move(p_variates));
 }
 
 template <typename Derived, size_t DIM>
 std::vector<double> RandomBase<Derived, DIM>::gaussians(std::vector<double> && p_variates) const
 {
-    //NOTE: here we provide a default implementation, can of course still be overloaded in the derived class
+    // NOTE: here we provide a default implementation, can of course still be overloaded in the derived class
     auto && ret = uniforms(std::move(p_variates));
     std::for_each(ret.begin(), ret.end(), invCDFNormal);
 
@@ -219,25 +219,13 @@ void RandomBase<Derived, DIM>::invCDFNormal(double & x)
 {
     // adapted from M. Joshi's source
 
-    static constexpr double a[4] = {2.50662823884,
-                                    -18.61500062529,
-                                    41.39119773534,
-                                    -25.44106049637};
+    static constexpr double a[4] = {2.50662823884, -18.61500062529, 41.39119773534, -25.44106049637};
 
-    static constexpr double b[4] = {-8.47351093090,
-                                    23.08336743743,
-                                    -21.06224101826,
-                                    3.13082909833};
+    static constexpr double b[4] = {-8.47351093090, 23.08336743743, -21.06224101826, 3.13082909833};
 
-    static constexpr double c[9] = {0.3374754822726147,
-                                    0.9761690190917186,
-                                    0.1607979714918209,
-                                    0.0276438810333863,
-                                    0.0038405729373609,
-                                    0.0003951896511919,
-                                    0.0000321767881768,
-                                    0.0000002888167364,
-                                    0.0000003960315187};
+    static constexpr double c[9] = {0.3374754822726147, 0.9761690190917186, 0.1607979714918209,
+                                    0.0276438810333863, 0.0038405729373609, 0.0003951896511919,
+                                    0.0000321767881768, 0.0000002888167364, 0.0000003960315187};
 
     double u = x - 0.5;
     double r;
@@ -274,9 +262,7 @@ void RandomBase<Derived, DIM>::invCDFNormal(double & x)
 // RandomParkMiller
 
 template <size_t DIM>
-RandomParkMiller<DIM>::RandomParkMiller(long p_seed)
-    : m_initSeed(p_seed)
-    , m_seed(p_seed)
+RandomParkMiller<DIM>::RandomParkMiller(long p_seed) : m_initSeed(p_seed), m_seed(p_seed)
 {
     if (p_seed == 0)
     {
@@ -376,8 +362,7 @@ template <size_t DIM>
 std::normal_distribution<double> MersenneTwister<DIM>::m_normalDist;
 
 template <size_t DIM>
-MersenneTwister<DIM>::MersenneTwister(long p_seed)
-    : m_rng((p_seed == -1) ? m_rDev() : p_seed)
+MersenneTwister<DIM>::MersenneTwister(long p_seed) : m_rng((p_seed == -1) ? m_rDev() : p_seed)
 
 {}
 
@@ -431,11 +416,10 @@ long MersenneTwister<DIM>::randInt() const
     return m_uniformDist(m_rng);
 }
 
-//Anti-Thetic
+// Anti-Thetic
 
 template <typename Generator, size_t DIM>
-AntiThetic<Generator, DIM>::AntiThetic(long p_seed)
-    : m_generator(p_seed)
+AntiThetic<Generator, DIM>::AntiThetic(long p_seed) : m_generator(p_seed)
 {}
 
 template <typename Generator, size_t DIM>
@@ -444,7 +428,7 @@ std::vector<double> AntiThetic<Generator, DIM>::uniforms(std::vector<double> && 
     long half = p_variates.size() / 2;
     auto midpoint = p_variates.begin() + half;
 
-    //recycling p_variates to minimize copying but keep value semantics
+    // recycling p_variates to minimize copying but keep value semantics
     auto tmp = m_generator.uniforms(std::vector<double>{p_variates.begin(), midpoint});
     std::move(tmp.begin(), tmp.end(), p_variates.begin());
 

@@ -85,17 +85,14 @@ simSpotParamsMultiple<Generator>::simSpotParamsMultiple(double p_S0, double p_t,
 {}
 
 template <typename Generator>
-simSpotParamsMultiple<Generator>::simSpotParamsMultiple(double p_S0, double p_t, const Parameters & p_sigma, const Parameters & p_r,
-                                                        size_t p_seed)
-    : simSpotParams(p_S0, p_t, p_sigma, p_r)
-    , m_generator(p_seed)
+simSpotParamsMultiple<Generator>::simSpotParamsMultiple(double p_S0, double p_t, const Parameters & p_sigma, const Parameters & p_r, size_t p_seed)
+    : simSpotParams(p_S0, p_t, p_sigma, p_r), m_generator(p_seed)
 {}
 
 template <typename Generator>
-simSpotParamsMultiple<Generator>::simSpotParamsMultiple(double p_S0, double p_t, const Parameters & p_sigma, const Parameters & p_r,
-                                                        Generator & p_generator)
-    : simSpotParams(p_S0, p_t, p_sigma, p_r)
-    , m_generator(p_generator)
+simSpotParamsMultiple<Generator>::simSpotParamsMultiple(double p_S0, double p_t, const Parameters & p_sigma,
+                                                        const Parameters & p_r, Generator & p_generator)
+    : simSpotParams(p_S0, p_t, p_sigma, p_r), m_generator(p_generator)
 {}
 
 template <typename Generator>
@@ -107,7 +104,7 @@ double simSpotParamsMultiple<Generator>::operator()() const
             return m_precalc * std::exp(sqrt(m_sigma.integralSquare(0, m_t)) * normalDist<double>());
         }
         else if constexpr (std::is_same<Generator, size_t>::value)
-        {                                                                               // this is the seed, only used once
+        { // this is the seed, only used once
             return m_precalc * std::exp(sqrt(m_sigma.integralSquare(0, m_t)) * normalDist<double>(m_generator));
         }
         // make use of custom generator

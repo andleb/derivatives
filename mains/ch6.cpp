@@ -40,7 +40,7 @@ auto doMonteCarlo(const VanillaOption & option, const Parameters & sigma, const 
         spot = simSpotParamsMultiple<Generator>{S0, option.expiry(), sigma, r};
     }
 
-                                        // number of scenarios is taken into account here
+    // number of scenarios is taken into account here
     std::vector<double> simSpots = spot.simSpotMultiple(nScen);
     double discount = std::exp(-r.integral(0, option.expiry()));
 
@@ -104,8 +104,8 @@ int main(int, char * [])
     ConvergenceTable gatherer1{std::make_unique<StatisticsMean>(gathererInner)};
     RandomParkMiller<1> generator1{1};
 
-    std::vector<std::vector<double>> results1 = doMonteCarlo(option, ParametersConstant{sigma}, ParametersConstant{r}, S0, nScen,
-                                                             gatherer1, generator1);
+    std::vector<std::vector<double>> results1 =
+        doMonteCarlo(option, ParametersConstant{sigma}, ParametersConstant{r}, S0, nScen, gatherer1, generator1);
 
     std::cout << "Park-Miller: number of paths were: " << gatherer1.simsSoFar() << "\n";
     std::cout << "the results are: " << results1 << "\n\n";
@@ -114,8 +114,8 @@ int main(int, char * [])
     ConvergenceTable gatherer2{std::make_unique<StatisticsMean>(gathererInner)};
     AntiThetic<RandomParkMiller<1>, 1> generator2{42};
 
-    std::vector<std::vector<double>> results2 = doMonteCarlo(option, ParametersConstant{sigma}, ParametersConstant{r}, S0, nScen,
-                                                             gatherer2, generator2);
+    std::vector<std::vector<double>> results2 =
+        doMonteCarlo(option, ParametersConstant{sigma}, ParametersConstant{r}, S0, nScen, gatherer2, generator2);
 
     std::cout << "Anti-thetic Park-Miller: number of paths were: " << gatherer2.simsSoFar() << "\n";
     std::cout << "the results are: " << results2 << "\n\n";
@@ -124,8 +124,8 @@ int main(int, char * [])
     // Default generator for the random class, i.e. when no generator is provided
     ConvergenceTable gatherer3{std::make_unique<StatisticsMean>(gathererInner)};
 
-    std::vector<std::vector<double>> results3 = doMonteCarlo<std::nullptr_t>(option, ParametersConstant{sigma},
-                                                                             ParametersConstant{r}, S0, nScen, gatherer3);
+    std::vector<std::vector<double>> results3 =
+        doMonteCarlo<std::nullptr_t>(option, ParametersConstant{sigma}, ParametersConstant{r}, S0, nScen, gatherer3);
 
     std::cout << "Mersenne twister: number of paths were: " << gatherer3.simsSoFar() << "\n";
     std::cout << "the results are: " << results3 << "\n\n";
@@ -133,8 +133,8 @@ int main(int, char * [])
     // Anti-Thetic Mersenne-twister
     ConvergenceTable gatherer4{std::make_unique<StatisticsMean>(gathererInner)};
     AntiThetic<MersenneTwister<1>, 1> generator4{};
-    std::vector<std::vector<double>> results4 = doMonteCarlo(option, ParametersConstant{sigma}, ParametersConstant{r}, S0, nScen,
-                                                             gatherer4, generator4);
+    std::vector<std::vector<double>> results4 =
+        doMonteCarlo(option, ParametersConstant{sigma}, ParametersConstant{r}, S0, nScen, gatherer4, generator4);
 
     std::cout << "Anti-thetic Mersenne twister: number of paths were: " << gatherer4.simsSoFar() << "\n";
     std::cout << "the results are: " << results4 << "\n";

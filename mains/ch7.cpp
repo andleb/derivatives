@@ -55,8 +55,8 @@ int main()
     ParametersConstant dP{d};
 
     ConvergenceTable gatherer{std::make_unique<StatisticsMean>()};
-//    AntiThetic<RandomParkMiller<1>, 1> generator {};
-    MersenneTwister<1> generator {};
+    //    AntiThetic<RandomParkMiller<1>, 1> generator {};
+    MersenneTwister<1> generator{};
 
     ExoticBSEngine<decltype(generator)> engine(option, rP, dP, sigmaP, S0);
 

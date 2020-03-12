@@ -11,10 +11,7 @@
 
 #include "../src/derivatives.h"
 
-double payoff(double p_spot, double p_strike)
-{
-    return std::max<double>((p_spot - p_strike), 0);
-}
+double payoff(double p_spot, double p_strike) { return std::max<double>((p_spot - p_strike), 0); }
 
 double simSpot(double p_S0, double p_t, double p_sigma, double p_r)
 {

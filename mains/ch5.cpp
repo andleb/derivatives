@@ -16,8 +16,7 @@
 
 using namespace der;
 
-auto doMonteCarlo(const VanillaOption & option, const Parameters & sigma, const Parameters & r, double S0, int nScen,
-                  StatisticsBase & gatherer)
+auto doMonteCarlo(const VanillaOption & option, const Parameters & sigma, const Parameters & r, double S0, int nScen, StatisticsBase & gatherer)
 {
     const simSpotParams spot{S0, option.expiry(), sigma, r};
     auto discount = std::exp(-r.integral(0, option.expiry()));
@@ -62,8 +61,7 @@ int main(int, char * [])
     StatisticsMean gathererInner{};
     ConvergenceTable gatherer{std::make_unique<StatisticsMean>(std::move(gathererInner))};
 
-    auto results = doMonteCarlo(option, ParametersConstant{sigma}, ParametersConstant{r},
-                                S0, nScen, gatherer);
+    auto results = doMonteCarlo(option, ParametersConstant{sigma}, ParametersConstant{r}, S0, nScen, gatherer);
 
     std::cout << "the price is: " << results.back().back() << "\n";
     std::cout << "number of paths were: " << gatherer.simsSoFar() << "\n";

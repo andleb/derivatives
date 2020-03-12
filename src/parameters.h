@@ -77,7 +77,7 @@ public:
     double RMS(double time1, double time2) const;
 
 private:
-    std::unique_ptr<ParametersInner> m_pImpl {nullptr};
+    std::unique_ptr<ParametersInner> m_pImpl{nullptr};
 };
 
 //! \brief A constant-type implementation
@@ -85,16 +85,14 @@ class ParametersConstant : public ParametersInner
 {
 
 public:
-    ParametersConstant(double constant)
-        : m_constant(constant)
-    {}
+    ParametersConstant(double constant) : m_constant(constant) {}
 
     std::unique_ptr<ParametersInner> clone() const override;
     double integral(double time1, double time2) const override;
     double integralSquare(double time1, double time2) const override;
 
 private:
-    double m_constant {0.0};
+    double m_constant{0.0};
 };
 
 } // namespace der

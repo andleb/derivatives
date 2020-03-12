@@ -8,10 +8,7 @@
 #include <algorithm>
 #include <stdexcept>
 
-der::payoff1::payoff1(double p_strike, OptionsType p_type)
-    : m_strike(p_strike)
-    , m_type(p_type)
-{}
+der::payoff1::payoff1(double p_strike, OptionsType p_type) : m_strike(p_strike), m_type(p_type) {}
 
 double der::payoff1::operator()(double p_spot) const
 {
