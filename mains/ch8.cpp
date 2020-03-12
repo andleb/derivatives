@@ -1,4 +1,4 @@
-/** \file trees1.cpp
+/** \file ch8.cpp
  * \author Andrej Leban
  * \date 7/2019
  * Ch. 8 Trees

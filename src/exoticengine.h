@@ -1,7 +1,8 @@
 /** \file exoticengine.h
  * \author Andrej Leban
  * \date 4/2019
- * Ch 7 An exotics engine and the template pattern
+ *
+ * A generalized option pricing engine.
  */
 
 #ifndef EXOTICENGINE_H
@@ -22,62 +23,67 @@
 namespace der
 {
 
-//TODO: remove default ctor, dtors after development
-
-//! \brief The ExoticEngine class
-//! the central hub for calculation of the exotic derivative's price
+//! \brief A generalized option pricing engine.
+//! The process is provided by sub-classing this class and implementing the \p path method.
 class ExoticEngine
 {
 public:
-    ExoticEngine() = default;
     ExoticEngine(const PathDependent & p_product, Parameters p_r);
+    ExoticEngine(std::unique_ptr<PathDependent> p_product, Parameters p_r);
+
     ExoticEngine(const ExoticEngine &);
     ExoticEngine(ExoticEngine &&) noexcept = default;
     ExoticEngine & operator=(const ExoticEngine &);
     ExoticEngine & operator=(ExoticEngine &&) noexcept = default;
     virtual ~ExoticEngine();
 
-    //! \brief path
+    //! \brief This is a pure virtual whose implementation will signify a choice of stochastic process.
+    //! One could implement an exercise strategy here as well.
     //! \param p_spots
-    //! \return
-    //! This is a pure virtual whose implementation will signify a choice of model & stochastic process
-    //! One could implement an exercise strategy here as well
-    //! Returns an array of spot values
+    //! \return An array of spot values.
     virtual std::vector<double> path(std::vector<double> && p_spots) const = 0;
 
-    //! \brief doOnePath
+    //! \brief Evaluates one path of the simulation, with the spot values provided
     //! \param p_spots
     //! \return
-    //! Evaluates one path of the simulation, with the spot values provided
     double doOnePath(const std::vector<double> & p_spots) const;
 
-    //! \brief doSimulation
+    //! \brief Performs the whole simulation, i.e. evaluates all the paths.
     //! \param p_gatherer
     //! \param p_numberOfPaths
-    //! Performs the whole simulation, i.e. evaluates all the paths
     void doSimulation(StatisticsBase & p_gatherer, size_t p_numberOfPaths) const;
 
 protected:
     std::unique_ptr<PathDependent> m_pProduct{nullptr};
+
     Parameters m_r;
     std::vector<double> m_discounts;
 
-    // scratchpad
+    // scratchpad, hence mutable
     mutable std::vector<CashFlow> m_cashflows;
+
+private:
+
+    //! \brief Pre-calculates the discount factors \p m_discounts given the interest rate \p m_r.
+    void precalculate();
 };
 
 template <typename Generator>
 class ExoticBSEngine : public ExoticEngine
 {
 public:
-    ExoticBSEngine() = default;
     ExoticBSEngine(const PathDependent & p_product, Parameters p_r, Parameters p_d, Parameters p_vol, double p_S0);
+    ExoticBSEngine(std::unique_ptr<PathDependent> p_product, Parameters p_r, Parameters p_d, Parameters p_vol, double p_S0);
+
     ExoticBSEngine(const ExoticBSEngine &) = default;
     ExoticBSEngine(ExoticBSEngine &&) = default;
     ExoticBSEngine & operator=(const ExoticBSEngine &) = default;
     ExoticBSEngine & operator=(ExoticBSEngine &&) noexcept = default;
     ~ExoticBSEngine() override = default;
 
+    //! \brief Implements the Black-Scholes process for the spot with the class' parameters.
+    //! \param p_spots
+    //! \return Modified \p p_spots in-place.
     std::vector<double> path(std::vector<double> && p_spots) const override;
 
 protected:
@@ -88,13 +94,17 @@ protected:
     const double m_logS0{0.0};
 
 private:
-    // helper
+    //! \brief Pre-calculates the drifts \p m_drifts and stdev's \p m_stds given the parameters above.
+    void precalculate();
+
+    // helpers
+    // lookAtTimes
     mutable std::vector<double> m_times;
 
+    // pre-calculated
     mutable std::vector<double> m_drifts;
     mutable std::vector<double> m_stds;
 };
-
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION
@@ -112,6 +122,26 @@ ExoticBSEngine<Generator>::ExoticBSEngine(const PathDependent & p_product, Param
     , m_times(m_pProduct->lookAtTimes())
     , m_drifts(m_times.size())
     , m_stds(m_times.size())
+{
+    precalculate();
+}
+
+template <typename Generator>
+ExoticBSEngine<Generator>::ExoticBSEngine(std::unique_ptr<PathDependent> p_product, Parameters p_r, Parameters p_d,
+                                          Parameters p_vol, double p_S0)
+    : ExoticEngine(std::move(p_product), p_r)
+    , m_d(std::move(p_d))
+    , m_vol(std::move(p_vol))
+    , m_logS0(std::log(p_S0))
+    , m_times(m_pProduct->lookAtTimes())
+    , m_drifts(m_times.size())
+    , m_stds(m_times.size())
+{
+    precalculate();
+}
+
+template <typename Generator>
+void ExoticBSEngine<Generator>::precalculate()
 {
     // pre-calculate the drifts and the standard deviations
     m_stds[0] = std::sqrt(m_vol.integralSquare(0, m_times[0]));

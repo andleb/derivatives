@@ -94,7 +94,7 @@ add_executable(ch6
     mains/ch6.cpp
     )
 
-add_executable(exotics1
+add_executable(ch7
     ${HEADERS}
     src/exoticengine.h
     src/exoticengine.cpp
@@ -107,10 +107,10 @@ add_executable(exotics1
     src/random.h
     src/statistics.h
     src/statistics.cpp
-    mains/exotics1.cpp
+    mains/ch7.cpp
     )
 
-add_executable(trees1
+add_executable(ch8
     ${HEADERS}
     src/treeproduct.h
     src/treeproduct.cpp
@@ -123,7 +123,7 @@ add_executable(trees1
     src/random.h
     src/statistics.h
     src/statistics.cpp
-    mains/trees1.cpp
+    mains/ch8.cpp
     )
 
 target_link_libraries(ch1 ${PROJECT_LINK_LIBS})
@@ -132,5 +132,5 @@ target_link_libraries(ch3 ${PROJECT_LINK_LIBS})
 target_link_libraries(ch4 ${PROJECT_LINK_LIBS})
 target_link_libraries(ch5 ${PROJECT_LINK_LIBS})
 target_link_libraries(ch6 ${PROJECT_LINK_LIBS})
-target_link_libraries(exotics1 ${PROJECT_LINK_LIBS})
-target_link_libraries(trees1 ${PROJECT_LINK_LIBS})
+target_link_libraries(ch7 ${PROJECT_LINK_LIBS})
+target_link_libraries(ch8 ${PROJECT_LINK_LIBS})

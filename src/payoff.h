@@ -25,6 +25,7 @@ public:
     virtual ~Payoff();
 
     virtual std::unique_ptr<Payoff> clone() const = 0;
+    //! \brief calculates the payoff
     virtual double operator()(double p_spot) const = 0;
 };
 
@@ -57,6 +58,9 @@ private:
 //! \brief Implementation for double digital options
 class PayoffDoubleDigital : public Payoff
 {
+    //! \brief PayoffDoubleDigital
+    //! \param lowerLevel - the lower knockout boundary
+    //! \param upperLevel - the upper knockout boundary
     PayoffDoubleDigital(double lowerLevel, double upperLevel);
 
     std::unique_ptr<Payoff> clone() const override;
