@@ -1,1 +1,61 @@
-/home/andrej/myStuff/settings/.clang-format
+BasedOnStyle: WebKit
+AccessModifierOffset: '-4'
+AlignAfterOpenBracket: Align
+AlignEscapedNewlines: true
+AlignTrailingComments: true
+AlignOperands: 'true'
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowShortFunctionsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: true
+AllowShortLoopsOnASingleLine: true
+AlwaysBreakBeforeMultilineStrings: false
+AlwaysBreakTemplateDeclarations: true
+BinPackParameters: true
+BreakBeforeBinaryOperators: false
+BreakBeforeBraces: Custom
+BreakBeforeTernaryOperators: false
+BreakConstructorInitializers: BeforeComma
+BraceWrapping:
+    AfterClass: true
+    AfterControlStatement: true
+    AfterEnum: true
+    AfterFunction: true
+    AfterNamespace: true
+    AfterStruct: true
+    AfterUnion: true
+    AfterExternBlock: true
+    BeforeCatch: true
+    BeforeElse: true
+    SplitEmptyFunction: false
+    SplitEmptyRecord: false
+    SplitEmptyNamespace: false
+ColumnLimit: 130
+Cpp11BracedListStyle: 'true'
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+ConstructorInitializerIndentWidth: 4
+Cpp11BracedListStyle: true
+IndentCaseLabels: false
+IndentFunctionDeclarationAfterType: false
+IndentWidth: 4
+Language: Cpp
+MaxEmptyLinesToKeep: 2
+NamespaceIndentation: None
+PenaltyBreakBeforeFirstCallParameter: 20
+PenaltyBreakComment: 20
+PenaltyBreakFirstLessLess: 1
+PenaltyBreakString: 20
+PenaltyExcessCharacter: 1
+PenaltyReturnTypeOnItsOwnLine: 0
+PointerAlignment: Middle
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeParens: ControlStatements
+SpaceInEmptyParentheses: false
+SpacesBeforeTrailingComments: 1
+SpacesInAngles: false
+SpacesInCStyleCastParentheses: false
+SpacesInContainerLiterals: false
+SpacesInParentheses: false
+SortIncludes: 'true'
+Standard: Cpp11
+TabWidth: 4
+UseTab: Never
