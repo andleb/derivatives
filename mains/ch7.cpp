@@ -63,11 +63,11 @@ int main()
 
     ExoticBSEngine<decltype(generator)> engine(option, rP, dP, sigmaP, S0);
     ExoticBSEngine<decltype(generatorat)> engineat(option, rP, dP, sigmaP, S0);
-    ExoticBSEngine<decltype(generatorat)> engineatm(option, rP, dP, sigmaP, S0);
+    ExoticBSEngine<decltype(generatoratm)> engineatm(option, rP, dP, sigmaP, S0);
 
     engine.doSimulation(gatherer, nScen);
     engineat.doSimulation(gathererat, nScen);
-    engineat.doSimulation(gathereratm, nScen);
+    engineatm.doSimulation(gathereratm, nScen);
 
     auto results = gatherer.resultsSoFar();
     auto resultsat = gathererat.resultsSoFar();

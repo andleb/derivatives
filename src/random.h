@@ -160,9 +160,12 @@ protected:
 
 //! \brief Implements Anti-Thetic sampling using on top of \p Generator.
 template <typename Generator, size_t DIM>
-class AntiTheticMemo : public AntiThetic<Generator, DIM>
+class AntiTheticMemo : public AntiThetic<Generator, DIM>, public RandomBase<AntiTheticMemo<Generator, DIM>, DIM>
 {
 public:
+    using interface = RandomBase<AntiTheticMemo<Generator, DIM>, DIM>;
+    using interface::gaussians;
+
     AntiTheticMemo() = default;
     explicit AntiTheticMemo(long p_seed);
 
@@ -171,8 +174,8 @@ public:
     void reset();
 
 private:
-    std::vector<double> m_last;
-    bool useAT{false};
+    mutable std::vector<double> m_last;
+    mutable bool useAT{false};
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -493,7 +496,9 @@ std::vector<double> AntiTheticMemo<Generator, DIM>::uniforms(std::vector<double>
     if (useAT)
     {
         useAT = false;
-        return std::move(m_last);
+        // this resizes m_last to 0, cheaper to copy than to resize @ every step
+//        return std::move(m_last);
+        return m_last;
     }
 
     useAT = true;
@@ -504,8 +509,7 @@ std::vector<double> AntiTheticMemo<Generator, DIM>::uniforms(std::vector<double>
         m_last.resize(p_variates.size());
     }
 
-    std::transform(p_variates.begin(), p_variates.end(), m_last.begin(),
-                   [](const auto & el) { return 1.0 - el; });
+    std::transform(p_variates.begin(), p_variates.end(), m_last.begin(), [](const auto & el) { return 1.0 - el; });
 
     return std::move(p_variates);
 }
