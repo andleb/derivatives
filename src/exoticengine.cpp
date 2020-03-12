@@ -59,9 +59,11 @@ double ExoticEngine::doOnePath(const std::vector<double> & p_spots) const
     // TODO: does this take advantage of the move?
     m_cashflows = m_pProduct->cashFlows(p_spots, std::move(m_cashflows));
 
-    // TODO: better way to handle this timeIndex stuff
     double val = 0.0;
 
+    // using TimeIndex instead of scalar product cash-flows * discounts
+    // since discounts are pre-calculated and sized to MAX number of cash-flows
+    // - the actual can be lower
     for (const auto & cashflow : m_cashflows)
     {
         val += cashflow.amount * m_discounts[cashflow.timeIndex];

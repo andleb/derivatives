@@ -1,7 +1,6 @@
 /** \file pathdependent.cpp
  * \author Andrej Leban
  * \date 4/2019
- * Ch 7 An exotics engine and the template pattern
  */
 
 #include <algorithm>
@@ -16,7 +15,7 @@
 namespace der
 {
 
-// PathDependendent
+// PathDependent
 
 PathDependent::PathDependent(const std::vector<double> & p_lookAtTimes) : m_lookAtTimes(p_lookAtTimes) {}
 

@@ -15,7 +15,6 @@
 #include "../src/exoticengine.h"
 #include "../src/pathdependent.h"
 #include "../src/payoff.h"
-//#include "../src/random.h"
 
 using namespace der;
 
@@ -46,7 +45,7 @@ int main()
     PayoffCall payoff{K};
 
     // not interested in time 0, which we'll discard
-    std::vector<double> dates = cm::linspace(T / nDates, T, nDates + 1, true);
+    std::vector<double> dates = cm::linspace(T / nDates, T, nDates, true);
 
     AsianOptionArith option(dates, T, payoff);
 

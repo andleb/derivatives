@@ -43,7 +43,7 @@ public:
     //! \return An array of spot values.
     virtual std::vector<double> path(std::vector<double> && p_spots) const = 0;
 
-    //! \brief Evaluates one path of the simulation, with the spot values provided
+    //! \brief Evaluates one path of the simulation, with the spot values provided.
     //! \param p_spots
     //! \return
     double doOnePath(const std::vector<double> & p_spots) const;
@@ -57,9 +57,10 @@ protected:
     std::unique_ptr<PathDependent> m_pProduct{nullptr};
 
     Parameters m_r;
+    //! \brief pre-calculated discounts
     std::vector<double> m_discounts;
 
-    // scratchpad, hence mutable
+    //! \brief used as scratchpad for in-place calculations
     mutable std::vector<CashFlow> m_cashflows;
 
 private:
@@ -86,6 +87,7 @@ public:
     std::vector<double> path(std::vector<double> && p_spots) const override;
 
 protected:
+    //! \brief The RNG provided.
     Generator m_generator;
 
     const Parameters m_d{};
@@ -97,7 +99,7 @@ private:
     void precalculate();
 
     // helpers
-    // lookAtTimes
+    //! \brief Cached relevant spot times to the product's cash-flow function.
     mutable std::vector<double> m_times;
 
     // pre-calculated
