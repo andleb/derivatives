@@ -154,8 +154,25 @@ public:
     void setSeed(size_t p_seed);
     void reset();
 
-private:
+protected:
     Generator m_generator;
+};
+
+//! \brief Implements Anti-Thetic sampling using on top of \p Generator.
+template <typename Generator, size_t DIM>
+class AntiTheticMemo : public AntiThetic<Generator, DIM>
+{
+public:
+    AntiTheticMemo() = default;
+    explicit AntiTheticMemo(long p_seed);
+
+    std::vector<double> uniforms(std::vector<double> && p_variates) const;
+
+    void reset();
+
+private:
+    std::vector<double> m_last;
+    bool useAT{false};
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -422,14 +439,24 @@ std::vector<double> AntiThetic<Generator, DIM>::uniforms(std::vector<double> && 
     long half = p_variates.size() / 2;
     auto midpoint = p_variates.begin() + half;
 
-    // recycling p_variates to minimize copying but keep value semantics
-    auto tmp = m_generator.uniforms(std::vector<double>{p_variates.begin(), midpoint});
-    std::move(tmp.begin(), tmp.end(), p_variates.begin());
+    //    // recycling p_variates to minimize copying but keep value semantics
+    //    auto tmp = m_generator.uniforms(std::vector<double>{p_variates.begin(), midpoint});
+    //    std::move(tmp.begin(), tmp.end(), p_variates.begin());
 
-    // anti-thetic in the second half
-    for (auto it = midpoint; it != p_variates.end(); ++it)
+    //    // anti-thetic in the second half
+    //    for (auto it = midpoint; it != p_variates.end(); ++it)
+    //    {
+    //        *it = 1.0 - *(it - half);
+    //    }
+
+    auto tmp = m_generator.uniforms(std::vector<double>(half));
+
+    // anti-thetic interleaved
+    for (auto itVar = p_variates.begin(), itTmp = tmp.begin(); itVar != p_variates.end(); ++itTmp, ++itVar)
     {
-        *it = 1.0 - *(it - half);
+        *itVar = std::move(*itTmp);
+        ++itVar;
+        *itVar = 1.0 - *(itVar - 1);
     }
 
     return std::move(p_variates);
@@ -452,6 +479,43 @@ template <typename Generator, size_t DIM>
 void AntiThetic<Generator, DIM>::reset()
 {
     return m_generator.reset();
+}
+
+// AntiTheticMemo
+
+template <typename Generator, size_t DIM>
+AntiTheticMemo<Generator, DIM>::AntiTheticMemo(long p_seed) : AntiThetic<Generator, DIM>(p_seed)
+{}
+
+template <typename Generator, size_t DIM>
+std::vector<double> AntiTheticMemo<Generator, DIM>::uniforms(std::vector<double> && p_variates) const
+{
+    if (useAT)
+    {
+        useAT = false;
+        return std::move(m_last);
+    }
+
+    useAT = true;
+    p_variates = AntiThetic<Generator, DIM>::m_generator.uniforms(std::move(p_variates));
+
+    if (m_last.size() != p_variates.size())
+    {
+        m_last.resize(p_variates.size());
+    }
+
+    std::transform(p_variates.begin(), p_variates.end(), m_last.begin(),
+                   [](const auto & el) { return 1.0 - el; });
+
+    return std::move(p_variates);
+}
+
+template <typename Generator, size_t DIM>
+void AntiTheticMemo<Generator, DIM>::reset()
+{
+    AntiThetic<Generator, DIM>::reset(this);
+    m_last.clear();
+    useAT = false;
 }
 
 } // namespace der

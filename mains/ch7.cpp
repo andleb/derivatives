@@ -54,17 +54,29 @@ int main()
     ParametersConstant dP{d};
 
     ConvergenceTable gatherer{std::make_unique<StatisticsMean>()};
-    //    AntiThetic<RandomParkMiller<1>, 1> generator {};
+    ConvergenceTable gathererat{std::make_unique<StatisticsMean>()};
+    ConvergenceTable gathereratm{std::make_unique<StatisticsMean>()};
+
     MersenneTwister<1> generator{};
+    AntiThetic<MersenneTwister<1>, 1> generatorat {};
+    AntiTheticMemo<MersenneTwister<1>, 1> generatoratm {};
 
     ExoticBSEngine<decltype(generator)> engine(option, rP, dP, sigmaP, S0);
+    ExoticBSEngine<decltype(generatorat)> engineat(option, rP, dP, sigmaP, S0);
+    ExoticBSEngine<decltype(generatorat)> engineatm(option, rP, dP, sigmaP, S0);
 
     engine.doSimulation(gatherer, nScen);
+    engineat.doSimulation(gathererat, nScen);
+    engineat.doSimulation(gathereratm, nScen);
 
     auto results = gatherer.resultsSoFar();
+    auto resultsat = gathererat.resultsSoFar();
+    auto resultsatm = gathereratm.resultsSoFar();
 
     std::cout << "Arithmetic Asian call pricing with number of paths: " << gatherer.simsSoFar() << "\n";
     std::cout << "the results are: " << results << "\n\n";
+    std::cout << "Anti-thetic results are: " << resultsat << "\n\n";
+    std::cout << "Anti-thetic w memoization results are: " << resultsatm << "\n\n";
 
     return 0;
 }

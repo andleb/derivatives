@@ -36,7 +36,7 @@ class PathDependent
 public:
     //! \brief PathDependent
     //! \param p_lookAtTimes - the times that get taken into account by the payoff function.
-    explicit PathDependent(const std::vector<double> & p_lookAtTimes);
+    explicit PathDependent(std::vector<double> p_lookAtTimes);
 
     PathDependent(const PathDependent &) = default;
     PathDependent(PathDependent &&) = default;

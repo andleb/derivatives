@@ -74,7 +74,7 @@ auto doMonteCarlo(const VanillaOption & option, const Parameters & sigma, const 
 }
 #endif
 
-int main(int, char * [])
+int main()
 {
 
     double S0, K, T, sigma, r;
