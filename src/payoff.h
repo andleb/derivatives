@@ -2,7 +2,7 @@
  * \author Andrej Leban
  * \date 11/2018
  *
- * Abstract payoff interface
+ * Abstract payoff interface.
  */
 
 #ifndef PAYOFF2_H
@@ -58,6 +58,7 @@ private:
 //! \brief Implementation for double digital options
 class PayoffDoubleDigital : public Payoff
 {
+public:
     //! \brief PayoffDoubleDigital
     //! \param lowerLevel - the lower knockout boundary
     //! \param upperLevel - the upper knockout boundary
@@ -69,6 +70,20 @@ class PayoffDoubleDigital : public Payoff
 private:
     double m_lowerLevel;
     double m_upperLevel;
+};
+
+//! \brief Implementation for a simple Forward.
+class PayoffForward : public Payoff
+{
+
+public:
+    PayoffForward(double p_strike);
+    virtual std::unique_ptr<Payoff> clone() const override;
+
+    virtual double operator()(double p_spot) const override;
+
+private:
+    double m_strike = 0;
 };
 
 } // namespace der

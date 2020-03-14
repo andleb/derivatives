@@ -32,4 +32,10 @@ std::unique_ptr<Payoff> PayoffDoubleDigital::clone() const { return std::make_un
 
 double PayoffDoubleDigital::operator()(double spot) const { return (spot <= m_upperLevel && spot >= m_lowerLevel) ? 1.0 : 0.0; }
 
+PayoffForward::PayoffForward(double p_strike) : m_strike(p_strike) {}
+
+std::unique_ptr<Payoff> PayoffForward::clone() const { return std::make_unique<PayoffForward>(*this); }
+
+double PayoffForward::operator()(double p_spot) const { return p_spot - m_strike; }
+
 } // namespace der

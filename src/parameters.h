@@ -48,6 +48,7 @@ class Parameters
 public:
     Parameters() = default;
     Parameters(const ParametersInner & parameter);
+
     ~Parameters();
     Parameters(const Parameters & other);
     Parameters(Parameters && other) noexcept;
@@ -85,7 +86,30 @@ class ParametersConstant : public ParametersInner
 {
 
 public:
-    ParametersConstant(double constant) : m_constant(constant) {}
+    ParametersConstant() = default;
+    // no explicit since we want implicit conversion
+    ParametersConstant(double constant);
+
+    virtual ~ParametersConstant() override;
+
+    //! \name Conversions
+    //!@{
+
+    //! \brief Parsing constructors
+    //! \param p_str
+    ParametersConstant(std::string p_str);
+    ParametersConstant(const char * p_str);
+
+    //! \brief Conversion operators
+    operator double();
+    operator double() const;
+
+    operator const char *();
+    operator const char *() const;
+
+    operator std::string();
+    operator std::string() const;
+    //!@}
 
     std::unique_ptr<ParametersInner> clone() const override;
     double integral(double time1, double time2) const override;
@@ -93,6 +117,9 @@ public:
 
 private:
     double m_constant{0.0};
+
+    //! \brief To enable implicit conversions, e.g. for printing
+    char * m_strRepr{nullptr};
 };
 
 } // namespace der

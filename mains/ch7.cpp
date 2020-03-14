@@ -34,12 +34,13 @@ int main()
     nScen = 1E6;
     nDates = 10;
 #else
-    std::cout << "enter spot, strike, time to expiry, vol, r, number of scenarios, and the number of averaging dates:\n";
+    std::cout << "enter spot, strike, time to expiry, vol, r, dividend rate, number of scenarios, and the number of averaging "
+                 "dates:\n";
     std::string inputParams;
     std::getline(std::cin, inputParams);
     std::istringstream iss{inputParams};
 
-    iss >> S0 >> K >> T >> sigma >> r >> nScen >> nDates;
+    iss >> S0 >> K >> T >> sigma >> r >> d >> nScen >> nDates;
 #endif
 
     PayoffCall payoff{K};
@@ -57,7 +58,7 @@ int main()
     ConvergenceTable gathererat{std::make_unique<StatisticsMean>()};
 
     MersenneTwister<1> generator{};
-    AntiThetic<MersenneTwister<1>, 1> generatorat {};
+    AntiThetic<MersenneTwister<1>, 1> generatorat{};
 
     ExoticBSEngine<decltype(generator)> engine(option, rP, dP, sigmaP, S0);
     ExoticBSEngine<decltype(generatorat)> engineat(option, rP, dP, sigmaP, S0);
