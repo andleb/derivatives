@@ -29,10 +29,8 @@ Tree::Tree(size_t p_nSteps, double p_S0, const Parameters & p_r, const Parameter
     // the spot
     double logS = logS0;
 
-    // size of the next level
-    size_t level_size = 2;
     // index to the first element in the second half of the level
-    size_t cumulative = 1;
+    size_t cumulative;
 
 
     double sqrtDeltaT = std::sqrt(m_deltaT);
@@ -42,8 +40,10 @@ Tree::Tree(size_t p_nSteps, double p_S0, const Parameters & p_r, const Parameter
 
 
     // pre-calculate the spots
-    for (long level = 1; level <= static_cast<long>(p_nSteps); ++level)
+    for (long level = 1; level <= static_cast<long>(m_tree.numLevels()); ++level)
     {
+        cumulative = m_tree.left_boundary(static_cast<size_t>(level));
+
         time = level * m_deltaT;
         logS = logS0 + m_r.integral(0, time) - m_d.integral(0, time) - 0.5 * m_sigma * m_sigma * time;
 
@@ -55,11 +55,10 @@ Tree::Tree(size_t p_nSteps, double p_S0, const Parameters & p_r, const Parameter
             m_tree[cumulative + k].first = std::exp(logS + j * m_sigma * sqrtDeltaT);
         }
 
-        cumulative += level_size;
-        level_size *= 2;
     }
 
     // pre-calculate the discount factors
+    // TODO: check this
     for (size_t level = 0; level < p_nSteps; ++level)
     {
         m_discountFactors[level] = std::exp(-1.0 * m_r.integral(level * m_deltaT, (level + 1) * m_deltaT));
@@ -90,6 +89,7 @@ double Tree::price(const TreeProduct & p_product)
         for (i = m_tree.left_boundary(static_cast<size_t>(level)); i <= m_tree.right_boundary(static_cast<size_t>(level)); ++i)
         {
             // discounted expectation of the value (not spot!) at next step
+            // FIXME:
             discFutValue = m_discountFactors[static_cast<size_t>(level)] * 0.5 *
                            (m_tree[m_tree.goDownLeft(i)].second + m_tree[m_tree.goDownRight(i)].second);
             // the value at this node is product-dependent
