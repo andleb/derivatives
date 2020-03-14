@@ -140,24 +140,6 @@ private:
     double m_reciprocal = 1. / (1. + max());
 };
 
-////! \brief Implements Anti-Thetic sampling using on top of \p Generator.
-// template <typename Generator, size_t DIM>
-// class AntiThetic : public RandomBase<AntiThetic<Generator, DIM>, DIM>
-//{
-// public:
-//    AntiThetic() = default;
-//    explicit AntiThetic(long p_seed);
-
-//    std::vector<double> uniforms(std::vector<double> && p_variates) const;
-
-//    void skip(size_t p_nPaths);
-//    void setSeed(size_t p_seed);
-//    void reset();
-
-// protected:
-//    Generator m_generator;
-//};
-
 //! \brief Implements Anti-Thetic sampling using on top of \p Generator.
 template <typename Generator, size_t DIM>
 class AntiThetic : public RandomBase<AntiThetic<Generator, DIM>, DIM>

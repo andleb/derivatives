@@ -1,7 +1,8 @@
 /** \file tree.h
  * \author Andrej Leban
  * \date 7/2019
- * Ch. 8 Trees
+ *
+ * An option pricing tree class.
  */
 
 
@@ -19,27 +20,30 @@
 namespace der
 {
 
+//! \brief Handles the discretization of the pricing.
+//! The prices are supplied by a separate product class.
+//! Stores the entire tree in a static array.
 class Tree
 {
 public:
-    Tree(double p_S0, const Parameters & p_r, const Parameters & p_d, double p_sigma, size_t p_nSteps, double p_expiryTime);
+    Tree(size_t p_nSteps, double p_S0, const Parameters & p_r, const Parameters & p_d, double p_sigma, double p_expiryTime);
 
-    //! \brief price
-    //! Performs the pricing on the tree. The product evaluated is a read only parameter
+    //! \brief Performs the pricing on the tree. The product evaluated is a read-only parameter.
     //! \param p_product
-    //! \return
+    //! \return the \p p_product's price
     double price(const TreeProduct & p_product);
 
 private:
     //! \brief m_tree
     //! The tree structure, the first element of the pair holds the evolution of the spot, the second is the placeholder for the
-    //! option value at that node and gets overwritten
-    cm::bTree<std::pair<double, double>> m_tree;
+    //! option value at that node and gets overwritten of \a price is called multiple times with multiple products on the same
+    //! tree instance.
+    cm::recombinantBTree<std::pair<double, double>> m_tree;
 
     std::vector<double> m_discountFactors;
 
     double m_S0;
-    // we support variable interest and dividend rates
+    // we support variable interest and dividend rates, but not volatility! - that would severely complicate the tree.
     Parameters m_r;
     Parameters m_d;
     double m_sigma;
