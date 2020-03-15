@@ -25,11 +25,13 @@ include(cmake/libraries/common.cmake)
 
 add_executable(ch1
     ${HEADERS}
+    src/derivatives.cpp
     mains/ch1.cpp
     )
 
 add_executable(ch2
     ${HEADERS}
+    src/derivatives.cpp
     src/payoff1.h
     src/payoff1.cpp
     src/parameters.h
@@ -41,6 +43,7 @@ add_executable(ch2
 
 add_executable(ch3
     ${HEADERS}
+    src/derivatives.cpp
     src/payoff.h
     src/payoff.cpp
     src/parameters.h
@@ -52,6 +55,7 @@ add_executable(ch3
 
 add_executable(ch4
     ${HEADERS}
+    src/derivatives.cpp
     src/payoff.h
     src/payoff.cpp
     src/parameters.h
@@ -80,6 +84,7 @@ add_executable(ch5
 
 add_executable(ch6
     ${HEADERS}
+    src/derivatives.cpp
     src/parameters.h
     src/parameters.cpp
     src/payoff.h
@@ -96,6 +101,7 @@ add_executable(ch6
 
 add_executable(ch7
     ${HEADERS}
+    src/derivatives.cpp
     src/exoticengine.h
     src/exoticengine.cpp
     src/parameters.h
@@ -120,14 +126,12 @@ add_executable(ch8
     src/parameters.cpp
     src/payoff.h
     src/payoff.cpp
-    src/random.h
-    src/statistics.h
-    src/statistics.cpp
     mains/ch8.cpp
     )
 
 add_executable(ch9
     ${HEADERS}
+    src/derivatives.cpp
     src/solver.h
     src/solver.cpp
     mains/ch9.cpp

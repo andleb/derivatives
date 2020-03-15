@@ -20,6 +20,8 @@
 #include <fstream>
 #endif
 
+#include "derivatives.h"
+
 // Decided on static polymorphism here instead of dynamic,
 // since we usually know the desired generator at compile time
 
@@ -56,10 +58,6 @@ public:
     //! \brief Reset the generator state.
     void reset();
     ///@}
-
-protected:
-    //! \brief Transforms a uniformly distributed \p x into a normally distributed one in-place.
-    static void invCDFNormal(double & x);
 };
 
 //! \brief The minimal standard linear congruent generator due to Park & Miller.
@@ -179,7 +177,7 @@ std::vector<double> RandomBase<Derived, DIM>::gaussians(std::vector<double> && p
 {
     // NOTE: here we provide a default implementation, can of course still be overloaded in the derived class
     auto && ret = uniforms(std::move(p_variates));
-    std::for_each(ret.begin(), ret.end(), invCDFNormal);
+    std::for_each(ret.begin(), ret.end(), [](auto & el) { el = inverseCumulativeGaussian(el); });
 
 #ifdef DUMPINTERMEDIATE
     std::filesystem::path dataDir{"../data"};
@@ -217,50 +215,6 @@ void RandomBase<Derived, DIM>::reset()
     return static_cast<Derived *>(this)->reset();
 }
 
-template <typename Derived, size_t DIM>
-void RandomBase<Derived, DIM>::invCDFNormal(double & x)
-{
-    // adapted from M. Joshi's source
-
-    static constexpr double a[4] = {2.50662823884, -18.61500062529, 41.39119773534, -25.44106049637};
-
-    static constexpr double b[4] = {-8.47351093090, 23.08336743743, -21.06224101826, 3.13082909833};
-
-    static constexpr double c[9] = {0.3374754822726147, 0.9761690190917186, 0.1607979714918209,
-                                    0.0276438810333863, 0.0038405729373609, 0.0003951896511919,
-                                    0.0000321767881768, 0.0000002888167364, 0.0000003960315187};
-
-    double u = x - 0.5;
-    double r;
-
-    if (std::abs(u) < 0.42) // Beasley-Springer approximation
-    {
-        double y = u * u;
-
-        r = u * (((a[3] * y + a[2]) * y + a[1]) * y + a[0]) / ((((b[3] * y + b[2]) * y + b[1]) * y + b[0]) * y + 1.0);
-    }
-    else // Moro approximation
-    {
-
-        r = x;
-
-        if (u > 0.0)
-        {
-            r = 1.0 - x;
-        }
-
-        r = std::log(-std::log(r));
-
-        r = c[0] + r * (c[1] + r * (c[2] + r * (c[3] + r * (c[4] + r * (c[5] + r * (c[6] + r * (c[7] + r * c[8])))))));
-
-        if (u < 0.0)
-        {
-            r = -r;
-        }
-    }
-
-    x = r;
-}
 
 // RandomParkMiller
 
