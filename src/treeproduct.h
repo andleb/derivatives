@@ -33,7 +33,7 @@ public:
 
     //! \brief expiryTime.
     double expiryTime() const;
-    //! \brief The final payoff of the product @ \a expiryTime.
+    //! \brief The payoff function of the product.
     //! \param p_spot
     //! \return
     double payoff(double p_spot) const;

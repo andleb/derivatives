@@ -3,24 +3,25 @@
  * \date 7/2019
  */
 
+#include "tree.h"
 #include <algorithm>
 #include <cmath>
-
-#include "tree.h"
+#include <utility>
 
 namespace der
 {
 
-Tree::Tree(size_t p_nSteps, double p_S0, const Parameters & p_r, const Parameters & p_d, double p_sigma, double p_expiryTime)
-    // including the initial step
-    : m_tree(p_nSteps + 1)
+Tree::Tree(size_t p_nSteps, double p_S0, Parameters p_r, Parameters p_d, double p_sigma, double p_expiryTime)
+    // including the initial step - constructor specifies sub-levels
+    : m_tree(p_nSteps)
     // no discounting the last level, hence no + 1
     , m_discountFactors(p_nSteps)
     , m_S0(p_S0)
-    , m_r(p_r)
-    , m_d(p_d)
+    , m_r(std::move(p_r))
+    , m_d(std::move(p_d))
     , m_sigma(p_sigma)
     , m_expiryTime(p_expiryTime)
+    // including the initial step
     , m_deltaT(p_expiryTime / p_nSteps)
 {
     // populate the tree
@@ -40,9 +41,9 @@ Tree::Tree(size_t p_nSteps, double p_S0, const Parameters & p_r, const Parameter
 
 
     // pre-calculate the spots
-    for (long level = 1; level <= static_cast<long>(m_tree.numLevels()); ++level)
+    for (long level = 0; level < static_cast<long>(m_tree.numLevels()); ++level)
     {
-        cumulative = m_tree.left_boundary(static_cast<size_t>(level));
+        cumulative = treeType::left_boundary(static_cast<size_t>(level));
 
         time = level * m_deltaT;
         logS = logS0 + m_r.integral(0, time) - m_d.integral(0, time) - 0.5 * m_sigma * m_sigma * time;
@@ -54,11 +55,10 @@ Tree::Tree(size_t p_nSteps, double p_S0, const Parameters & p_r, const Parameter
         {
             m_tree[cumulative + k].first = std::exp(logS + j * m_sigma * sqrtDeltaT);
         }
-
     }
 
-    // pre-calculate the discount factors
-    // TODO: check this
+    // Pre-calculate the discount factors.
+    // For constant interest rates they'll be the same since the tree is evenly spaced out.
     for (size_t level = 0; level < p_nSteps; ++level)
     {
         m_discountFactors[level] = std::exp(-1.0 * m_r.integral(level * m_deltaT, (level + 1) * m_deltaT));
@@ -73,25 +73,26 @@ double Tree::price(const TreeProduct & p_product)
     }
 
     // fill-out the last level
-    for (size_t i = m_tree.left_boundary(m_tree.numLevels()); i <= m_tree.right_boundary(m_tree.numLevels()); ++i)
+    for (size_t i = treeType::left_boundary(m_tree.numLevels() - 1); i <= treeType::right_boundary(m_tree.numLevels() - 1); ++i)
     {
         m_tree[i].second = p_product.payoff(m_tree[i].first);
     }
 
     // re-trace back to root
     size_t i;
-    for (long level = static_cast<long>(m_tree.numLevels()) - 1; level >= 0; level--)
+    // levels are 0 indexed, already did last
+    for (long level = static_cast<long>(m_tree.numLevels() - 2); level >= 0; --level)
     {
         double t = level * m_deltaT;
         double discFutValue;
 
         // evaluate abreast
-        for (i = m_tree.left_boundary(static_cast<size_t>(level)); i <= m_tree.right_boundary(static_cast<size_t>(level)); ++i)
+        for (i = treeType::left_boundary(static_cast<size_t>(level)); i <= treeType::right_boundary(static_cast<size_t>(level)); ++i)
         {
             // discounted expectation of the value (not spot!) at next step
-            // FIXME:
-            discFutValue = m_discountFactors[static_cast<size_t>(level)] * 0.5 *
-                           (m_tree[m_tree.goDownLeft(i)].second + m_tree[m_tree.goDownRight(i)].second);
+            discFutValue = 0.5 * (m_tree[m_tree.goDownLeft(i)].second + m_tree[m_tree.goDownRight(i)].second);
+            discFutValue *= m_discountFactors[static_cast<size_t>(level)];
+
             // the value at this node is product-dependent
             m_tree[i].second = p_product.value(m_tree[i].first, t, discFutValue);
         }

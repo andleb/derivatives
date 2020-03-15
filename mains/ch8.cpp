@@ -28,10 +28,10 @@ int main()
     S0 = 100;
     K = 90;
     T = 30;
-    sigma = 0.2;
+    sigma = 0.5;
     r = 0.02;
-    d = 0.01;
-    nSteps = 10;
+    d = 0.;
+    nSteps = 1000;
 #else
     std::cout << "enter spot, strike, time to expiry, vol, r, dividend rate, and the number of steps\n";
     std::string inputParams;
@@ -39,6 +39,14 @@ int main()
     std::istringstream iss{inputParams};
 
     iss >> S0 >> K >> T >> sigma >> r >> d >> nSteps;
+
+// for benchmarking
+//  std::cout << "enter the number of steps\n";
+//  std::string inputParams;
+//  std::getline(std::cin, inputParams);
+//  std::istringstream iss{inputParams};
+//  iss >> nSteps;
+
 #endif
 
     Parameters rP{ParametersConstant(r)};
@@ -48,18 +56,27 @@ int main()
     Tree tree(nSteps, S0, rP, dP, sigma, T);
 
     // the payoff functions
-    PayoffCall payoff(K);
+    PayoffCall payoffC(K);
+    PayoffPut payoffP(K);
     PayoffForward payoffF(K);
 
     // the products
-    TreeEuropean europeanOption(T, payoff);
-    TreeAmerican americanOption(T, payoff);
+    TreeEuropean europeanCall(T, payoffC);
+    TreeEuropean europeanPut(T, payoffP);
+    TreeAmerican americanCall(T, payoffC);
     // European exercise rights + forward payoff = forward
     TreeEuropean forward(T, payoffF);
 
-    std::cout << "Price of the Forward is: " << tree.price(forward) << "\n";
-    std::cout << "Price of the European Option is: " << tree.price(europeanOption) << "\n";
-    std::cout << "Price of the American Option is: " << tree.price(americanOption) << "\n";
+    double pF = tree.price(forward);
+    double pEC = tree.price(europeanCall);
+    double pEP = tree.price(europeanPut);
+
+    std::cout << "Price of the Forward is: " << pF << "\n";
+    std::cout << "Price of the European Call Option is: " << pEC << "\n";
+    std::cout << "Price of the European Put Option is: " << pEP << "\n";
+    std::cout << "Put-call parity preserved: " << (std::abs((pEC - pEP) - pF) < 1e-3) << " (" << std::abs((pEC - pEP) - pF) << ")"
+                                                                                    << "\n";
+    std::cout << "Price of the American Option is: " << tree.price(americanCall) << "\n";
 
     return 0;
 }

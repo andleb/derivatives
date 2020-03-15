@@ -26,7 +26,7 @@ namespace der
 class Tree
 {
 public:
-    Tree(size_t p_nSteps, double p_S0, const Parameters & p_r, const Parameters & p_d, double p_sigma, double p_expiryTime);
+    Tree(size_t p_nSteps, double p_S0, Parameters p_r, Parameters p_d, double p_sigma, double p_expiryTime);
 
     //! \brief Performs the pricing on the tree. The product evaluated is a read-only parameter.
     //! \param p_product
@@ -39,6 +39,7 @@ private:
     //! option value at that node and gets overwritten of \a price is called multiple times with multiple products on the same
     //! tree instance.
     cm::recombinantBTree<std::pair<double, double>> m_tree;
+    using treeType = decltype(m_tree);
 
     std::vector<double> m_discountFactors;
 

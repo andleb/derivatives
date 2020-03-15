@@ -73,7 +73,7 @@ double TreeAmerican::value(double p_spot, double /*p_t*/, double p_futureValue) 
 {
     // The optimal exercise strategy on an American-style option is to exercise whenever the current
     // payoff exceeds the future value. Such a strategy doesn't depend on the time in question.
-    return std::max(p_spot, p_futureValue);
+    return std::max(payoff(p_spot), p_futureValue);
 }
 
 } // namespace der

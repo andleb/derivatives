@@ -44,7 +44,7 @@ PenaltyBreakBeforeFirstCallParameter: 20
 PenaltyBreakComment: 20
 PenaltyBreakFirstLessLess: 1
 PenaltyBreakString: 20
-PenaltyExcessCharacter: 1
+PenaltyExcessCharacter: 10
 PenaltyReturnTypeOnItsOwnLine: 0
 PointerAlignment: Middle
 SpaceBeforeAssignmentOperators: true

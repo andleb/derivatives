@@ -63,7 +63,10 @@ der::ParametersConstant::operator double() const { return const_cast<ParametersC
 
 der::ParametersConstant::operator const char *()
 {
-    m_strRepr = new char[16];
+    if(m_strRepr == nullptr)
+    {
+        m_strRepr = new char[16];
+    }
     std::snprintf(m_strRepr, 16, "%g", m_constant);
     return m_strRepr;
 }
