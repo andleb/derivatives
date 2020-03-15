@@ -133,7 +133,6 @@ add_executable(ch9
     ${HEADERS}
     src/derivatives.cpp
     src/solver.h
-    src/solver.cpp
     mains/ch9.cpp
     )
 

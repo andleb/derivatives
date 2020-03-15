@@ -39,8 +39,18 @@ int main()
     std::cout << "Sanity check: " << BSCall::BSCallFormula(r, d, T, sigma, S0, K) << "\n";
     try
     {
-        double impVolB = bisection(88.2363, BSCall(r, d, T, {}, S0, K), 0.4, 0.6);
+        double impVolB = bisection(88.2363, BSCall(r, d, T, {}, S0, K), 0.3, 0.55);
         std::cout << "Implied volatility by bisection is: " << impVolB << "\n";
+    }
+    catch (const std::logic_error & e)
+    {
+        std::cout << "Exception: " << e.what() << "\n";
+    }
+
+    try
+    {
+        double impVolN = newtonRaphson(88.2363, BSCall(r, d, T, {}, S0, K), 0.4);
+        std::cout << "Implied volatility by Newton-Raphson is: " << impVolN << "\n";
     }
     catch (const std::logic_error & e)
     {

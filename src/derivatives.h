@@ -85,6 +85,15 @@ public:
     //! \param p_K - The strike.
     //! \return The value of the option.
     virtual double operator()(p p_r, p p_d, p p_T, p p_sigma, p p_S0, p p_K) const = 0;
+    //! \brief Overload for numerically solving the implied volatility equation.
+    //! Warning: Assumes all the other parameters are cached!
+    //! \param p_sigma
+    //! \return The value of the option.
+    virtual double operator()(double p_sigma) const = 0;
+    //! \brief The vega: \f$\frac{\partial C}{\partial \sigma}\f$ - used in Newton-Raphson root finding algorithm, for example.
+    //! \param p_sigma
+    //! \return
+    virtual double vega(double p_sigma) const = 0;
 
 protected:
     p m_r{};
@@ -104,16 +113,8 @@ public:
     friend class BSPut;
 
     virtual double operator()(p p_r, p p_d, p p_T, p p_sigma, p p_S0, p p_K) const override;
-    //! \brief Overload for numerically solving the implied volatilty equation.
-    //! Warning: Assumes all the other parameters are cached!
-    //! \param p_sigma
-    //! \return The value of the option.
-    double operator()(double p_sigma) const;
-
-    //! \brief The vega: \f$\frac{\partial C}{\partial \sigma}\f$ - used in Newton-Raphson root finding algorithm, for example.
-    //! \param p_sigma
-    //! \return
-    double vega(double p_sigma) const;
+    virtual double operator()(double p_sigma) const override;
+    virtual double vega(double p_sigma) const override;
 
     // This would be a fantastic candidate for a constexpr function, but alas the std math functions are not constexpr for C
     // compatibility.
@@ -137,16 +138,8 @@ public:
     using BSFormula::p;
 
     virtual double operator()(p p_r, p p_d, p p_T, p p_sigma, p p_S0, p p_K) const override;
-    //! \brief Overload for numerically solving the implied volatilty equation.
-    //! Warning: Assumes all the other parameters are cached!
-    //! \param p_sigma
-    //! \return The value of the option.
-    double operator()(double p_sigma) const;
-
-    //! \brief The vega: \f$\frac{\partial C}{\partial \sigma}\f$ - used in Newton-Raphson root finding algorithm, for example.
-    //! \param p_sigma
-    //! \return
-    double vega(double p_sigma) const;
+    virtual double operator()(double p_sigma) const override;
+    virtual double vega(double p_sigma) const override;
 
     // This would be a fantastic candidate for a constexpr function, but alas the std math functions are not constexpr for C
     // compatibility.
