@@ -68,6 +68,7 @@ private:
     void precalculate();
 };
 
+//! \brief A concrete implementation of an options pricing engine using a Black-Scholes (i.e. log-Wiener) process.
 template <typename Generator>
 class ExoticBSEngine : public ExoticEngine
 {

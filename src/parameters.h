@@ -95,19 +95,26 @@ public:
     //! \name Conversions
     //!@{
 
-    //! \brief Parsing constructors
+    //! \brief Parsing constructor.
     //! \param p_str
     ParametersConstant(std::string p_str);
+    //! \brief Parsing constructor.
+    //! \param p_str
     ParametersConstant(const char * p_str);
 
-    //! \brief Conversion operators
+    //! \brief Conversion operator.
     operator double();
+    //! \brief Conversion operator.
     operator double() const;
 
+    //! \brief Conversion operator.
     operator const char *();
+    //! \brief Conversion operator.
     operator const char *() const;
 
+    //! \brief Conversion operator.
     operator std::string();
+    //! \brief Conversion operator.
     operator std::string() const;
     //!@}
 
