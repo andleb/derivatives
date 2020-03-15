@@ -126,6 +126,13 @@ add_executable(ch8
     mains/ch8.cpp
     )
 
+add_executable(ch9
+    ${HEADERS}
+    src/solver.h
+    src/solver.cpp
+    mains/ch9.cpp
+    )
+
 target_link_libraries(ch1 ${PROJECT_LINK_LIBS})
 target_link_libraries(ch2 ${PROJECT_LINK_LIBS})
 target_link_libraries(ch3 ${PROJECT_LINK_LIBS})
@@ -134,3 +141,4 @@ target_link_libraries(ch5 ${PROJECT_LINK_LIBS})
 target_link_libraries(ch6 ${PROJECT_LINK_LIBS})
 target_link_libraries(ch7 ${PROJECT_LINK_LIBS})
 target_link_libraries(ch8 ${PROJECT_LINK_LIBS})
+target_link_libraries(ch9 ${PROJECT_LINK_LIBS})

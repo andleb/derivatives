@@ -2,7 +2,7 @@
  * \author Andrej Leban
  * \date 7/2019
  *
- * Ch. 8: Trees
+ * Ch. 8: Trees.
  */
 
 #include <iostream>
