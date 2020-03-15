@@ -26,7 +26,6 @@ public:
 template <typename Function>
 double bisection(double p_y, Function p_function, double p_a, double p_b, double p_tol = 1e-5)
 {
-    // TODO: implement this
     int increasing = (p_function(p_b) >= p_function(p_a)) ? 1 : -1;
     size_t iters = 0;
 
@@ -44,21 +43,23 @@ double bisection(double p_y, Function p_function, double p_a, double p_b, double
         {
             p_a = mid;
         }
-        else if (diff < p_tol)
+        else if (diff < -p_tol)
         {
             p_b = mid;
         }
         else
         {
-            return mid;
+            break;
         }
 
         ++iters;
         if (iters > 1e6)
         {
-            throw std::logic_error("Cannot converge, function malformed?");
+            throw std::logic_error("Cannot converge, function malformed or doesn't cross the value on interval?");
         }
     } while (flag);
+
+    return mid;
 }
 
 } // namespace der

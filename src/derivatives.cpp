@@ -4,6 +4,7 @@
  */
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <iostream>
 
@@ -24,13 +25,13 @@ double inverseCumulativeGaussian(double p_y)
 {
     // adapted from M. Joshi's source
 
-    static constexpr double a[4] = {2.50662823884, -18.61500062529, 41.39119773534, -25.44106049637};
+    static constexpr std::array<double, 4> a = {2.50662823884, -18.61500062529, 41.39119773534, -25.44106049637};
 
-    static constexpr double b[4] = {-8.47351093090, 23.08336743743, -21.06224101826, 3.13082909833};
+    static constexpr std::array<double, 4> b = {-8.47351093090, 23.08336743743, -21.06224101826, 3.13082909833};
 
-    static constexpr double c[9] = {0.3374754822726147, 0.9761690190917186, 0.1607979714918209,
-                                    0.0276438810333863, 0.0038405729373609, 0.0003951896511919,
-                                    0.0000321767881768, 0.0000002888167364, 0.0000003960315187};
+    static constexpr std::array<double, 9> c = {0.3374754822726147, 0.9761690190917186, 0.1607979714918209,
+                                                0.0276438810333863, 0.0038405729373609, 0.0003951896511919,
+                                                0.0000321767881768, 0.0000002888167364, 0.0000003960315187};
 
     double u = p_y - 0.5;
     double r;
@@ -84,7 +85,7 @@ double BSCall::operator()(BSFormula::p p_r, BSFormula::p p_d, BSFormula::p p_T, 
     double K = p_K.value_or(m_K.value());
 
     auto params = {r, d, T, sigma, S0, K};
-    if (std::any_of(params.begin(), params.end(), [](const auto & el) { return el == 0; }))
+    if (std::any_of(params.begin(), params.end(), [](const auto & el) { return std::abs(el) < 1e-12; }))
     {
         std::cerr << "BSCall::operator::Warning: some parameters zero. Is this intentional?";
     }
@@ -108,7 +109,7 @@ double BSCall::BSCallFormula(const double p_r, const double p_d, const double p_
     double logSK = std::log(p_S0 / p_K);
     double d1 = (logSK + (p_r - p_d) * p_T + 0.5 * std * std) / std;
     double d2 = d1 - std;
-    return std::exp(-1. * p_d * p_T) * p_S0 * cumulativeGaussian(d1) - std::exp(-1. * p_r * p_T) * cumulativeGaussian(d2);
+    return std::exp(-1. * p_d * p_T) * p_S0 * cumulativeGaussian(d1) - std::exp(-1. * p_r * p_T) * p_K * cumulativeGaussian(d2);
 }
 
 
@@ -122,7 +123,7 @@ double BSPut::operator()(BSFormula::p p_r, BSFormula::p p_d, BSFormula::p p_T, B
     double K = p_K.value_or(m_K.value());
 
     auto params = {r, d, T, sigma, S0, K};
-    if (std::any_of(params.begin(), params.end(), [](const auto & el) { return el == 0; }))
+    if (std::any_of(params.begin(), params.end(), [](const auto & el) { return std::abs(el) < 1e-12; }))
     {
         std::cerr << "BSCall::operator::Warning: some parameters zero. Is this intentional?";
     }
@@ -145,6 +146,6 @@ double BSPut::BSPutFormula(const double p_r, const double p_d, const double p_T,
     double logSK = std::log(p_S0 / p_K);
     double d1 = (logSK + (p_r - p_d) * p_T + 0.5 * std * std) / std;
     double d2 = d1 - std;
-    return -std::exp(-1. * p_d * p_T) * p_S0 * cumulativeGaussian(-d1) + std::exp(-1. * p_r * p_T) * cumulativeGaussian(-d2);
+    return -std::exp(-1. * p_d * p_T) * p_S0 * cumulativeGaussian(-d1) + std::exp(-1. * p_r * p_T) * p_K * cumulativeGaussian(-d2);
 }
 } // namespace der
