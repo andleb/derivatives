@@ -136,6 +136,18 @@ add_executable(ch9
     mains/ch9.cpp
     )
 
+add_executable(ch10
+    ${HEADERS}
+    src/payoff.h
+    src/payoff.cpp
+    src/payofffactory.h
+    src/payofffactory.cpp
+    src/payoffregisterer.h
+    src/payoffregistration.cpp
+    mains/ch10.cpp
+    )
+
+
 target_link_libraries(ch1 ${PROJECT_LINK_LIBS})
 target_link_libraries(ch2 ${PROJECT_LINK_LIBS})
 target_link_libraries(ch3 ${PROJECT_LINK_LIBS})

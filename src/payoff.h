@@ -10,6 +10,8 @@
 
 #include <memory>
 
+// NOTE: these are registered in payoffregistration.cpp.
+
 namespace der
 {
 
