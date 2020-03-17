@@ -135,9 +135,10 @@ double BSPut::operator()(double p_sigma) const { return BSPutFormula(*m_r, *m_d,
 
 double BSPut::vega(double p_sigma) const
 {
-    // is the same as for Calls
-    // The classes are identical in layout, so this reinterpret_cast is OK.
-    return reinterpret_cast<const BSCall *>(this)->vega(p_sigma);
+    double std = p_sigma * std::sqrt(*m_T);
+    static double logSK = std::log(*m_S0 / *m_K);
+    double d1 = (logSK + (*m_r - *m_d) * (*m_T) + 0.5 * std * std) / std;
+    return std::exp(-1. * (*m_d) * (*m_T)) * (*m_S0) * std::sqrt(*m_T) * cumulativeGaussian(d1);
 }
 
 double BSPut::BSPutFormula(const double p_r, const double p_d, const double p_T, const double p_sigma, const double p_S0, const double p_K)

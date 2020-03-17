@@ -25,18 +25,12 @@ T normalDistImpl(size_t p_seed = std::numeric_limits<size_t>::max());
 //! \brief Returns a normally distributed number of type \p T.
 //! \return
 template <typename T>
-T normalDist()
-{
-    return normalDistImpl<T>();
-}
+T normalDist();
 
 //! \brief Returns a normally distributed number of type \p T, seeded once with p_seed.
 //! \return
 template <typename T>
-T normalDist(size_t p_seed)
-{
-    return normalDistImpl<T>(p_seed);
-}
+T normalDist(size_t p_seed);
 //!@}
 
 //! \name Mathematical functions
@@ -161,6 +155,19 @@ public:
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+template <typename T>
+T normalDist()
+{
+    return normalDistImpl<T>();
+}
+
+template <typename T>
+T normalDist(size_t p_seed)
+{
+    return normalDistImpl<T>(p_seed);
+}
 
 template <typename T>
 T normalDistImpl(size_t p_seed)

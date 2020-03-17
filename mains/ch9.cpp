@@ -36,7 +36,9 @@ int main()
     iss >> S0 >> K >> T >> sigma >> r >> d;
 #endif
 
-    std::cout << "Sanity check: " << BSCall::BSCallFormula(r, d, T, sigma, S0, K) << "\n";
+//    std::cout << "Sanity check: " << BSCall::BSCallFormula(r, d, T, sigma, S0, K) << "\n";
+    std::cout << "Sanity check: " << BSPut::BSPutFormula(r, d, T, sigma, S0, K) << "\n";
+
     try
     {
         double impVolB = bisection(88.2363, BSCall(r, d, T, {}, S0, K), 0.3, 0.55);
@@ -49,7 +51,8 @@ int main()
 
     try
     {
-        double impVolN = newtonRaphson(88.2363, BSCall(r, d, T, {}, S0, K), 0.4);
+//        double impVolN = newtonRaphson(88.2363, BSCall(r, d, T, {}, S0, K), 0.4);
+        double impVolN = newtonRaphson(37.6294, BSPut(r, d, T, {}, S0, K), 0.4);
         std::cout << "Implied volatility by Newton-Raphson is: " << impVolN << "\n";
     }
     catch (const std::logic_error & e)

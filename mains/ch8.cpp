@@ -40,12 +40,12 @@ int main()
 
     iss >> S0 >> K >> T >> sigma >> r >> d >> nSteps;
 
-// for benchmarking
-//  std::cout << "enter the number of steps\n";
-//  std::string inputParams;
-//  std::getline(std::cin, inputParams);
-//  std::istringstream iss{inputParams};
-//  iss >> nSteps;
+    // for benchmarking
+    //  std::cout << "enter the number of steps\n";
+    //  std::string inputParams;
+    //  std::getline(std::cin, inputParams);
+    //  std::istringstream iss{inputParams};
+    //  iss >> nSteps;
 
 #endif
 
@@ -74,8 +74,9 @@ int main()
     std::cout << "Price of the Forward is: " << pF << "\n";
     std::cout << "Price of the European Call Option is: " << pEC << "\n";
     std::cout << "Price of the European Put Option is: " << pEP << "\n";
-    std::cout << "Put-call parity preserved: " << (std::abs((pEC - pEP) - pF) < 1e-3) << " (" << std::abs((pEC - pEP) - pF) << ")"
-                                                                                    << "\n";
+    std::cout << "Put-call parity preserved: " << std::boolalpha << (std::abs((pEC - pEP) - pF) < 1e-3) << " (diff = "
+              << std::abs((pEC - pEP) - pF) << ")"
+              << "\n";
     std::cout << "Price of the American Option is: " << tree.price(americanCall) << "\n";
 
     return 0;
