@@ -17,10 +17,14 @@
 namespace der
 {
 
+//! \brief An adapter that makes any Payoff class which has a constructor that takes a double
+//!  usable with the PayoffFactory class.
 template <typename T>
 class payoffRegisterer
 {
 public:
+    //! \brief Automatically registers the class with PayoffFactory under \p p_name.
+    //! \param p_name
     payoffRegisterer(std::string p_name);
     static std::unique_ptr<Payoff> create(double p_strike);
 };

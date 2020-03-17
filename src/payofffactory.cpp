@@ -27,7 +27,6 @@ std::unique_ptr<Payoff> PayoffFactory::createPayoff(std::string p_name, double p
 {
     try
     {
-//        return std::unique_ptr<Payoff>(m_registeredFactories.at(p_name)(p_strike));
         return m_registeredFactories.at(p_name)(p_strike);
     }
     catch (const std::out_of_range &)
