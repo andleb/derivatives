@@ -4,6 +4,6 @@ Approximately based on [M. Joshi's C++ Design Patterns and Derivatives Pricing](
 *C++17* strongly recommended.
 
 ## dependencies
-[*cmake*](https://github.com/andleb/cmake) repository for the cmake scripts, included as a submodule.
+[*cmake*](https://github.com/andleb/cmake) repository for the *CMake* scripts, included as a submodule.
 
 [*common*](https://github.com/andleb/common) repository for utility classes & functions.
