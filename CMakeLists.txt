@@ -150,6 +150,8 @@ add_executable(ch10
 add_executable(ch14
     ${HEADERS}
     src/templatefactory.h
+    src/payoff.h
+    src/payoff.cpp
     mains/ch14.cpp
     )
 

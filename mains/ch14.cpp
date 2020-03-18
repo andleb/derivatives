@@ -1,4 +1,4 @@
-/** \file ch8.cpp
+/** \file ch14.cpp
  * \author Andrej Leban
  * \date 3/2020
  *
@@ -10,47 +10,49 @@
 
 // common libraries
 #include <common/io.h>
-#include <common/numeric.h>
 
-#include "../src/parameters.h"
+#include "../src/templatefactory.h"
 #include "../src/payoff.h"
-#include "../src/tree.h"
-#include "../src/treeproduct.h"
 
 using namespace der;
 
 int main()
 {
-    double S0, K, T, sigma, r, d;
-    size_t nSteps;
+    Factory<Payoff> & factory = Factory<Payoff>::instance();
+    factoryRegisterer<PayoffCall, Payoff, double> call{"call"};
+    factoryRegisterer<PayoffDoubleDigital, Payoff, double, double> dd{"call"};
+
+    std::string name1, name2;
+    double strike1, strike2, strike3;
 
 #ifndef NDEBUG
-    S0 = 100;
-    K = 90;
-    T = 30;
-    sigma = 0.5;
-    r = 0.02;
-    d = 0.;
-    nSteps = 1000;
+    name1 = "call";
+    strike1 = 90.;
+
+    name2 = "dd";
+    strike2 = 90.;
+    strike3 = 110.;
+
 #else
-    std::cout << "enter spot, strike, time to expiry, vol, r, dividend rate, and the number of steps\n";
+    std::cout << "enter the product name and strike \n";
     std::string inputParams;
     std::getline(std::cin, inputParams);
     std::istringstream iss{inputParams};
 
-    iss >> S0 >> K >> T >> sigma >> r >> d >> nSteps;
-
-    // for benchmarking
-    //  std::cout << "enter the number of steps\n";
-    //  std::string inputParams;
-    //  std::getline(std::cin, inputParams);
-    //  std::istringstream iss{inputParams};
-    //  iss >> nSteps;
-
+    iss >> name >> strike;
 #endif
 
-
-//    std::cout << "Price of the American Option is: " << tree.price(americanCall) << "\n";
+    // arbitrary number of arguments
+    auto payoffcall = factory.create(name1, strike1);
+    if (payoffcall != nullptr)
+    {
+        std::cout << "The payoff of a " << name1 << " for a spot of 100 is: " << (*payoffcall)(100) << "\n";
+    }
+    auto payoffdd = factory.create(name2, strike2, strike3);
+    if (payoffdd != nullptr)
+    {
+        std::cout << "The payoff of a " << name1 << " for a spot of 100 is: " << (*payoffdd)(100) << "\n";
+    }
 
     return 0;
 }
