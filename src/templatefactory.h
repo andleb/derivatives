@@ -12,12 +12,10 @@
 #include <memory>
 #include <string>
 
-//#include <functional>
 #include <any>
-#include <type_traits>
 
 #include <common/functional.h>
-#include <common/tools.h>
+#include <common/patterns.h>
 
 namespace der
 {
@@ -68,7 +66,6 @@ public:
 
     factoryRegisterer(std::string p_name);
 
-    // TODO: does this play with the return above?
     static std::unique_ptr<Base> create(Args... p_args);
 };
 
