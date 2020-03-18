@@ -11,6 +11,7 @@ if(CMAKE_BUILD_TYPE MATCHES "Debug")
     message("Building in DEBUG mode, enabling testing macros.")
     add_definitions(-DTESTING)
 #    add_definitions(-DDUMPINTERMEDIATE)
+    # NOTE: this dumps results of the random generators to data/
     add_definitions(-DDUMPRESULTS)
 endif()
 
