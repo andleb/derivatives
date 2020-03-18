@@ -1,4 +1,4 @@
-/** \file payofffactory.cpp
+﻿/** \file payofffactory.cpp
  * \author Andrej Leban
  * \date 3/2020
  */
@@ -20,10 +20,10 @@ PayoffFactory & PayoffFactory::instance()
 
 void PayoffFactory::registerPayoff(std::string p_name, PayoffFactory::PayoffFactoryMethod p_factory)
 {
-    m_registeredFactories[p_name] = p_factory;
+    m_registeredFactories[std::move(p_name)] = p_factory;
 }
 
-std::unique_ptr<Payoff> PayoffFactory::createPayoff(std::string p_name, double p_strike)
+std::unique_ptr<Payoff> PayoffFactory::createPayoff(const std::string & p_name, double p_strike)
 {
     try
     {

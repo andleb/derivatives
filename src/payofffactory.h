@@ -39,13 +39,13 @@ public:
     //! \param p_strike
     //! \return A std::unique_ptr to the payoff class requested,
     //!  or a nullptr if \p p_name not registered.
-    std::unique_ptr<der::Payoff> createPayoff(std::string p_name, double p_strike);
+    std::unique_ptr<der::Payoff> createPayoff(const std::string & p_name, double p_strike);
 
 protected:
     PayoffFactory() = default;
 
 private:
-    std::map<std::string, PayoffFactoryMethod> m_registeredFactories {};
+    std::map<std::string, PayoffFactoryMethod> m_registeredFactories{};
 };
 
 } // namespace der

@@ -46,7 +46,7 @@ public:
     //! \return A std::unique_ptr to the \p Base class of the class requested,
     //!  or a nullptr if \p p_name not registered.
     template <typename... Args>
-    Ret create(std::string p_name, Args... p_args);
+    Ret create(const std::string & p_name, Args... p_args);
 
 protected:
     friend class cm::Singleton<Factory<Base>>;
@@ -81,12 +81,13 @@ template <class Base>
 template <typename... Args>
 void Factory<Base>::registerFactoryMethod(std::string p_name, FactoryMethod<Args...> p_factory)
 {
-    m_registeredFactories[p_name] = cm::AnyCallable<Ret>(std::move(p_factory));
+//    m_registeredFactories[p_name] = cm::AnyCallable<Ret>(std::forward<FactoryMethod<Args...>>(p_factory));
+    m_registeredFactories[std::move(p_name)] = cm::AnyCallable<Ret>(std::move(p_factory));
 }
 
 template <class Base>
 template <typename... Args>
-typename Factory<Base>::Ret Factory<Base>::create(std::string p_name, Args... p_args)
+typename Factory<Base>::Ret Factory<Base>::create(const std::string & p_name, Args... p_args)
 {
     try
     {

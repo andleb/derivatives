@@ -20,7 +20,7 @@ int main()
 {
     Factory<Payoff> & factory = Factory<Payoff>::instance();
     factoryRegisterer<PayoffCall, Payoff, double> call{"call"};
-    factoryRegisterer<PayoffDoubleDigital, Payoff, double, double> dd{"call"};
+    factoryRegisterer<PayoffDoubleDigital, Payoff, double, double> dd{"dd"};
 
     std::string name1, name2;
     double strike1, strike2, strike3;
@@ -51,7 +51,7 @@ int main()
     auto payoffdd = factory.create(name2, strike2, strike3);
     if (payoffdd != nullptr)
     {
-        std::cout << "The payoff of a " << name1 << " for a spot of 100 is: " << (*payoffdd)(100) << "\n";
+        std::cout << "The payoff of a " << name2 << " for a spot of 100 is: " << (*payoffdd)(100) << "\n";
     }
 
     return 0;
