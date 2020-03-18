@@ -74,8 +74,8 @@ int main()
     std::cout << "Price of the Forward is: " << pF << "\n";
     std::cout << "Price of the European Call Option is: " << pEC << "\n";
     std::cout << "Price of the European Put Option is: " << pEP << "\n";
-    std::cout << "Put-call parity preserved: " << std::boolalpha << (std::abs((pEC - pEP) - pF) < 1e-3) << " (diff = "
-              << std::abs((pEC - pEP) - pF) << ")"
+    std::cout << "Put-call parity preserved: " << std::boolalpha << (std::abs((pEC - pEP) - pF) < 1e-3)
+              << " (diff = " << std::abs((pEC - pEP) - pF) << ")"
               << "\n";
     std::cout << "Price of the American Option is: " << tree.price(americanCall) << "\n";
 

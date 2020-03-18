@@ -147,6 +147,12 @@ add_executable(ch10
     mains/ch10.cpp
     )
 
+add_executable(ch14
+    ${HEADERS}
+    src/templatefactory.h
+    mains/ch14.cpp
+    )
+
 
 target_link_libraries(ch1 ${PROJECT_LINK_LIBS})
 target_link_libraries(ch2 ${PROJECT_LINK_LIBS})

@@ -2,7 +2,7 @@
  * \author Andrej Leban
  * \date 3/2020
  *
- * A Factory Method (Gang of 4 terminology) class for der::Payoffs.
+ * An Abstract Factory (Gang of 4 terminology) class for der::Payoffs.
  */
 
 
@@ -19,7 +19,7 @@ namespace der
 
 class Payoff;
 
-//! \brief A Factory Method class for Payoffs.
+//! \brief A Factory class for Payoffs.
 class PayoffFactory
 {
 public:
