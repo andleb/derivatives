@@ -35,6 +35,7 @@ NOTE: I have stayed away from *C*-like input/output parameters and have replaced
 [*common*](https://github.com/andleb/common) repository for utility classes & functions.
 
 The project is built via *CMake*. One can, of course, modify the *CMake* configuration at will or use one's own.
+The documentation is to be built with *Doxygen* from the provided *doxyfile*.
 
 
 ## Authors
