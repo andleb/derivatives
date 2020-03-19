@@ -12,7 +12,7 @@
 #include <utility>
 #include <vector>
 
-#include <common/btree.h>
+#include <common/trees.h>
 
 #include "parameters.h"
 #include "treeproduct.h"
