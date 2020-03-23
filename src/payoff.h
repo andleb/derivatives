@@ -15,7 +15,7 @@
 namespace der
 {
 
-//! \brief Abstract payoff class
+//! \brief Abstract payoff class.
 class Payoff
 {
 public:
@@ -27,11 +27,11 @@ public:
     virtual ~Payoff();
 
     virtual std::unique_ptr<Payoff> clone() const = 0;
-    //! \brief calculates the payoff
+    //! \brief Calculates the payoff.
     virtual double operator()(double p_spot) const = 0;
 };
 
-//! \brief Implementation for calls
+//! \brief Implementation for calls.
 class PayoffCall : public Payoff
 {
 public:
@@ -44,7 +44,7 @@ private:
     double m_strike = 0;
 };
 
-//! \brief Implementation for puts
+//! \brief Implementation for puts.
 class PayoffPut : public Payoff
 {
 public:
@@ -57,7 +57,7 @@ private:
     double m_strike = 0;
 };
 
-//! \brief Implementation for double digital options
+//! \brief Implementation for double digital options.
 class PayoffDoubleDigital : public Payoff
 {
 public:

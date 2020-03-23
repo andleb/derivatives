@@ -156,6 +156,18 @@ add_executable(ch14
     mains/ch14.cpp
     )
 
+add_executable(final
+    ${HEADERS}
+    src/treeproduct.h
+    src/treeproduct.cpp
+    src/tree.h
+    src/tree.cpp
+    src/parameters.h
+    src/parameters.cpp
+    src/payoff.h
+    src/payoff.cpp
+    mains/final.cpp
+    )
 
 target_link_libraries(ch1 ${PROJECT_LINK_LIBS})
 target_link_libraries(ch2 ${PROJECT_LINK_LIBS})
@@ -166,3 +178,6 @@ target_link_libraries(ch6 ${PROJECT_LINK_LIBS})
 target_link_libraries(ch7 ${PROJECT_LINK_LIBS})
 target_link_libraries(ch8 ${PROJECT_LINK_LIBS})
 target_link_libraries(ch9 ${PROJECT_LINK_LIBS})
+
+target_link_libraries(final ${PROJECT_LINK_LIBS})
+

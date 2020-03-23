@@ -1,16 +1,13 @@
-/** \file ch8.cpp
+/** \file final.cpp
  * \author Andrej Leban
- * \date 7/2019
+ * \date 3/2020
  *
- * Ch. 8: Trees.
+ * Final project: Multithreaded trinomial tree pricing.
  */
 
 #include <iostream>
 #include <sstream>
-
-// common libraries
-#include <common/io.h>
-#include <common/numeric.h>
+#include <stddef.h>
 
 #include "../src/parameters.h"
 #include "../src/payoff.h"
@@ -53,7 +50,7 @@ int main()
     Parameters dP{ParametersConstant(d)};
 
     // the pricing tree
-    binomialTree tree(nSteps, S0, rP, dP, sigma, T);
+    trinomialTree tree(nSteps, 0.5, S0, rP, dP, sigma, T);
 
     // the payoff functions
     PayoffCall payoffC(K);
