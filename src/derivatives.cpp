@@ -67,7 +67,7 @@ double inverseCumulativeGaussian(double p_y)
     return p_y;
 }
 
-// BS formuals
+// BS formulas
 
 BSFormula::BSFormula(BSFormula::p p_r, BSFormula::p p_d, BSFormula::p p_T, BSFormula::p p_sigma, BSFormula::p p_S0, BSFormula::p p_K)
     : m_r(p_r), m_d(p_d), m_T(p_T), m_sigma(p_sigma), m_S0(p_S0), m_K(p_K)
