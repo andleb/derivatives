@@ -9,6 +9,8 @@ The project roughly follows the second edition of the aforementioned book, which
 The code itself is separated into the driver/playground routines, located in *mains*, and the library, located in *src*.
 The *mains* correspond to each relevant chapter, look at the list of includes in each to follow along with the development of the library. The original book features a heavy evolution of concepts, especially in the first chapters. This has been compacted a bit in this project.
 
+The executables defined in the *CMakeLists.txt* correspond to the chapters from the book, as elaborated below:
+
 #### Ch. 1 - 5:
 These perform *Monte-Carlo* pricing of various derivatives, with an increasing degree of software architecture.
 
