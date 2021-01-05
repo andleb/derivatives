@@ -7,7 +7,7 @@ Approximately based on [M. Joshi's C++ Design Patterns and Derivatives Pricing](
 The project roughly follows the second edition of the aforementioned book, which was published in 2008. While the numerics and mathematics haven't changed, *C++* has gone through quite a bit of a revolution in the time since. Due to this fact, the original book includes some now archaic elements, such as a self-implemented smart pointer. All such were replaced with their modern equivalents. Some chapters do not correspond to a concrete problem and have been excluded; in others, the sub-problems have often been consolidated/handled in a more generic way.
 
 The code itself is separated into the driver/playground routines, located in *mains*, and the library, located in *src*.
-The *mains* correspond to each relevant chapter, look at the list of includes, corresponding to each executable in *CMakeLists.txt* to follow along with the development of the library. 
+The *mains* correspond to each relevant chapter. Take a look at the list of includes, corresponding to each executable in *CMakeLists.txt*, to follow along with the development of the library. 
 
 
 #### Ch. 1 - 5:
