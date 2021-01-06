@@ -28,6 +28,10 @@ Deals with the concept of *implied volatility* and introduces two simple numeric
 #### Ch. 10, 14:
 Introduce the factory pattern & apply it to the existing architecture. The latter improves on the former by making the factory completely generic.
 
+#### Final
+As an exercise, I added pricing on trinomial trees. In the future, I intend to add low-level parallelization as an additional feature.
+
+
 NOTE: I have stayed away from *C*-like input/output parameters and have replaced them with *rvalue* reference inputs that get moved into, modified in place, and returned by value (moved out). I feel that this syntax is clearer and also mirrors the approach popular *Python* numerics packages, such as *Pandas*, are taking with regards to in-place modification. There is also the added benefit of zero additional performance costs afforded to us by modern *C++*.
 
 ## Dependencies & installation
