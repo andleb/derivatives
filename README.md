@@ -3,6 +3,14 @@ Approximately based on [M. Joshi's C++ Design Patterns and Derivatives Pricing](
 
 *C++17* strongly recommended.
 
+## Dependencies & installation
+[*cmake*](https://github.com/andleb/cmake) repository for the *CMake* scripts; included as a **submodule**.
+
+[*common*](https://github.com/andleb/common) repository for utility classes & functions.
+
+The project is built via *CMake*. One can, of course, modify the *CMake* configuration at will or use one's own.
+The documentation is to be built with *Doxygen* from the provided *doxyfile*.
+
 ## Overview
 The project roughly follows the second edition of the aforementioned book, which was published in 2008. While the numerics and mathematics haven't changed, *C++* has gone through quite a bit of a revolution in the time since. Due to this fact, the original book includes some now archaic elements, such as a self-implemented smart pointer. All such were replaced with their modern equivalents. Some chapters do not correspond to a concrete problem and have been excluded; in others, the sub-problems have often been consolidated/handled in a more generic way.
 
@@ -33,14 +41,6 @@ As an exercise, I added pricing on trinomial trees. In the future, I intend to a
 
 
 NOTE: I have stayed away from *C*-like input/output parameters and have replaced them with *rvalue* reference inputs that get moved into, modified in place, and returned by value (moved out). I feel that this syntax is clearer and also mirrors the approach popular *Python* numerics packages, such as *Pandas*, are taking with regards to in-place modification. There is also the added benefit of zero additional performance costs afforded to us by modern *C++*.
-
-## Dependencies & installation
-[*cmake*](https://github.com/andleb/cmake) repository for the *CMake* scripts; included as a **submodule**.
-
-[*common*](https://github.com/andleb/common) repository for utility classes & functions.
-
-The project is built via *CMake*. One can, of course, modify the *CMake* configuration at will or use one's own.
-The documentation is to be built with *Doxygen* from the provided *doxyfile*.
 
 
 ## Authors
