@@ -28,7 +28,7 @@ This chapter implements custom random number generators and integrates them with
 Deals with the pricing of exotic, more specifically, path-dependent, options via *Monte-Carlo* using all the preceding infrastructure.
 
 #### Ch. 8:
-Switches gears and introduces pricing on *trees* (or *lattices*). For this, I have developed a helper static recombinant tree class that is found in the *common* repository (see below). This allows us to price early-exercise options.
+Switches gears and introduces pricing on *trees* (or *lattices*). For this, I have developed a helper static recombinant tree class that is found in the [*common*](https://github.com/andleb/common) repository (see above). This allows us to price early-exercise options.
 
 #### Ch. 9:
 Deals with the concept of *implied volatility* and introduces two simple numerical root-finding routines.
@@ -40,7 +40,7 @@ Introduce the factory pattern & apply it to the existing architecture. The latte
 As an exercise, I added pricing on trinomial trees. In the future, I intend to add low-level parallelization as an additional feature.
 
 
-NOTE: I have stayed away from *C*-like input/output parameters and have replaced them with *rvalue* reference inputs that get moved into, modified in place, and returned by value (moved out). I feel that this syntax is clearer and also mirrors the approach popular *Python* numerics packages, such as *Pandas*, are taking with regards to in-place modification. There is also the added benefit of zero additional performance costs afforded to us by modern *C++*.
+NOTE: I have stayed away from *C*-like input/output parameters and have replaced them with *rvalue* reference inputs that get moved into, modified in place, and returned by value (moved out). I feel that this syntax is clearer and also mirrors the approach popular *Python* numerics packages, such as *Pandas*, are taking with regards to in-place modification. There is also the added benefit of zero additional performance costs, afforded to us by modern *C++*.
 
 
 ## Authors
