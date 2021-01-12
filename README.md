@@ -1,5 +1,5 @@
 # derivatives
-Approximately based on [M. Joshi's C++ Design Patterns and Derivatives Pricing](https://www.amazon.com/Patterns-Derivatives-Pricing-Mathematics-Finance/dp/0521721628), making use of updated paradigms wherever possible. 
+Based on [M. Joshi's C++ Design Patterns and Derivatives Pricing](https://www.amazon.com/Patterns-Derivatives-Pricing-Mathematics-Finance/dp/0521721628), making use of updated paradigms wherever possible. 
 
 *C++17* strongly recommended.
 
