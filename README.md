@@ -48,4 +48,4 @@ NOTE: I have stayed away from *C*-like input/output parameters and have replaced
 Andrej Leban
 
 ## Acknowledgments
-dr. Mark Joshi (RIP)
+Dr. Mark Joshi (RIP)
