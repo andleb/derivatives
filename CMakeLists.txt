@@ -178,6 +178,8 @@ target_link_libraries(ch6 ${PROJECT_LINK_LIBS})
 target_link_libraries(ch7 ${PROJECT_LINK_LIBS})
 target_link_libraries(ch8 ${PROJECT_LINK_LIBS})
 target_link_libraries(ch9 ${PROJECT_LINK_LIBS})
+target_link_libraries(ch10 ${PROJECT_LINK_LIBS})
+target_link_libraries(ch14 ${PROJECT_LINK_LIBS})
 
 target_link_libraries(final ${PROJECT_LINK_LIBS})
 

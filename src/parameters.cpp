@@ -6,6 +6,7 @@
 #include "parameters.h"
 
 #include <cmath>
+#include <string>
 
 namespace der
 {

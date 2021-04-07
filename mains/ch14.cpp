@@ -39,7 +39,7 @@ int main()
     std::getline(std::cin, inputParams);
     std::istringstream iss{inputParams};
 
-    iss >> name >> strike;
+    iss >> name1 >> strike1;
 #endif
 
     // arbitrary number of arguments
