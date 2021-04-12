@@ -47,5 +47,7 @@ NOTE: I have stayed away from *C*-like input/output parameters and have replaced
 
 Andrej Leban
 
+andrejleban@gmail.com
+
 ## Acknowledgments
 Dr. Mark Joshi (RIP)
