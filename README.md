@@ -14,8 +14,11 @@ The documentation is to be built with *Doxygen* from the provided *doxyfile*.
 ## Overview
 The project roughly follows the second edition of the aforementioned book, which was published in 2008. While the numerics and mathematics haven't changed, *C++* has gone through quite a bit of a revolution in the time since. Due to this fact, the original book includes some now archaic elements, such as a self-implemented smart pointer. All such were replaced with their modern equivalents. Some chapters do not correspond to a concrete problem and have been excluded; in others, the sub-problems have often been consolidated/handled in a more generic way.
 
-The code itself is separated into the driver/playground routines, located in *mains*, and the library, located in *src*.
-The *mains* correspond to each relevant chapter. Take a look at the list of includes, corresponding to each executable in *CMakeLists.txt*, to follow along with the development of the library. 
+The code itself is separated into two directories:
+ * **src**: the library itself
+ * **mains**: auxiliary driver/playground code  
+
+The *mains* correspond to each relevant chapter. Take a look at the list of includes corresponding to each executable in *CMakeLists.txt*, to follow along with the development of the library as the book progresses. 
 
 
 #### Ch. 1 - 5:
@@ -37,7 +40,7 @@ Deals with the concept of *implied volatility* and introduces two simple numeric
 Introduce the factory pattern & apply it to the existing architecture. The latter improves on the former by making the factory completely generic.
 
 #### Final
-As an exercise, I added pricing on trinomial trees. In the future, I intend to add low-level parallelization as an additional feature.
+As an exercise, I added pricing on trinomial trees. In the future, I might add low-level parallelization as an additional feature (c.f. the *barrier* class in *common*).
 
 
 NOTE: I have stayed away from *C*-like input/output parameters and have replaced them with *rvalue* reference inputs that get moved into, modified in place, and returned by value (moved out). I feel that this syntax is clearer and also mirrors the approach popular *Python* numerics packages, such as *Pandas*, are taking with regards to in-place modification. There is also the added benefit of zero additional performance costs, afforded to us by modern *C++*.
