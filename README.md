@@ -15,8 +15,8 @@ The documentation is to be built with *Doxygen* from the provided *doxyfile*.
 The project roughly follows the second edition of the aforementioned book, which was published in 2008. While the numerics and mathematics haven't changed, *C++* has gone through quite a bit of a revolution in the time since. Due to this fact, the original book includes some now archaic elements, such as a self-implemented smart pointer. All such were replaced with their modern equivalents. Some chapters do not correspond to a concrete problem and have been excluded; in others, the sub-problems have often been consolidated/handled in a more generic way.
 
 The code itself is separated into two directories:
- * **src**: the library itself
- * **mains**: auxiliary driver/playground code  
+ * **src**: the library itself - this contains all the actual relevant code
+ * **mains**: auxiliary driver/playground code - this merely calls the above for some toy examples
 
 The *mains* correspond to each relevant chapter. Take a look at the list of includes corresponding to each executable in *CMakeLists.txt*, to follow along with the development of the library as the book progresses. 
 
